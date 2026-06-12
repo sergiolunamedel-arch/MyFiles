@@ -178,6 +178,23 @@ footer{padding:28px 0 10px;font-size:.65rem;color:var(--muted);opacity:.45;text-
 .confirm-btn.danger{background:#e05555;color:#fff;border-color:#e05555}
 .confirm-btn.danger:hover{background:#c94444}
 
+/* ZIP DOWNLOAD */
+.zip-progress-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:2000;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .2s}
+.zip-progress-overlay.open{opacity:1;pointer-events:auto}
+.zip-box{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:28px 28px 22px;max-width:300px;width:90%;text-align:center;
+  box-shadow:0 12px 40px rgba(0,0,0,.5)}
+.zip-title{font-size:.95rem;font-weight:700;color:var(--accent);margin-bottom:12px}
+.zip-bar-wrap{height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin:12px 0}
+.zip-bar{height:100%;background:var(--accent);width:0%;transition:width .25s}
+.zip-msg{font-size:.75rem;color:var(--muted);margin-top:4px}
+.zip-cancel{margin-top:14px;background:transparent;border:1px solid var(--border);
+  color:var(--muted);border-radius:8px;padding:6px 16px;font-size:.78rem;
+  cursor:pointer;font-family:var(--font);transition:all .18s}
+.zip-cancel:hover{border-color:var(--muted);color:var(--text)}
+
 ::-webkit-scrollbar{width:4px}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
@@ -268,6 +285,17 @@ footer{padding:28px 0 10px;font-size:.65rem;color:var(--muted);opacity:.45;text-
 
 <div class="bottom-nav">
   <button class="nav-btn" onclick="loadFiles()">🔄 Actualizar</button>
+  <button class="nav-btn" id="btn-zip" onclick="downloadAllZip()">🗜 Descargar ZIP</button>
+</div>
+
+<!-- ZIP progress overlay -->
+<div class="zip-progress-overlay" id="zip-overlay">
+  <div class="zip-box">
+    <div class="zip-title">🗜 Empaquetando archivos…</div>
+    <div class="zip-bar-wrap"><div class="zip-bar" id="zip-bar"></div></div>
+    <div class="zip-msg" id="zip-msg">Iniciando…</div>
+    <button class="zip-cancel" id="zip-cancel-btn">Cancelar</button>
+  </div>
 </div>
 
 <script>
@@ -531,6 +559,82 @@ function timeAgo(dateStr){
   if(s < 86400) return 'Hace ' + Math.round(s/3600) + ' h';
   return 'Hace ' + Math.round(s/86400) + ' d';
 }
+
+/* ══ ZIP DOWNLOAD ══ */
+var zipAborted = false;
+
+window.downloadAllZip = function(){
+  if(!allFiles.length){
+    alert('No hay archivos para descargar.');
+    return;
+  }
+  zipAborted = false;
+  var overlay = $('zip-overlay');
+  var bar     = $('zip-bar');
+  var msg     = $('zip-msg');
+  overlay.classList.add('open');
+  bar.style.width = '0%';
+  msg.textContent = 'Cargando JSZip…';
+
+  // Load JSZip dynamically
+  function loadJSZip(cb){
+    if(window.JSZip){ cb(); return; }
+    var s = document.createElement('script');
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
+    s.onload = cb;
+    s.onerror = function(){ alert('No se pudo cargar JSZip.'); overlay.classList.remove('open'); };
+    document.head.appendChild(s);
+  }
+
+  loadJSZip(function(){
+    if(zipAborted){ overlay.classList.remove('open'); return; }
+    var zip   = new JSZip();
+    var total = allFiles.length;
+    var done  = 0;
+
+    function next(i){
+      if(zipAborted){ overlay.classList.remove('open'); return; }
+      if(i >= total){
+        msg.textContent = 'Generando ZIP…';
+        bar.style.width = '100%';
+        zip.generateAsync({ type:'blob' }, function(meta){
+          bar.style.width = Math.round(meta.percent) + '%';
+        }).then(function(blob){
+          overlay.classList.remove('open');
+          var a = document.createElement('a');
+          a.href = URL.createObjectURL(blob);
+          a.download = 'MisArchivos_' + new Date().toISOString().slice(0,10) + '.zip';
+          document.body.appendChild(a);
+          a.click();
+          setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 2000);
+        });
+        return;
+      }
+      var f = allFiles[i];
+      var displayName = f.name.replace(/^\d{8}_/, '');
+      msg.textContent = '(' + (i+1) + '/' + total + ') ' + displayName;
+      bar.style.width = Math.round((i / total) * 90) + '%';
+
+      fetch(f.download_url)
+        .then(function(r){ return r.arrayBuffer(); })
+        .then(function(buf){
+          zip.file(displayName, buf);
+          done++;
+          next(i + 1);
+        })
+        .catch(function(err){
+          msg.textContent = '⚠ Error: ' + displayName;
+          setTimeout(function(){ next(i + 1); }, 500);
+        });
+    }
+    next(0);
+  });
+};
+
+$('zip-cancel-btn').addEventListener('click', function(){
+  zipAborted = true;
+  $('zip-overlay').classList.remove('open');
+});
 
 /* ══ SORT ══ */
 window.setSort = function(s){
