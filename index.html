@@ -301,7 +301,21 @@ function showTokenNotice(show){
 
 $('token-save-btn').addEventListener('click', function(){
   var tok = $('token-input').value.trim();
-  if(tok){ saveToken(tok); showTokenNotice(false); }
+  if(!tok) return;
+  saveToken(tok);
+  // Feedback visual breve
+  var btn = $('token-save-btn');
+  var prev = btn.textContent;
+  btn.textContent = '✓ Guardado';
+  btn.disabled = true;
+  setTimeout(function(){ btn.textContent = prev; btn.disabled = false; }, 1500);
+  showTokenNotice(false);
+  // Reanudar archivos pendientes
+  if(pendingFiles.length){
+    var toUpload = pendingFiles.slice();
+    pendingFiles = [];
+    toUpload.forEach(uploadFile);
+  }
 });
 
 // pre-fill stored token (masked)
@@ -310,6 +324,7 @@ if(getToken()) $('token-input').value = getToken();
 /* ══ UPLOAD ZONE ══ */
 var zone  = $('upload-zone');
 var input = $('upload-input');
+var pendingFiles = [];
 
 zone.addEventListener('dragover',  function(e){ e.preventDefault(); zone.classList.add('drag-over'); });
 zone.addEventListener('dragleave', function(e){ if(!zone.contains(e.relatedTarget)) zone.classList.remove('drag-over'); });
@@ -324,7 +339,12 @@ input.addEventListener('change', function(){
 
 function handleFiles(files){
   if(!files.length) return;
-  if(!getToken()){ showTokenNotice(true); $('token-input').focus(); return; }
+  if(!getToken()){
+    pendingFiles = Array.from(files);
+    showTokenNotice(true);
+    $('token-input').focus();
+    return;
+  }
   showTokenNotice(false);
   files.forEach(uploadFile);
 }
@@ -341,15 +361,21 @@ function uploadFile(file){
   item.innerHTML =
     '<span class="q-name">' + esc(file.name) + '</span>' +
     '<div class="q-bar-wrap"><div class="q-bar" id="bar-'+uid+'"></div></div>' +
-    '<span class="q-status" id="st-'+uid+'">⏳</span>';
+    '<span class="q-status" id="st-'+uid+'">⏳ Subiendo…</span>';
   queue.appendChild(item);
+
+  function makeCtrl(ms){
+    var ctrl = new AbortController();
+    setTimeout(function(){ ctrl.abort(); }, ms);
+    return ctrl;
+  }
 
   var reader = new FileReader();
   reader.onload = function(e){
     var b64 = e.target.result.split(',')[1];
     var path = API_ROOT + 'files/' + encodeURIComponent(repoName);
     // get SHA if file exists
-    fetch(path, { headers: ghHeaders() })
+    fetch(path, { headers: ghHeaders(), signal: makeCtrl(15000).signal })
     .then(function(r){ return r.ok ? r.json() : null; })
     .then(function(existing){
       bar(uid, 40);
@@ -358,14 +384,15 @@ function uploadFile(file){
       return fetch(path, {
         method: 'PUT',
         headers: ghHeaders({'Content-Type':'application/json'}),
-        body: JSON.stringify(body)
+        body: JSON.stringify(body),
+        signal: makeCtrl(60000).signal
       });
     })
     .then(function(r){
       bar(uid, 100);
       if(r && r.ok){
-        $('st-'+uid).textContent = '✓';
-        setTimeout(function(){ item.remove(); loadFiles(); }, 1200);
+        $('st-'+uid).textContent = '✓ Subido';
+        setTimeout(function(){ item.remove(); loadFiles(); }, 1500);
       } else {
         return r.json().then(function(d){ throw new Error(d.message || r.status); });
       }
@@ -373,10 +400,16 @@ function uploadFile(file){
     .catch(function(err){
       $('bar-'+uid).style.background = '#e05555';
       bar(uid, 100);
-      $('st-'+uid).textContent = '✗';
-      $('st-'+uid).title = err.message;
-      if(/401|Bad cred/i.test(err.message)) showTokenNotice(true);
-      setTimeout(function(){ item.remove(); }, 3500);
+      var msg = err.name === 'AbortError' ? 'Tiempo de espera agotado' : err.message;
+      $('st-'+uid).textContent = '✗ Error';
+      $('st-'+uid).title = msg;
+      // Mostrar alerta visible además de la barra
+      var errDiv = document.createElement('div');
+      errDiv.style.cssText = 'font-size:.72rem;color:#e05555;padding:2px 0 0 4px';
+      errDiv.textContent = '⚠ ' + msg;
+      item.appendChild(errDiv);
+      if(/401|Bad cred/i.test(msg)) showTokenNotice(true);
+      setTimeout(function(){ item.remove(); }, 5000);
     });
   };
   reader.readAsDataURL(file);
