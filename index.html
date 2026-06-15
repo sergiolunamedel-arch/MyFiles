@@ -348,7 +348,7 @@ footer{
         <div class="upload-arrow">
           <svg viewBox="0 0 24 24"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
         </div>
-        <div class="upload-text">Arrastra aquí o <strong>selecciona archivos</strong></div>
+        <div class="upload-text">Arrastra, <strong>selecciona</strong> o pega imagen <strong>Ctrl+V</strong></div>
       </div>
       <input class="upload-input" id="upload-input" type="file" multiple>
     </div>
@@ -507,6 +507,22 @@ zone.addEventListener('drop', function(e){
 input.addEventListener('change', function(){
   handleFiles(Array.from(this.files));
   this.value = '';
+});
+
+/* PASTE (Ctrl+V) — imagen del portapapeles */
+document.addEventListener('paste', function(e) {
+  var items = (e.clipboardData || window.clipboardData || {}).items;
+  if (!items) return;
+  var imageFiles = [];
+  for (var i = 0; i < items.length; i++) {
+    if (items[i].kind === 'file' && items[i].type.indexOf('image') !== -1) {
+      var f = items[i].getAsFile();
+      if (f) imageFiles.push(f);
+    }
+  }
+  if (!imageFiles.length) return;
+  e.preventDefault();
+  handleFiles(imageFiles);
 });
 
 function handleFiles(files){
