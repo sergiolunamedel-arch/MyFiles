@@ -1,0 +1,64 @@
+[snyk] CLI ready (1.1305.1)
+[auth] cleared stored Snyk credentials — starting a fresh sign-in through your organization's SSO.
+[tls] trusting corporate proxy via NODE_EXTRA_CA_CERTS=C:\Users\fpablo\AppData\Local\Temp\bbscanner_corp_ca.pem
+[auth] launching snyk auth — browser will open shortly.
+
+Now redirecting you to our auth page, go ahead and log in,
+and once the auth is complete, return to this prompt and you'll
+be ready to start using snyk.
+
+If you can't wait use this url:
+https://app.snyk.io/oauth2/authorize?access_type=offline&client_id=b56d4c2e-b9e1-4d27-8773-ad47eafb0956&code_challenge=3QnPRee-tR9CCSFY-IM39eb2IBwxnMAS-XnLoaVbNmU&code_challenge_method=S256&cross_region_routing=true&redirect_uri=http%3A%2F%2F127.0.0.1%3A8080%2Fauthorization-code%2Fcallback&response_type=code&scope=offline_access&state=WYBiWVQfVS1zo3K&utm_source=TS_BINARY_WRAPPER&version=2021-08-11~experimental
+[auth] snyk auth exited (0)
+[scan] pipeline: CODE+SCA+SECRETS
+[scan] output → C:\Users\fpablo\Downloads\BancoBaseScanner\Reports\_unscoped\report_20260617_163038_code+sca+secrets
+[snyk] CLI ready (1.1305.1)
+[scan] running 3 stages concurrently
+[secrets] running secret scan as pipeline stage…
+[secrets] scanning C:\GIT\gfb-baseinetintranet-wcf
+[scan] $ snyk code test --json  (cwd=C:\GIT\gfb-baseinetintranet-wcf)
+[scan] $ snyk test --all-projects --detection-depth=10 --strict-out-of-sync=false --skip-unresolved --json  (cwd=C:\GIT\gfb-baseinetintranet-wcf)
+[scan] raw JSON → C:\Users\fpablo\Downloads\BancoBaseScanner\Reports\_unscoped\report_20260617_163038_code+sca+secrets\snyk_code.json
+[secrets] done — 0 finding(s) across 7326 file(s) in 162.9s
+[secrets] 0 finding(s) across 7326 file(s)
+[scan] SCA total vulnerabilities: 46
+[scan] raw JSON → C:\Users\fpablo\Downloads\BancoBaseScanner\Reports\_unscoped\report_20260617_163038_code+sca+secrets\snyk_test.json
+[state] sca result persisted to cumulative store
+[state] code result persisted to cumulative store
+[state] secrets result persisted to cumulative store
+[report] building cumulative report (all scan types merged)
+[scan] cumulative total: 93  crit=0  high=35  med=24  low=34  secrets=0
+[report] CSV bundle (ZIP): C:\Users\fpablo\Downloads\BancoBaseScanner\Reports\_unscoped\report_20260617_163038_code+sca+secrets\code+sca+secrets+fpablo_20260617.zip  (sca/sast/dast/api/secrets sheets + summary)
+[report] Secrets HTML → C:\Users\fpablo\Downloads\BancoBaseScanner\Reports\_unscoped\report_20260617_163038_code+sca+secrets\code+sca+secrets+fpablo_20260617_secrets.html
+[report] SARIF: C:\Users\fpablo\Downloads\BancoBaseScanner\Reports\_unscoped\report_20260617_163038_code+sca+secrets\findings.sarif
+[report] merged JSON: C:\Users\fpablo\Downloads\BancoBaseScanner\Reports\_unscoped\report_20260617_163038_code+sca+secrets\findings_merged.json
+[history] recorded scan — remediated 0, new 52 since last CODE+SCA+SECRETS run
+[gate] FAIL  (critical=0 high=35 medium=24 low=34 secrets_crit_high=0)
+[report] HTML: C:\Users\fpablo\Downloads\BancoBaseScanner\Reports\_unscoped\report_20260617_163038_code+sca+secrets\code+sca+secrets+fpablo_20260617.html
+[report] CSV:  C:\Users\fpablo\Downloads\BancoBaseScanner\Reports\_unscoped\report_20260617_163038_code+sca+secrets\code+sca+secrets+fpablo_20260617.zip
+[scan] pipeline: CODE+SCA+SECRETS
+[scan] output → C:\Users\fpablo\Downloads\BancoBaseScanner\Reports\_unscoped\report_20260617_164700_code+sca+secrets
+[snyk] CLI ready (1.1305.1)
+[scan] running 3 stages concurrently
+[secrets] running secret scan as pipeline stage…
+[secrets] scanning C:\GIT\gfb-baseinetintranet-wcf\Services\Pebb.DistributedServices.Web
+[scan] $ snyk code test --json  (cwd=C:\GIT\gfb-baseinetintranet-wcf\Services\Pebb.DistributedServices.Web)
+[scan] $ snyk test --all-projects --detection-depth=10 --strict-out-of-sync=false --skip-unresolved --json  (cwd=C:\GIT\gfb-baseinetintranet-wcf\Services\Pebb.DistributedServices.Web)
+[secrets] done — 0 finding(s) across 333 file(s) in 5.7s
+[secrets] 0 finding(s) across 333 file(s)
+[scan] SCA total vulnerabilities: 12
+[scan] raw JSON → C:\Users\fpablo\Downloads\BancoBaseScanner\Reports\_unscoped\report_20260617_164700_code+sca+secrets\snyk_test.json
+[scan] raw JSON → C:\Users\fpablo\Downloads\BancoBaseScanner\Reports\_unscoped\report_20260617_164700_code+sca+secrets\snyk_code.json
+[state] sca result persisted to cumulative store
+[state] code result persisted to cumulative store
+[state] secrets result persisted to cumulative store
+[report] building cumulative report (all scan types merged)
+[scan] cumulative total: 160  crit=0  high=7  med=48  low=105  secrets=0
+[report] CSV bundle (ZIP): C:\Users\fpablo\Downloads\BancoBaseScanner\Reports\_unscoped\report_20260617_164700_code+sca+secrets\code+sca+secrets+fpablo_20260617.zip  (sca/sast/dast/api/secrets sheets + summary)
+[report] Secrets HTML → C:\Users\fpablo\Downloads\BancoBaseScanner\Reports\_unscoped\report_20260617_164700_code+sca+secrets\code+sca+secrets+fpablo_20260617_secrets.html
+[report] SARIF: C:\Users\fpablo\Downloads\BancoBaseScanner\Reports\_unscoped\report_20260617_164700_code+sca+secrets\findings.sarif
+[report] merged JSON: C:\Users\fpablo\Downloads\BancoBaseScanner\Reports\_unscoped\report_20260617_164700_code+sca+secrets\findings_merged.json
+[history] recorded scan — remediated 46, new 10 since last CODE+SCA+SECRETS run
+[gate] FAIL  (critical=0 high=7 medium=48 low=105 secrets_crit_high=0)
+[report] HTML: C:\Users\fpablo\Downloads\BancoBaseScanner\Reports\_unscoped\report_20260617_164700_code+sca+secrets\code+sca+secrets+fpablo_20260617.html
+[report] CSV:  C:\Users\fpablo\Downloads\BancoBaseScanner\Reports\_unscoped\report_20260617_164700_code+sca+secrets\code+sca+secrets+fpablo_20260617.zip
