@@ -396,30 +396,6 @@ footer{
   <div class="sort-opt"        data-sort="type" onclick="setSort('type')">tipo</div>
 </div>
 
-<!-- Delete confirm -->
-<div class="confirm-overlay" id="confirm-overlay">
-  <div class="confirm-box">
-    <div class="confirm-title">Eliminar archivo</div>
-    <div class="confirm-msg" id="confirm-msg"></div>
-    <div class="confirm-btns">
-      <button class="confirm-btn cancel" onclick="closeConfirm()">Cancelar</button>
-      <button class="confirm-btn danger" id="confirm-ok">Eliminar</button>
-    </div>
-  </div>
-</div>
-
-<!-- Delete ALL confirm -->
-<div class="confirm-overlay" id="confirm-all-overlay">
-  <div class="confirm-box">
-    <div class="confirm-title">Eliminar todo</div>
-    <div class="confirm-msg" id="confirm-all-msg"></div>
-    <div class="confirm-btns">
-      <button class="confirm-btn cancel" onclick="closeConfirmAll()">Cancelar</button>
-      <button class="confirm-btn danger" id="confirm-all-ok">Eliminar todo</button>
-    </div>
-  </div>
-</div>
-
 <div class="bottom-nav">
   <button class="nav-btn" onclick="loadFiles()">
     <svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
@@ -429,7 +405,7 @@ footer{
     <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
     ZIP
   </button>
-  <button class="nav-btn danger" id="btn-delete-all" onclick="confirmDeleteAll()">
+  <button class="nav-btn danger" id="btn-delete-all" onclick="deleteAllFiles()">
     <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
     Eliminar todos
   </button>
@@ -455,7 +431,6 @@ var API_ROOT  = 'https://api.github.com/repos/' + REPO + '/contents/';
 var TOKEN_KEY = 'mf_gh_token';
 var currentSort   = 'date';
 var allFiles      = [];
-var pendingDelete = null;
 
 function $(id){ return document.getElementById(id); }
 
@@ -509,20 +484,43 @@ input.addEventListener('change', function(){
   this.value = '';
 });
 
-/* PASTE (Ctrl+V) — imagen del portapapeles */
+/* PASTE (Ctrl+V) — imagen o texto del portapapeles */
 document.addEventListener('paste', function(e) {
-  var items = (e.clipboardData || window.clipboardData || {}).items;
-  if (!items) return;
+  var cd = e.clipboardData || window.clipboardData;
+  var items = (cd || {}).items;
+
+  // Imagen pegada → subir como archivo de imagen
   var imageFiles = [];
-  for (var i = 0; i < items.length; i++) {
-    if (items[i].kind === 'file' && items[i].type.indexOf('image') !== -1) {
-      var f = items[i].getAsFile();
-      if (f) imageFiles.push(f);
+  if (items) {
+    for (var i = 0; i < items.length; i++) {
+      if (items[i].kind === 'file' && items[i].type.indexOf('image') !== -1) {
+        var f = items[i].getAsFile();
+        if (f) imageFiles.push(f);
+      }
     }
   }
-  if (!imageFiles.length) return;
-  e.preventDefault();
-  handleFiles(imageFiles);
+  if (imageFiles.length) {
+    e.preventDefault();
+    handleFiles(imageFiles);
+    return;
+  }
+
+  // No interferir si se está pegando dentro de un campo de texto (token, búsqueda, etc.)
+  var tag = (e.target && e.target.tagName || '').toLowerCase();
+  if (tag === 'input' || tag === 'textarea' || (e.target && e.target.isContentEditable)) return;
+
+  // Texto pegado → subir como archivo .txt
+  var text = cd ? cd.getData('text/plain') : '';
+  if (text && text.length) {
+    e.preventDefault();
+    var now  = new Date();
+    var pad  = function(n){ return (n < 10 ? '0' : '') + n; };
+    var fname = now.getFullYear() + pad(now.getMonth()+1) + pad(now.getDate()) + '_' +
+                pad(now.getHours()) + pad(now.getMinutes()) + pad(now.getSeconds()) + '_texto.txt';
+    var blob = new Blob([text], { type: 'text/plain' });
+    var file = new File([blob], fname, { type: 'text/plain' });
+    handleFiles([file]);
+  }
 });
 
 function handleFiles(files){
@@ -680,7 +678,7 @@ function renderFiles(){
     });
     card.querySelector('[title="Eliminar"]').addEventListener('click', function(e){
       e.stopPropagation();
-      openConfirm(this.getAttribute('data-name'), this.getAttribute('data-sha'));
+      deleteFile(this.getAttribute('data-name'), this.getAttribute('data-sha'));
     });
     card.addEventListener('click', function(){
       if(f.download_url) window.open(f.download_url, '_blank');
@@ -808,43 +806,23 @@ $('btn-theme').addEventListener('click', function(){
   applyTheme(!document.documentElement.classList.contains('light'));
 });
 
-/* DELETE */
-function openConfirm(name, sha){
-  pendingDelete = { name: name, sha: sha };
-  $('confirm-msg').textContent = 'Se eliminara "' + name.replace(/^\d{8}_/,'') + '" del repositorio. Esta accion no se puede deshacer.';
-  $('confirm-overlay').classList.add('open');
-}
-window.closeConfirm = function(){
-  $('confirm-overlay').classList.remove('open'); pendingDelete = null;
-};
-$('confirm-ok').addEventListener('click', function(){
-  if(!pendingDelete) return;
-  var n = pendingDelete.name, s = pendingDelete.sha;
-  closeConfirm();
+/* DELETE — sin confirmación */
+function deleteFile(name, sha){
   if(!getToken()){ showTokenNotice(true); return; }
-  fetch(API_ROOT + 'files/' + encodeURIComponent(n), {
+  fetch(API_ROOT + 'files/' + encodeURIComponent(name), {
     method: 'DELETE',
     headers: ghHeaders({'Content-Type':'application/json'}),
-    body: JSON.stringify({ message: 'delete ' + n + ' via web', sha: s, branch: 'main' })
+    body: JSON.stringify({ message: 'delete ' + name + ' via web', sha: sha, branch: 'main' })
   }).then(function(r){
     if(r.ok){ setTimeout(loadFiles, 800); }
     else r.json().then(function(d){ alert('Error: ' + (d.message || r.status)); });
   }).catch(function(e){ alert('Error: ' + e.message); });
-});
-$('confirm-overlay').addEventListener('click', function(e){ if(e.target===this) closeConfirm(); });
+}
+window.deleteFile = deleteFile;
 
-/* DELETE ALL */
-window.confirmDeleteAll = function(){
+/* DELETE ALL — sin confirmación */
+window.deleteAllFiles = function(){
   if(!allFiles.length){ alert('No hay archivos para eliminar.'); return; }
-  $('confirm-all-msg').textContent =
-    'Se eliminaran los ' + allFiles.length + ' archivo(s) del repositorio. Esta accion no se puede deshacer.';
-  $('confirm-all-overlay').classList.add('open');
-};
-window.closeConfirmAll = function(){
-  $('confirm-all-overlay').classList.remove('open');
-};
-$('confirm-all-ok').addEventListener('click', function(){
-  closeConfirmAll();
   if(!getToken()){ showTokenNotice(true); return; }
   var files = allFiles.slice();
   var errors = [];
@@ -866,8 +844,7 @@ $('confirm-all-ok').addEventListener('click', function(){
     }).catch(function(){ errors.push(f.name); deleteNext(i + 1); });
   }
   deleteNext(0);
-});
-$('confirm-all-overlay').addEventListener('click', function(e){ if(e.target===this) closeConfirmAll(); });
+};
 
 /* OFFLINE */
 function checkOnline(){ $('offline-bar').classList.toggle('show', !navigator.onLine); }
