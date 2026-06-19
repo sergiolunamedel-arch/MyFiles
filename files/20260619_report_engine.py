@@ -1019,8 +1019,13 @@ h1{margin:0;font-size:20px}.sub{color:var(--mu);font-size:12px}
 .chip[data-sev=critical] .dot{background:var(--crit)}.chip[data-sev=high] .dot{background:var(--high)}
 .chip[data-sev=medium] .dot{background:var(--med)}.chip[data-sev=low] .dot{background:var(--low)}
 .chip.active{background:var(--ac);color:#fff;border-color:var(--ac)}.chip.active .dot{background:#fff}
-.section-head{display:flex;align-items:baseline;gap:10px;margin:26px 0 12px;scroll-margin-top:104px}
-.section-head h3{margin:0;font-size:18px}
+.section-head{display:flex;align-items:baseline;gap:10px;margin:26px 0 12px;scroll-margin-top:104px;cursor:pointer;user-select:none}
+.section-head:hover h3{color:var(--ac)}
+.section-head h3{margin:0;font-size:18px;transition:color .12s}
+.section-head .chev{display:inline-block;font-size:11px;color:var(--mu);transition:transform .15s ease;transform:rotate(0deg)}
+.section-head.collapsed .chev{transform:rotate(-90deg)}
+.sec-body{transition:none}
+.sec-body.collapsed{display:none}
 .count{background:var(--s);border:1px solid var(--bd);color:var(--mu);font-size:12px;padding:2px 9px;border-radius:999px}
 .hint{color:var(--mu);font-size:12px;margin-left:auto}
 details.group{background:var(--s);border:1px solid var(--bd);border-radius:var(--r);margin-bottom:12px;overflow:hidden}
@@ -1160,8 +1165,9 @@ details.group.grp-hidden{display:none!important}
   {% if secrets_total %}<a href="#sec-secrets">🔑 Secrets <b>{{ secrets_total }}</b></a>{% endif %}
 </div>
 
-<div class="section-head" id="sec-sca"><h3>Open-source (SCA)</h3><span class="count">{{ sca_total }}</span>
+<div class="section-head" id="sec-sca"><span class="chev">▾</span><h3>Open-source (SCA)</h3><span class="count">{{ sca_total }}</span>
   <span class="hint">{{ projects|selectattr('issues')|list|length }} project{{ '' if projects|selectattr('issues')|list|length==1 else 's' }} with findings{% if state_timestamps and state_timestamps.sca %}  ·  last scan {{ state_timestamps.sca[:16] }}{% endif %}</span></div>
+<div class="sec-body">
 {% if not projects %}<div class="empty">No manifests detected or no vulnerabilities found.</div>{% endif %}
 {% for p in projects %}{% if p.issues or p.error %}<details class="group sca-group" open>
   <summary>
@@ -1203,9 +1209,11 @@ details.group.grp-hidden{display:none!important}
     </tbody></table></div>
   {% endif %}
 </details>{% endif %}{% endfor %}
+</div>
 
-<div class="section-head" id="sec-sast"><h3>Static code (SAST)</h3><span class="count">{{ code_total }}</span>
+<div class="section-head" id="sec-sast"><span class="chev">▾</span><h3>Static code (SAST)</h3><span class="count">{{ code_total }}</span>
   <span class="hint">{{ files|length }} file{{ '' if files|length==1 else 's' }}{% if state_timestamps and state_timestamps.code %}  ·  last scan {{ state_timestamps.code[:16] }}{% endif %}</span></div>
+<div class="sec-body">
 {% if not files %}<div class="empty">No SAST issues found.</div>{% endif %}
 {% for f in files %}<details class="group sast-group" open>
   <summary>
@@ -1240,11 +1248,13 @@ details.group.grp-hidden{display:none!important}
     </tr>{% endfor %}
     </tbody></table></div>
 </details>{% endfor %}
+</div>
 
 {% if dast.findings or dast.pages_visited %}
-<div class="section-head" id="sec-dast"><h3>Dynamic (DAST) — {{ dast.target }}</h3>
+<div class="section-head" id="sec-dast"><span class="chev">▾</span><h3>Dynamic (DAST) — {{ dast.target }}</h3>
   <span class="count">{{ dast_total }}</span>
   <span class="hint">{{ dast.pages_visited }} pages · {{ dast.profile }}{% if state_timestamps and state_timestamps.dast %}  ·  last scan {{ state_timestamps.dast[:16] }}{% endif %}</span></div>
+<div class="sec-body">
 {% if not dast.findings %}<div class="empty">No DAST issues found.</div>{% endif %}
 {% if dast.findings %}<details class="group" open>
   <summary><span class="gt">DAST findings</span><span class="gm">{{ mini(dast.findings) }}</span></summary>
@@ -1268,12 +1278,15 @@ details.group.grp-hidden{display:none!important}
       <td style="font-size:11px;color:var(--mu)">{{ _DAST_SOL.get(cat_key, '—') }}</td>
     </tr>{% endfor %}
     </tbody></table></div>
-</details>{% endif %}{% endif %}
+</details>{% endif %}
+</div>
+{% endif %}
 
 {% if api.findings or api.endpoints_tested %}
-<div class="section-head" id="sec-api"><h3>API Security</h3>
+<div class="section-head" id="sec-api"><span class="chev">▾</span><h3>API Security</h3>
   <span class="count">{{ api_total }}</span>
   <span class="hint">{{ api.endpoints_tested }}/{{ api.endpoints_total }} endpoints · {{ api.profile }}{% if state_timestamps and state_timestamps.api %}  ·  last scan {{ state_timestamps.api[:16] }}{% endif %}</span></div>
+<div class="sec-body">
 {% if not api.findings %}<div class="empty">No API security issues found.</div>{% endif %}
 {% if api.findings %}<details class="group" open>
   <summary><span class="gt">API findings</span><span class="gm">{{ mini(api.findings) }}</span></summary>
@@ -1298,12 +1311,15 @@ details.group.grp-hidden{display:none!important}
       <td style="font-size:11px;color:var(--mu)">{{ _API_SOL.get(cat_key, '—') }}</td>
     </tr>{% endfor %}
     </tbody></table></div>
-</details>{% endif %}{% endif %}
+</details>{% endif %}
+</div>
+{% endif %}
 
 {% if secrets.findings or secrets.scanned_files %}
-<div class="section-head" id="sec-secrets"><h3>🔑 Secrets / Hard-coded Credentials</h3>
+<div class="section-head" id="sec-secrets"><span class="chev">▾</span><h3>🔑 Secrets / Hard-coded Credentials</h3>
   <span class="count">{{ secrets_total }}</span>
   <span class="hint">{{ secrets.scanned_files }} files scanned · engine: {{ secrets.engine or 'built-in' }}{% if state_timestamps and state_timestamps.secrets %}  ·  last scan {{ state_timestamps.secrets[:16] }}{% endif %}</span></div>
+<div class="sec-body">
 <p style="font-size:12px;color:var(--mu);margin:0 0 12px">
   Findings follow <b>CWE-798</b> (Use of Hard-coded Credentials) and
   <b>CWE-259</b> (Use of Hard-coded Password). All matched values are
@@ -1341,7 +1357,9 @@ details.group.grp-hidden{display:none!important}
       <td style="font-size:11px;color:var(--crit);font-weight:600">🔁 ROTATE immediately &amp; purge from git history</td>
     </tr>{% endfor %}
     </tbody></table></div>
-</details>{% endif %}{% endif %}
+</details>{% endif %}
+</div>
+{% endif %}
 
 <footer>Generated by Vulnerability Scanner · Snyk {{ snyk_version or '?' }} · {{ generated_at }}</footer>
 </div>
@@ -1387,6 +1405,39 @@ details.group.grp-hidden{display:none!important}
       btt.classList.toggle('vis',window.scrollY>400);
     });
   }
+
+  // Collapsible sections — click a section title (SCA, SAST, DAST, …) to
+  // collapse/expand everything under it.
+  function expandSection(head){
+    head.classList.remove('collapsed');
+    var body=head.nextElementSibling;
+    if(body&&body.classList.contains('sec-body'))body.classList.remove('collapsed');
+  }
+  document.querySelectorAll('.section-head').forEach(function(head){
+    head.addEventListener('click',function(){
+      var body=head.nextElementSibling;
+      if(!body||!body.classList.contains('sec-body'))return;
+      head.classList.toggle('collapsed');
+      body.classList.toggle('collapsed');
+    });
+  });
+  // "Jump to" links should auto-expand a collapsed section so the target
+  // is actually visible after the anchor scroll happens.
+  document.querySelectorAll('.idx a[href^="#"]').forEach(function(a){
+    a.addEventListener('click',function(){
+      var head=document.getElementById(a.getAttribute('href').slice(1));
+      if(head)expandSection(head);
+    });
+  });
+  // Deep-link support: if the page loads (or the hash changes) pointing at
+  // a section, expand it automatically.
+  function expandFromHash(){
+    if(!location.hash)return;
+    var head=document.getElementById(location.hash.slice(1));
+    if(head&&head.classList.contains('section-head'))expandSection(head);
+  }
+  window.addEventListener('hashchange',expandFromHash);
+  expandFromHash();
 })();
 </script>
 </body></html>
