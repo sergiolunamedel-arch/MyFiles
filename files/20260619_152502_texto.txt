@@ -1,0 +1,6 @@
+[dast] launching chrome (engine=chromium, headless=False, binary=C:\Program Files\Google\Chrome\Application\chrome.exe)
+[macro] opening https://promodescuentos.com — log in, then press Ctrl+Shift+F12 to capture
+[record] browser window was closed — cancelling operation.
+[dast] launching chrome (engine=chromium, headless=False, binary=C:\Program Files\Google\Chrome\Application\chrome.exe)
+[macro] opening https://promodescuentos.com — log in, then press Ctrl+Shift+F12 to capture
+[record] browser window was closed — cancelling operation.
