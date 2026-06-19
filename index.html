@@ -484,24 +484,24 @@ input.addEventListener('change', function(){
   this.value = '';
 });
 
-/* PASTE (Ctrl+V) — imagen o texto del portapapeles */
+/* PASTE (Ctrl+V) — archivo (imagen u otro), o texto del portapapeles */
 document.addEventListener('paste', function(e) {
   var cd = e.clipboardData || window.clipboardData;
   var items = (cd || {}).items;
 
-  // Imagen pegada → subir como archivo de imagen
-  var imageFiles = [];
+  // Cualquier archivo pegado (imagen, pdf, docx, etc.) → subir tal cual, con su nombre y tipo originales
+  var pastedFiles = [];
   if (items) {
     for (var i = 0; i < items.length; i++) {
-      if (items[i].kind === 'file' && items[i].type.indexOf('image') !== -1) {
+      if (items[i].kind === 'file') {
         var f = items[i].getAsFile();
-        if (f) imageFiles.push(f);
+        if (f) pastedFiles.push(f);
       }
     }
   }
-  if (imageFiles.length) {
+  if (pastedFiles.length) {
     e.preventDefault();
-    handleFiles(imageFiles);
+    handleFiles(pastedFiles);
     return;
   }
 
@@ -674,18 +674,33 @@ function renderFiles(){
     card.querySelector('[title="Descargar"]').addEventListener('click', function(e){
       e.stopPropagation();
       var u = this.getAttribute('data-url');
-      if(u && u !== '#') window.open(u, '_blank');
+      if(u && u !== '#') downloadFile(u, displayName);
     });
     card.querySelector('[title="Eliminar"]').addEventListener('click', function(e){
       e.stopPropagation();
       deleteFile(this.getAttribute('data-name'), this.getAttribute('data-sha'));
     });
     card.addEventListener('click', function(){
-      if(f.download_url) window.open(f.download_url, '_blank');
+      if(f.download_url) downloadFile(f.download_url, displayName);
     });
     grid.appendChild(card);
   });
   renderStats();
+}
+
+/* DOWNLOAD (archivo individual) — siempre con su nombre limpio, sin timestamp */
+function downloadFile(url, name){
+  fetch(url)
+    .then(function(r){ return r.blob(); })
+    .then(function(blob){
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = name;
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 2000);
+    })
+    .catch(function(){ window.open(url, '_blank'); });
 }
 
 function renderStats(){
@@ -752,7 +767,7 @@ window.downloadAllZip = function(){
           overlay.classList.remove('open');
           var a = document.createElement('a');
           a.href = URL.createObjectURL(blob);
-          a.download = 'MisArchivos_' + new Date().toISOString().slice(0,10) + '.zip';
+          a.download = 'MisArchivos.zip';
           document.body.appendChild(a);
           a.click();
           setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 2000);
