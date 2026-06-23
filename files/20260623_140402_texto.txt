@@ -1,0 +1,1 @@
+[wizard-auth] Error al lanzar navegador: start_snyk_auth() missing 1 required positional argument: 'log'
