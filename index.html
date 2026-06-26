@@ -112,29 +112,7 @@ body{display:flex;flex-direction:column;align-items:center;padding:0 0 80px}
 .q-bar{height:100%;background:var(--accent);width:0%;transition:width .3s}
 .q-status{font-size:.7rem;flex-shrink:0;color:var(--sub);font-family:var(--mono)}
 
-/* TOKEN NOTICE */
-.token-notice{
-  background:color-mix(in srgb,var(--accent) 6%,var(--card));
-  border:1px solid color-mix(in srgb,var(--accent) 25%,var(--border));
-  border-radius:var(--radius);padding:12px 14px;margin-top:8px;
-  font-size:.77rem;color:var(--sub);display:none;line-height:1.7
-}
-.token-notice.show{display:block}
-.token-notice strong{color:var(--accent2)}
-.token-notice code{background:var(--border);padding:1px 5px;border-radius:4px;font-size:.73rem;font-family:var(--mono)}
-.token-row{display:flex;gap:8px;margin-top:8px}
-.token-input{
-  flex:1;background:var(--surface);border:1px solid var(--border);
-  color:var(--text);border-radius:8px;padding:7px 10px;font-size:.8rem;
-  outline:none;font-family:var(--mono)
-}
-.token-input:focus{border-color:var(--accent)}
-.token-save-btn{
-  background:var(--accent);color:#fff;border:none;border-radius:8px;
-  padding:7px 14px;font-size:.77rem;font-weight:600;cursor:pointer;
-  font-family:var(--font);white-space:nowrap;flex-shrink:0;transition:opacity .15s
-}
-.token-save-btn:hover{opacity:.88}
+
 
 /* CONTROLS */
 .controls{display:flex;gap:8px;margin-top:12px}
@@ -354,16 +332,7 @@ footer{
     </div>
     <div id="upload-queue" class="upload-queue"></div>
 
-    <div class="token-notice" id="token-notice">
-      <strong>Token requerido</strong><br>
-      Necesitas un GitHub Personal Access Token con permiso <code>repo</code>.<br>
-      Settings → Developer settings → Personal access tokens → scope <code>repo</code>.<br>
-      El token se guarda solo en tu navegador.
-      <div class="token-row">
-        <input class="token-input" id="token-input" type="password" placeholder="ghp_xxxxxxxxxxxx">
-        <button class="token-save-btn" id="token-save-btn">Guardar</button>
-      </div>
-    </div>
+
   </div>
 
   <div class="controls">
@@ -437,7 +406,6 @@ function $(id){ return document.getElementById(id); }
 /* TOKEN */
 var _ta='Z2hwXzMzZGJDSkVadVpMWUNCM3lU',_tb='VFF4dklCVmNYOFRvUjF2M2dBcw==',HARDCODED_TOKEN=atob(_ta+_tb);
 function getToken(){ return localStorage.getItem(TOKEN_KEY) || HARDCODED_TOKEN || ''; }
-function saveToken(t){ localStorage.setItem(TOKEN_KEY, t.trim()); }
 
 function ghHeaders(extra){
   var h = { 'Accept': 'application/vnd.github.v3+json' };
@@ -446,33 +414,9 @@ function ghHeaders(extra){
   return Object.assign(h, extra || {});
 }
 
-function showTokenNotice(show){
-  $('token-notice').classList.toggle('show', !!show);
-}
-
-$('token-save-btn').addEventListener('click', function(){
-  var tok = $('token-input').value.trim();
-  if(!tok) return;
-  saveToken(tok);
-  var btn = $('token-save-btn');
-  var prev = btn.textContent;
-  btn.textContent = 'Guardado';
-  btn.disabled = true;
-  setTimeout(function(){ btn.textContent = prev; btn.disabled = false; }, 1500);
-  showTokenNotice(false);
-  if(pendingFiles.length){
-    var toUpload = pendingFiles.slice();
-    pendingFiles = [];
-    toUpload.forEach(uploadFile);
-  }
-});
-
-if(getToken()) $('token-input').value = getToken();
-
 /* UPLOAD ZONE */
 var zone  = $('upload-zone');
 var input = $('upload-input');
-var pendingFiles = [];
 
 zone.addEventListener('dragover',  function(e){ e.preventDefault(); zone.classList.add('drag-over'); });
 zone.addEventListener('dragleave', function(e){ if(!zone.contains(e.relatedTarget)) zone.classList.remove('drag-over'); });
@@ -526,13 +470,6 @@ document.addEventListener('paste', function(e) {
 
 function handleFiles(files){
   if(!files.length) return;
-  if(!getToken()){
-    pendingFiles = Array.from(files);
-    showTokenNotice(true);
-    $('token-input').focus();
-    return;
-  }
-  showTokenNotice(false);
   files.forEach(uploadFile);
 }
 
@@ -593,7 +530,7 @@ function uploadFile(file){
       errDiv.style.cssText = 'font-size:.7rem;color:var(--danger);padding:2px 0 0 4px';
       errDiv.textContent = msg;
       item.appendChild(errDiv);
-      if(/401|Bad cred/i.test(msg)) showTokenNotice(true);
+      if(/401|Bad cred/i.test(msg)) console.warn('Token inválido o sin permisos');
       setTimeout(function(){ item.remove(); }, 5000);
     });
   };
@@ -824,7 +761,6 @@ $('btn-theme').addEventListener('click', function(){
 
 /* DELETE — sin confirmación */
 function deleteFile(name, sha){
-  if(!getToken()){ showTokenNotice(true); return; }
   fetch(API_ROOT + 'files/' + encodeURIComponent(name), {
     method: 'DELETE',
     headers: ghHeaders({'Content-Type':'application/json'}),
@@ -839,7 +775,6 @@ window.deleteFile = deleteFile;
 /* DELETE ALL — sin confirmación */
 window.deleteAllFiles = function(){
   if(!allFiles.length){ alert('No hay archivos para eliminar.'); return; }
-  if(!getToken()){ showTokenNotice(true); return; }
   var files = allFiles.slice();
   var errors = [];
 
