@@ -1,1 +1,0 @@
-[snyk-aw] ✕ GET /profile/ failed after 4 attempts: URLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Basic Constraints of CA cert not marked critical (_ssl.c:1081)'))
