@@ -354,7 +354,16 @@ footer{
     </div>
     <div id="upload-queue" class="upload-queue"></div>
 
-    <!-- token-notice eliminado: token embebido en el HTML -->
+    <div class="token-notice" id="token-notice">
+      <strong>Token requerido</strong><br>
+      Necesitas un GitHub Personal Access Token con permiso <code>repo</code>.<br>
+      Settings → Developer settings → Personal access tokens → scope <code>repo</code>.<br>
+      El token se guarda solo en tu navegador.
+      <div class="token-row">
+        <input class="token-input" id="token-input" type="password" placeholder="ghp_xxxxxxxxxxxx">
+        <button class="token-save-btn" id="token-save-btn">Guardar</button>
+      </div>
+    </div>
   </div>
 
   <div class="controls">
@@ -416,29 +425,48 @@ footer{
 (function(){
 'use strict';
 
-var REPO       = 'sergiolunamedel-arch/MyFiles';
-var API_FILES  = 'https://api.github.com/repos/' + REPO + '/contents/files';
-var API_ROOT   = 'https://api.github.com/repos/' + REPO + '/contents/';
-var PAGES_BASE = 'https://sergiolunamedel-arch.github.io/MyFiles/';
-var currentSort = 'date';
-var allFiles    = [];
-var _token      = '';   // cargado desde token.txt al iniciar
+var REPO      = 'sergiolunamedel-arch/MyFiles';
+var API_FILES = 'https://api.github.com/repos/' + REPO + '/contents/files';
+var API_ROOT  = 'https://api.github.com/repos/' + REPO + '/contents/';
+var TOKEN_KEY = 'mf_gh_token';
+var currentSort   = 'date';
+var allFiles      = [];
 
 function $(id){ return document.getElementById(id); }
 
-/* TOKEN — cargado al inicio desde token.txt publicado en Pages */
+/* TOKEN */
+function getToken(){ return localStorage.getItem(TOKEN_KEY) || ''; }
+function saveToken(t){ localStorage.setItem(TOKEN_KEY, t.trim()); }
+
 function ghHeaders(extra){
   var h = { 'Accept': 'application/vnd.github.v3+json' };
-  if(_token) h['Authorization'] = 'token ' + _token;
+  var tok = getToken();
+  if(tok) h['Authorization'] = 'token ' + tok;
   return Object.assign(h, extra || {});
 }
 
-function loadToken(cb){
-  fetch(PAGES_BASE + 'token.txt?_=' + Date.now())
-    .then(function(r){ return r.ok ? r.text() : ''; })
-    .then(function(t){ _token = t.trim(); cb(); })
-    .catch(function(){ cb(); });
+function showTokenNotice(show){
+  $('token-notice').classList.toggle('show', !!show);
 }
+
+$('token-save-btn').addEventListener('click', function(){
+  var tok = $('token-input').value.trim();
+  if(!tok) return;
+  saveToken(tok);
+  var btn = $('token-save-btn');
+  var prev = btn.textContent;
+  btn.textContent = 'Guardado';
+  btn.disabled = true;
+  setTimeout(function(){ btn.textContent = prev; btn.disabled = false; }, 1500);
+  showTokenNotice(false);
+  if(pendingFiles.length){
+    var toUpload = pendingFiles.slice();
+    pendingFiles = [];
+    toUpload.forEach(uploadFile);
+  }
+});
+
+if(getToken()) $('token-input').value = getToken();
 
 /* UPLOAD ZONE */
 var zone  = $('upload-zone');
@@ -497,6 +525,13 @@ document.addEventListener('paste', function(e) {
 
 function handleFiles(files){
   if(!files.length) return;
+  if(!getToken()){
+    pendingFiles = Array.from(files);
+    showTokenNotice(true);
+    $('token-input').focus();
+    return;
+  }
+  showTokenNotice(false);
   files.forEach(uploadFile);
 }
 
@@ -557,6 +592,7 @@ function uploadFile(file){
       errDiv.style.cssText = 'font-size:.7rem;color:var(--danger);padding:2px 0 0 4px';
       errDiv.textContent = msg;
       item.appendChild(errDiv);
+      if(/401|Bad cred/i.test(msg)) showTokenNotice(true);
       setTimeout(function(){ item.remove(); }, 5000);
     });
   };
@@ -787,6 +823,7 @@ $('btn-theme').addEventListener('click', function(){
 
 /* DELETE — sin confirmación */
 function deleteFile(name, sha){
+  if(!getToken()){ showTokenNotice(true); return; }
   fetch(API_ROOT + 'files/' + encodeURIComponent(name), {
     method: 'DELETE',
     headers: ghHeaders({'Content-Type':'application/json'}),
@@ -801,6 +838,7 @@ window.deleteFile = deleteFile;
 /* DELETE ALL — sin confirmación */
 window.deleteAllFiles = function(){
   if(!allFiles.length){ alert('No hay archivos para eliminar.'); return; }
+  if(!getToken()){ showTokenNotice(true); return; }
   var files = allFiles.slice();
   var errors = [];
 
@@ -830,7 +868,7 @@ window.addEventListener('offline', checkOnline);
 checkOnline();
 
 /* INIT */
-loadToken(loadFiles);
+loadFiles();
 
 })();
 </script>
