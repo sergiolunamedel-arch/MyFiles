@@ -1,0 +1,48 @@
+[boot] ⚠ 1 optional component(s) had install problems — the corresponding scan stage may not be available:
+[boot]   • Node.js / npm: install could not be verified — check the log
+[boot]   Full detail in boot_dependencies.log next to the program.
+[dast] pre-warming webdriver (one-time, background)…
+[dast] launching chrome (engine=chromium, headless=True, binary=C:\Program Files\Google\Chrome\Application\chrome.exe)
+[dast] webdriver ready — browser will open instantly from now on.
+[auth] launching snyk auth — browser will open shortly.
+
+Now redirecting you to our auth page, go ahead and log in,
+and once the auth is complete, return to this prompt and you'll
+be ready to start using snyk.
+
+If you can't wait use this url:
+https://app.snyk.io/oauth2/authorize?access_type=offline&client_id=b56d4c2e-b9e1-4d27-8773-ad47eafb0956&code_challenge=Rr8Cs9Q93VeS_p_W0FBqKJz2MzZIvVPN2h94pICJnZw&code_challenge_method=S256&cross_region_routing=true&redirect_uri=http%3A%2F%2F127.0.0.1%3A8080%2Fauthorization-code%2Fcallback&response_type=code&scope=offline_access&state=Q.IvfhXoZN2p8Du&version=2021-08-11~experimental
+
+Your account has been authenticated.
+[auth] snyk auth exited (0)
+[scan] pipeline: CODE+SCA+SECRETS
+[scan] output → C:\cosas\snyk\Reports\Nautilus\report_20260630_125332_code+sca+secrets
+[snyk] CLI ready (1.1305.2)
+[scan] running 3 stages concurrently
+[secrets] running secret scan as pipeline stage…
+[secrets] scanning C:\repos\gfb-onboardingpf-nautilusapi
+[secrets] git-secrets layer active (C:\Users\srangel\AppData\Local\vuln-scanner\git-secrets\git-secrets)
+[scan] $ snyk test --all-projects --detection-depth=10 --strict-out-of-sync=false --skip-unresolved --json  (cwd=C:\repos\gfb-onboardingpf-nautilusapi)
+[scan] $ snyk code test --json  (cwd=C:\repos\gfb-onboardingpf-nautilusapi)
+{
+  "ok": false,
+  "error": "Snyk Code is not supported for your current organization: srangel.",
+  "path": "C:\\repos\\gfb-onboardingpf-nautilusapi"
+}
+[scan] code failed: SnykScanError('Snyk scan failed — no JSON returned. Details: {   "ok": false,   "error": "Snyk Code is not supported for your current organization: srangel.",   "path": "C:\\\\repos\\\\gfb-onboardingpf-nautilusapi" }')
+[scan] SCA total vulnerabilities: 0
+[scan] raw JSON → C:\cosas\snyk\Reports\Nautilus\report_20260630_125332_code+sca+secrets\snyk_test.json
+[secrets] built-in engine: 5159 file(s) seen · 2595 scanned · skipped 2097 by type, 37 too-large, 430 binary, 0 unreadable
+[secrets] done — 32 finding(s) across 2595 file(s) in 90.2s
+[secrets] 32 finding(s) across 2595 file(s)
+[state] sca result persisted to cumulative store
+[state] secrets result persisted to cumulative store
+[report] building cumulative report (all scan types merged)
+[scan] cumulative total: 32  crit=0  high=17  med=0  low=15  secrets=32
+[report] CSV bundle (ZIP): C:\cosas\snyk\Reports\Nautilus\report_20260630_125332_code+sca+secrets\code+sca+secrets+srangel_20260630.zip  (sca/sast/dast/api/secrets sheets + summary)
+[report] Secrets HTML → C:\cosas\snyk\Reports\Nautilus\report_20260630_125332_code+sca+secrets\code+sca+secrets+srangel_20260630_secrets.html
+[history] recorded scan — remediated 0, new 32 since last CODE+SCA+SECRETS run
+[inventory] scan recorded for app 'Nautilus'
+[gate] FAIL  (critical=0 high=17 medium=0 low=15 secrets_crit_high=17)
+[report] HTML: C:\cosas\snyk\Reports\Nautilus\report_20260630_125332_code+sca+secrets\code+sca+secrets+srangel_20260630.html
+[report] CSV:  C:\cosas\snyk\Reports\Nautilus\report_20260630_125332_code+sca+secrets\code+sca+secrets+srangel_20260630.zip
