@@ -1,0 +1,226 @@
+Reorganizó reglas de firewall separando responsabilidades por administrador
+Reorganizó reglas de firewall separando responsabilidades por administrador
+Perfecto, esa es la forma correcta de pedirlo: cada quien solo puede configurar el firewall de su propio servidor. Así que reparto las reglas por dónde se aplican, no por flujo. Un detalle clave que subrayo abajo: los flujos servidor-a-servidor aparecen en ambos correos pero desde su lado (uno abre la salida, el otro abre la entrada), porque para que funcionen los dos extremos deben permitirlo.
+
+CORREO 1 — Administrador de Windows
+Servidor: 10.50.53.86 (IQ Service)
+Estas reglas se configuran en el servidor Windows.
+
+Entrante (abrir escucha en Windows — que otros lleguen a este servidor):
+
+Puerto	Proto	Origen (quién entra) → Destino	Función
+TLS (ej. 5051)	TCP	10.50.54.147 (Linux) y 10.50.53.83 (Linux) → 10.50.53.86 (este Windows)	Provisioning al IQ Service (TLS, obligatorio banco)
+5050	TCP	10.50.54.147 (Linux) y 10.50.53.83 (Linux) → 10.50.53.86 (este Windows)	Ídem, no-TLS. Solo si no usan TLS
+3389	TCP	Red admin → 10.50.53.86 (este Windows)	RDP para instalar/administrar
+Saliente (permitir salida desde Windows — que este servidor alcance a otros):
+
+Puerto	Proto	Origen → Destino	Función
+53	TCP/UDP	10.50.53.86 (este Windows) → DCs (AD)	DNS
+88	TCP/UDP	10.50.53.86 (este Windows) → DCs (AD)	Kerberos
+135	TCP	10.50.53.86 (este Windows) → DCs (AD)	RPC Endpoint Mapper
+445	TCP	10.50.53.86 (este Windows) → DCs (AD)	SMB/CIFS (provisioning)
+49152–65535	TCP	10.50.53.86 (este Windows) → DCs (AD)	Rango dinámico RPC
+123	UDP	10.50.53.86 (este Windows) → NTP	Sincronización de reloj
+CORREO 2 — Administrador de Linux
+Servidores: 10.50.54.147 (todo-en-uno) y 10.50.53.83 (respaldo/clon) — mismas reglas en ambos
+Estas reglas se configuran en cada uno de los dos servidores Linux (idénticas).
+
+Entrante (abrir escucha en cada Linux — que otros lleguen a estos servidores):
+
+Puerto	Proto	Origen (quién entra) → Destino	Función
+8443	TCP	Usuarios / admin → 10.50.54.147 y 10.50.53.83 (estos Linux)	Consola web IIQ (Tomcat HTTPS)
+8080	TCP	Usuarios / admin → 10.50.54.147 y 10.50.53.83 (estos Linux)	Consola web IIQ (HTTP). Solo si no usan TLS
+22	TCP	Red admin → 10.50.54.147 y 10.50.53.83 (estos Linux)	SSH para instalar IIQ, MySQL y DDL
+Saliente (permitir salida desde cada Linux — que estos servidores alcancen a otros):
+
+Puerto	Proto	Origen → Destino	Función
+TLS (ej. 5051) / 5050	TCP	10.50.54.147 y 10.50.53.83 (estos Linux) → 10.50.53.86 (Windows)	Órdenes de provisioning al IQ Service
+389	TCP/UDP	10.50.54.147 y 10.50.53.83 (estos Linux) → DCs (AD)	LDAP (agregación, pass-through auth)
+636	TCP	10.50.54.147 y 10.50.53.83 (estos Linux) → DCs (AD)	LDAPS
+3268	TCP	10.50.54.147 y 10.50.53.83 (estos Linux) → DCs (AD)	Global Catalog LDAP
+3269	TCP	10.50.54.147 y 10.50.53.83 (estos Linux) → DCs (AD)	Global Catalog LDAPS
+123	UDP	10.50.54.147 y 10.50.53.83 (estos Linux) → NTP	Sincronización de reloj
+Nota — MySQL 3306: NO se solicita. La conexión Tomcat→MySQL es loopback dentro de cada Linux, no cruza la red. (Recomendación: bind-address = 127.0.0.1 en MySQL.)
+
+El punto crítico que no puede fallar entre los dos correos
+El flujo Linux → Windows en 5050/TLS necesita que ambos administradores hagan su parte:
+
+Admin Windows → abre entrante 5050/TLS en 10.50.53.86 desde las dos IPs Linux.
+Admin Linux → abre saliente 5050/TLS desde los dos Linux hacia 10.50.53.86.
+Si solo uno lo configura, el provisioning no funciona. Asegúrate de que ese flujo quede confirmado en los dos correos.
+
+Lo mismo aplica para el tráfico hacia los Domain Controllers: cada admin abre solo la salida desde su(s) servidor(es) (Windows el stack RPC; Linux el LDAP/GC), pero si hay un firewall de red además del host, alguien tendrá que abrirlo también en ese equipo intermedio — eso ya no depende de ninguno de estos dos.
+
+¿Te redacto el cuerpo de cada correo ya listo para enviar (con saludo, contexto de "instalación de SailPoint IdentityIQ" y las tablas), uno para el admin de Windows y otro para el de Linux? Solo me faltarían las IPs de los Domain Controllers y del NTP para dejarlos completos.
+
+
+Desglozó requisitos de puertos para acceso administrativo remoto
+Desglozó requisitos de puertos para acceso administrativo remoto
+Ah, esto es una pregunta distinta a todo lo que veníamos armando, y es importante que lo distingas: Jorge Antonio no te está preguntando por los puertos que necesita SailPoint para funcionar (esas son las reglas app-a-app de las tablas). Te está preguntando por el puerto de TU conexión administrativa — o sea, con qué protocolo te vas a conectar tú, como persona, a cada servidor para poder entrar a instalar.
+
+La VPN te da la ruta de red hasta el servidor, pero además hay que abrir el puerto del servicio de administración remota para que puedas iniciar sesión. Y ese puerto depende del sistema operativo del servidor al que te conectas:
+
+Servidor Linux → te conectas por SSH → puerto 22 TCP
+Servidor Windows → te conectas por RDP (Escritorio Remoto) → puerto 3389 TCP
+Ahora, mapeando a tus dos tickets (cada uno va por separado porque son SO distintos):
+
+RITM0028996 — los dos servidores Linux
+QVL-M0SLP0MYS00 (10.50.54.147) y QVL-M0SLP0SIU00 (10.50.53.83), acceso sudo.
+
+→ Solicitas: SSH, puerto 22 TCP
+
+RITM0028997 — el servidor Windows
+QVW-M0SLP0SIQ00 (que es el 10.50.53.86), acceso admin.
+
+→ Solicitas: RDP, puerto 3389 TCP
+
+El origen en ambos casos es tu equipo a través de la IP que te asigne la VPN; el destino es el servidor, y el puerto es el del servicio en ese servidor.
+
+Respuestas listas para Jorge
+Para el correo del RITM0028996 (Linux):
+
+Hola Jorge, buen día. Para esos dos servidores Linux (10.50.54.147 y 10.50.53.83) requiero conexión por SSH, puerto 22 TCP, desde mi cuenta VPN. Con eso puedo entrar a hacer la instalación. Gracias.
+
+Para el correo del RITM0028997 (Windows):
+
+Hola Jorge, buen día. Para el servidor Windows QVW-M0SLP0SIQ00 requiero conexión por RDP (Escritorio Remoto), puerto 3389 TCP, desde mi cuenta VPN. Con eso puedo entrar a hacer la instalación. Gracias.
+
+Un apunte para que no te agarre en curva más adelante: estos puertos (22 y 3389) son solo para tu acceso humano de instalación y ya los tenía contemplados como "Red admin → servidor" en las tablas anteriores. Son independientes de las reglas que SailPoint necesita para operar (5050/TLS, LDAP, RPC, etc.). Cuando termines de instalar, esas reglas app-a-app siguen pendientes de solicitarse — no las cubre este acceso VPN tuyo. Que no se confundan ambas cosas en los tickets.
+
+20260707_1609074596984823579825858.jpg
+20260707_1609169013104243820754106.jpg
+Resuelve esta situación, se pidió un disco adicional de sesenta gigas, pero me están diciendo que no lo pueden agregar porque no saben dónde. Tú dime respecto a las necesidades de SailPoint, dónde lo debo poner, porque ni siquiera entendí bien lo que se me pregunta. Es para los server Linux
+
+Déjame traducirte lo que te preguntan y luego resolverlo, porque la pregunta de Efraín es razonable y tiene una respuesta concreta.
+
+Qué te están preguntando (en cristiano)
+Efraín ve que en el servidor hay un disco adicional de 60 GB ya montado — mira la salida del df -h:
+
+/dev/mapper/vg_db-lv_db   63G   24K   60G   1%   /DB
+O sea, el disco sí se agregó, y está montado en un directorio llamado /DB, vacío (24K usados). Lo que Efraín pregunta es: "¿qué directorios ocupa SailPoint y de qué tamaño, para saber si este disco está montado en el lugar correcto?" Su duda de fondo es: ¿SailPoint realmente va a escribir en /DB, o el disco debería estar montado en otra ruta? Si SailPoint escribe en otro lado, ese disco de 60 GB no sirve de nada y el disco raíz se te va a llenar.
+
+Dónde vive realmente SailPoint (para que respondas con criterio)
+En tu arquitectura, este Linux (QVL-M0SLP0MYS00) es el todo-en-uno: corre MySQL + Tomcat/IIQ. Los directorios que consumen espacio son:
+
+Los datos de MySQL — es lo más pesado y lo que más crece. Por defecto MySQL escribe en /var/lib/mysql. Aquí viven las tres bases (identityiq, plugins, access history), y en un banco con muchas identidades esto crece bastante.
+La aplicación IIQ (Tomcat) — el .war desplegado y el home de IIQ. Suele ir en algo como /opt/tomcat o /opt/sailpoint. Es relativamente estable en tamaño.
+Los logs — de Tomcat (catalina.out) y de IIQ. Crecen con el tiempo si no hay rotación.
+De estos tres, el que necesita el disco de 60 GB es MySQL, sin duda. Es el que crece y el que no quieres que reviente la partición raíz.
+
+El problema con /DB tal como está
+El disco está montado en /DB, pero MySQL por defecto no escribe ahí — escribe en /var/lib/mysql. Y fíjate en tu df -h: /var es una partición aparte de solo 15 GB. Si dejas MySQL en su ruta default, tus datos van a /var (15 GB) y el disco de 60 GB en /DB se queda vacío e inútil.
+
+Tienes dos formas de resolverlo, y cualquiera es válida:
+
+Opción A (la más limpia): apuntar el datadir de MySQL a /DB.
+Instalas MySQL y configuras datadir = /DB/mysql en my.cnf, de modo que MySQL escriba directo en el disco de 60 GB. Así todo el crecimiento de la BD vive en el disco dedicado. Es lo que técnicamente tiene más sentido y probablemente para lo que crearon esa partición /DB.
+
+Opción B: montar el disco directamente en /var/lib/mysql.
+Le pides al equipo de infra que en lugar de montar el disco en /DB, lo monten en /var/lib/mysql (la ruta default de MySQL). Menos configuración en MySQL, pero implica rehacer el punto de montaje.
+
+Para un despliegue nuevo yo iría por la Opción A: mantienes la convención /DB que ya eligieron y solo apuntas MySQL ahí.
+
+Respuesta lista para Efraín (chat)
+Hola Efraín. El disco de 60 GB sí lo montaron, está en /DB (lo veo en el df -h, vacío al 1%). Ese disco es para la base de datos MySQL, que es el componente de SailPoint que más crece.
+
+El detalle es que MySQL por defecto escribe en /var/lib/mysql, y esa partición (/var) solo tiene 15 GB. Para que los datos vivan en el disco de 60 GB, al instalar MySQL voy a configurar el datadir apuntando a /DB (algo como /DB/mysql). Con eso todo el crecimiento de la BD queda en ese disco dedicado y no llena la raíz.
+
+Entonces el disco está bien puesto en /DB, yo me encargo de que MySQL apunte ahí en la instalación. Los directorios de la aplicación IIQ y logs van en la partición raíz / /opt, que ya tienen espacio suficiente. Gracias por la observación.
+
+Una cosa que sí conviene que confirmes tú
+Antes de responder, vale la pena que verifiques qué tan grande esperan que crezca la BD. 60 GB está bien para un arranque, pero en un banco con muchas identidades, cuentas y sobre todo Access History (que acumula histórico y puede engordar mucho), esto puede quedarse corto en un par de años. No es que cambie tu respuesta ahora — el disco está bien colocado — pero si tienes un estimado de volumen de identidades, dimelo y te ayudo a validar si 60 GB es suficiente o conviene pedir más desde ya, mientras es fácil.
+
+¿Quieres que te deje también los pasos exactos de cómo configurar el datadir de MySQL hacia /DB (con el tema de SELinux en RHEL, que es un paso que suele morder), para que lo tengas listo cuando instales?
+
+Además de ese disco, se requiere otro de sesenta gigas, o al menos así se pidió el server. Entonces, debe montarse otro adicional de sesenta gigas. Pásame la lista de cómo deben de estar distribuidos para pasarlo al señor.
+
+
+Architected dual-disk allocation strategy for SailPoint infrastructure deployment
+Architected dual-disk allocation strategy for SailPoint infrastructure deployment
+El disco que ya está montado (/DB) es para la base de datos. El segundo disco de 60 GB que falta debe ir para la aplicación SailPoint (Tomcat + IIQ) y sus logs. Esa es la separación lógica: un disco para datos de MySQL, otro para la aplicación. Así ninguno de los dos llena la partición raíz del sistema operativo, y separas la carga de disco de la BD respecto a la del app.
+
+Aquí está la distribución completa para que se la pases a Efraín.
+
+Distribución de discos adicionales
+Disco	Tamaño	Punto de montaje	Uso	Estado
+Adicional 1	60 GB	/DB	Datos de MySQL (base de datos SailPoint)	Ya montado (vg_db-lv_db)
+Adicional 2	60 GB	/opt	Aplicación IIQ + Tomcat + logs	Falta montar ← este es el que se pide
+Qué va exactamente en cada uno
+Disco 1 — /DB (60 GB) → Base de datos
+
+El datadir de MySQL apuntará aquí (/DB/mysql), donde viven las tres bases: identityiq, identityiqPlugin y access history.
+Es el que más crece con el tiempo (identidades, cuentas, histórico).
+Disco 2 — /opt (60 GB) → Aplicación y logs
+
+Instalación de Tomcat (ej. /opt/tomcat).
+Home de IdentityIQ y el .war desplegado (ej. /opt/tomcat/webapps/identityiq).
+Logs de Tomcat (catalina.out) e IIQ, que crecen constantemente y no deben vivir en la raíz.
+Notas técnicas para infra (para que lo monten bien)
+Que sigan el mismo patrón que usaron en el disco 1:
+
+LVM: crear un volume group nuevo (ej. vg_app) y logical volume (lv_app), igual que hicieron con vg_db-lv_db. Así queda extensible a futuro.
+Filesystem: xfs (el default de RHEL, mismo que el resto del server).
+Persistencia: agregar la entrada en /etc/fstab para que monte automático al reiniciar.
+SELinux (crítico en RHEL): al mover el datadir de MySQL a /DB y la app a /opt, hay que aplicar los contextos SELinux correctos o los servicios no arrancan. Esto lo configuro yo en la instalación, pero es útil que sepan que RHEL viene con SELinux en enforcing.
+Mensaje listo para Efraín
+Hola Efraín. Sobre los discos: el server se pidió con dos discos adicionales de 60 GB y solo veo montado uno (/DB). Aquí va cómo deben quedar distribuidos:
+
+Disco 1 — 60 GB → /DB (ya montado): datos de la base de datos MySQL.
+
+Disco 2 — 60 GB → /opt (falta montar): aplicación SailPoint (Tomcat + IdentityIQ) y sus logs.
+
+La idea es separar base de datos (/DB) de la aplicación (/opt), y que ninguno crezca sobre la raíz. Para el disco 2 pueden seguir el mismo esquema del disco 1: LVM (un vg_app/lv_app), filesystem xfs, y persistencia en /etc/fstab. La configuración de MySQL apuntando a /DB y los contextos de SELinux los aplico yo en la instalación. ¿Me confirmas cuando esté montado el segundo? Gracias.
+
+Un apunte para ti: recuerda que el respaldo (10.50.53.83) es clon de este, así que necesita exactamente los mismos dos discos montados igual (/DB y /opt). Si a ese solo le pusieron uno también, pide los dos ahí también, o cuando conmutes te vas a quedar sin espacio para la app. ¿Quieres que te arme la lista equivalente para el servidor de respaldo, o con esta te basta para pasar ambos?
+
+20260707_161911843724313643275899.jpg
+Efraín tiene toda la razón y su observación es válida: no puedes montar el disco directamente en /opt porque esa raíz ya la ocupan otros componentes (CrowdStrike, Tenable, etc.). Si montas el disco de 60 GB sobre /opt, "taparías" o entrarías en conflicto con lo que ya vive ahí.
+
+La solución es exactamente la que él está proponiendo con su mensaje "/opt/sailpoint ?": el disco se monta en un subdirectorio dedicado, no en /opt como raíz. O sea, montarlo en /opt/sailpoint. Así:
+
+/opt sigue siendo la partición del sistema con CrowdStrike, Tenable y lo demás intactos.
+El disco nuevo de 60 GB se monta solo en /opt/sailpoint, y ahí vive toda la instalación de SailPoint (Tomcat + IIQ + logs) sin tocar a nadie.
+Es la práctica correcta y resuelve su preocupación al 100%.
+
+Distribución corregida
+Disco	Tamaño	Punto de montaje	Uso
+Adicional 1	60 GB	/DB	Datos de MySQL
+Adicional 2	60 GB	/opt/sailpoint	Tomcat + IdentityIQ + logs
+Respuesta lista para Efraín
+Tienes toda la razón, en /opt como raíz no, para no chocar con CrowdStrike/Tenable. Justo como dices: móntalo en /opt/sailpoint. El directorio /opt se queda igual con sus componentes actuales, y el disco de 60 GB se monta solo en el subdirectorio /opt/sailpoint, donde va toda la instalación de SailPoint (Tomcat, IdentityIQ y logs). Así queda aislado y no afecta nada de lo que ya está. Mismo esquema del disco 1 (LVM, xfs, fstab). Y sí, para ambos servers. Gracias.
+
+Un par de precisiones para que quede fino cuando lo monten:
+
+Que creen el directorio /opt/sailpoint primero y luego monten el disco ahí (el punto de montaje debe existir antes). Cualquier cosa que ya estuviera dentro de /opt/sailpoint quedaría oculta al montar, pero como es una instalación nueva, está vacío, así que no hay riesgo.
+
+Y confirma con él lo de "es para ambos servers" que ya le escribiste: tanto el principal (10.50.54.147) como el respaldo (10.50.53.83) necesitan los dos discos montados igual — /DB y /opt/sailpoint. Que no se le pase montarlos solo en uno.
+
+20260707_1643124346184834192240687.jpg
+Y son camiones de la derecha, así que falta corregir el de la izquierda, pero ese mismo de la derecha está bien, lo falta agregarle algo.
+
+Vamos a comparar los dos servidores lado a lado con lo que muestra el df -h:
+
+Servidor DERECHO — QVL-M0SLP0SIU00 (10.50.53.83):
+
+/dev/mapper/vg_app-lv_app → 63G → /opt/sailpoint ✅
+Pero NO tiene /DB ❌ — le falta el disco de la base de datos.
+Servidor IZQUIERDO — QVL-M0SLP0MYS00 (10.50.54.147):
+
+/dev/mapper/vg_db-lv_db → 63G → /DB ✅
+Pero NO tiene /opt/sailpoint ❌ — le falta el disco de la aplicación.
+Entonces cada servidor tiene uno de los dos discos, y le falta el otro. Están espejados al revés: uno tiene el de BD y le falta el de app; el otro tiene el de app y le falta el de BD. Ambos deben terminar con los dos discos (/DB + /opt/sailpoint), porque son clones y cualquiera puede operar como principal.
+
+Ojo con un detalle sobre tu mensaje: dices que "el de la derecha está bien" — pero al de la derecha también le falta /DB. No está completo tampoco. Los dos están a medias, solo que les falta un disco distinto a cada uno.
+
+Lo que falta montar
+Servidor	Ya tiene	Le falta
+Izquierdo · QVL-M0SLP0MYS00 (10.50.54.147)	/DB (60G)	/opt/sailpoint (60G)
+Derecho · QVL-M0SLP0SIU00 (10.50.53.83)	/opt/sailpoint (60G)	/DB (60G)
+Mensaje para Efraín
+Revisé los dos con df -h y cada uno tiene solo un disco, les falta el otro cruzado:
+
+QVL-M0SLP0MYS00 (10.50.54.147): ya tiene /DB, le falta montar /opt/sailpoint (60G).
+QVL-M0SLP0SIU00 (10.50.53.83): ya tiene /opt/sailpoint, le falta montar /DB (60G).
+Ambos servers deben quedar con los dos discos (/DB para la base de datos y /opt/sailpoint para la aplicación), mismo esquema LVM/xfs/fstab que ya usaron. ¿Me confirmas cuando estén los dos completos en ambos? Gracias.
+
+Cuando ambos tengan /DB y /opt/sailpoint, quedan idénticos y listos para instalar. Ese es el objetivo: dos clones espejo, cada uno autosuficiente.
