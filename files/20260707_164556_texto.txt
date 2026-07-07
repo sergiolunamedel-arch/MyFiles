@@ -1,0 +1,25 @@
+Vamos a comparar los dos servidores lado a lado con lo que muestra el df -h:
+Servidor DERECHO — QVL-M0SLP0SIU00 (10.50.53.83):
+
+/dev/mapper/vg_app-lv_app → 63G → /opt/sailpoint ✅
+Pero NO tiene /DB ❌ — le falta el disco de la base de datos.
+
+Servidor IZQUIERDO — QVL-M0SLP0MYS00 (10.50.54.147):
+
+/dev/mapper/vg_db-lv_db → 63G → /DB ✅
+Pero NO tiene /opt/sailpoint ❌ — le falta el disco de la aplicación.
+
+Entonces cada servidor tiene uno de los dos discos, y le falta el otro. Están espejados al revés: uno tiene el de BD y le falta el de app; el otro tiene el de app y le falta el de BD. Ambos deben terminar con los dos discos (/DB + /opt/sailpoint), porque son clones y cualquiera puede operar como principal.
+Ojo con un detalle sobre tu mensaje: dices que "el de la derecha está bien" — pero al de la derecha también le falta /DB. No está completo tampoco. Los dos están a medias, solo que les falta un disco distinto a cada uno.
+Lo que falta montar
+ServidorYa tieneLe faltaIzquierdo · QVL-M0SLP0MYS00 (10.50.54.147)/DB (60G)/opt/sailpoint (60G)Derecho · QVL-M0SLP0SIU00 (10.50.53.83)/opt/sailpoint (60G)/DB (60G)
+Mensaje para Efraín
+
+Revisé los dos con df -h y cada uno tiene solo un disco, les falta el otro cruzado:
+
+QVL-M0SLP0MYS00 (10.50.54.147): ya tiene /DB, le falta montar /opt/sailpoint (60G).
+QVL-M0SLP0SIU00 (10.50.53.83): ya tiene /opt/sailpoint, le falta montar /DB (60G).
+
+Ambos servers deben quedar con los dos discos (/DB para la base de datos y /opt/sailpoint para la aplicación), mismo esquema LVM/xfs/fstab que ya usaron. ¿Me confirmas cuando estén los dos completos en ambos? Gracias.
+
+Cuando ambos tengan /DB y /opt/sailpoint, quedan idénticos y listos para instalar. Ese es el objetivo: dos clones espejo, cada uno autosuficiente.
