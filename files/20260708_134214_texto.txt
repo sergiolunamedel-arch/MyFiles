@@ -1,0 +1,39 @@
+Hola Carolina, ¡buen día!
+
+Te contacto por recomendación de Christopher, estuvimos platicando sobre algunos problemitas que tenemos en el banco referente al uso de las IAs y me indicó que tú eres la indicada para ayudarnos. A grandes rasgos, nuestros devs están usando la IA para programar, la adopción se descontroló un poco y nos generó problemas para resolver ASAP, como uso excesivo de tokens, uso de IA para otras cosas que no son programar código como diseñar skills, generar especificaciones (specs) y tomar decisiones de arquitectura que no les corresponden.
+
+Por encima de todo, la preocupación recae en la ciberseguridad (vulnerabilidades como Prompt Injection y otros vectores de ataque). Te listo algunos:
+
+Exfiltración de datos sensibles (Data Leakage): Introducir secretos corporativos, PII, contraseñas o código fuente propietario.
+
+Prompt Injection directo e indirecto: Manipular entradas externas para alterar el comportamiento de la IA (cualquier cosa que nos afecte producción).
+
+Insecure Output Handling: El riesgo de que la IA sufra "alucinaciones" y genere código con vulnerabilidades (como inyecciones SQL, XSS o dependencias fantasmas) y nuestros desarrolladores lo integren al código no solo es riesgoso sino que incrementa el trabajo de revisar código (y por ende los costos de remediación).
+
+Evasión de Controles de Acceso: Que a través de la IA, un usuario logre escalar privilegios o acceder a repositorios y entornos para los cuales no tiene autorización.
+
+Escuchamos por ahí que tienen una herramienta llamada Evo que nos podría ayudar con estos problemitas. Puntualmente tengo las siguientes preguntas:
+
+1. Arquitectura de Red y Funneling: ¿Es posible hacer un funneling de absolutamente todas las interacciones y desarrollos con IA a través de Evo? Necesitamos que sea nuestro único intermediario. Si no se puede, contamos con la plataforma de CrowdStrike en cada equipo; ¿se puede integrar para lograrlo?
+
+2. Sistema de Roles: ¿Evo cuenta con algún RBAC customizable? Queremos tener control de que puede desarrollar cada developer.
+
+3. Control de Gastos: ¿La herramienta tiene algún tipo de rate limiting y hard limits de tokens por usuario o por departamento?
+
+4. Costos: Nos gustaría recibir un desglose detallado sobre los costos de la plataforma. 
+
+- ¿Se cobra por usuario, tokens, tarifa plana?
+
+- ¿Tiene planes escalonados?
+
+- ¿Si ya tenemos Snyk y Probely (enterprise) existe algún costo preferencial?
+
+5. Evaluación Técnica: Nos gustaría solicitar una PoC para ver la herramienta en acción. ¿Es posible?
+
+Entiendo que es mucha información, por lo que te propongo agendar una llamada esta o la próxima semana. Siéntete libre de invitar a los ingenieros o especialistas de tu equipo que puedan ayudarnos a profundizar en estos temas.
+
+Quedo a la espera de tus comentarios y te agradezco de antemano por tu tiempo y apoyo.
+
+De antemano muchas gracias. 
+
+¡Saludos!
