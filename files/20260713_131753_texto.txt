@@ -1,8 +1,0 @@
-Traceback (most recent call last):
-  File "C:\Users\slunam\AppData\Local\Python\pythoncore-3.14-64\Lib\tkinter\__init__.py", line 2088, in __call__
-    return self.func(*args)
-           ~~~~~~~~~^^^^^^^
-  File "C:\Users\slunam\Documents\Snyk\Scanner\core\gui_wizard.py", line 971, in _add_folder
-    with _popup_dialog_guard(self._win):
-         ^^^^^^^^^^^^^^^^^^^
-NameError: name '_popup_dialog_guard' is not defined
