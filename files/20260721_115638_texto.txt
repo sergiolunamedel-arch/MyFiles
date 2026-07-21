@@ -1,0 +1,7 @@
+IQ Service (Windows): 
+Name: QVW-M0SLPOSIQ00 
+IP: 10.50.53.86
+
+Base de Datos (Linux): 
+Name: QVL-M0SLPOMYS00 
+IP: 10.50.54.147
