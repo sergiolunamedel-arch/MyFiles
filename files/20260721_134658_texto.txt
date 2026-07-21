@@ -1,0 +1,40 @@
+[slunam@QVL-M0SLPOMYS00 iiq_install]$ sudo dnf install -y https://dev.mysql.com/get/mysql80-community-release-el9.noarch.rpm
+Updating Subscription Management repositories.
+Red Hat Enterprise Linux 9 for x86_64 - BaseOS (RPMs)                                                                         33 kB/s | 2.4 kB     00:00
+Red Hat Enterprise Linux 9 for x86_64 - AppStream (RPMs)                                                                      37 kB/s | 2.8 kB     00:00
+[MIRROR] mysql80-community-release-el9.noarch.rpm: Curl error (35): SSL connect error for https://dev.mysql.com/get/mysql80-community-release-el9.noarch.rpm [OpenSSL SSL_connect: Connection reset by peer in connection to dev.mysql.com:443 ]
+[MIRROR] mysql80-community-release-el9.noarch.rpm: Curl error (35): SSL connect error for https://dev.mysql.com/get/mysql80-community-release-el9.noarch.rpm [OpenSSL SSL_connect: Connection reset by peer in connection to dev.mysql.com:443 ]
+[MIRROR] mysql80-community-release-el9.noarch.rpm: Curl error (35): SSL connect error for https://dev.mysql.com/get/mysql80-community-release-el9.noarch.rpm [OpenSSL SSL_connect: Connection reset by peer in connection to dev.mysql.com:443 ]
+[MIRROR] mysql80-community-release-el9.noarch.rpm: Curl error (35): SSL connect error for https://dev.mysql.com/get/mysql80-community-release-el9.noarch.rpm [OpenSSL SSL_connect: Connection reset by peer in connection to dev.mysql.com:443 ]
+[FAILED] mysql80-community-release-el9.noarch.rpm: Curl error (35): SSL connect error for https://dev.mysql.com/get/mysql80-community-release-el9.noarch.rpm [OpenSSL SSL_connect: Connection reset by peer in connection to dev.mysql.com:443 ]
+Curl error (35): SSL connect error for https://dev.mysql.com/get/mysql80-community-release-el9.noarch.rpm [OpenSSL SSL_connect: Connection reset by peer in connection to dev.mysql.com:443 ]
+[slunam@QVL-M0SLPOMYS00 iiq_install]$ ^C
+[slunam@QVL-M0SLPOMYS00 iiq_install]$ ^[[200~curl -L -k -O https://dev.mysql.com/get/mysql80-community-release-el9.noarch.rpm~
+-bash: $'\E[200~curl': command not found
+[slunam@QVL-M0SLPOMYS00 iiq_install]$ curl -L -k -O https://dev.mysql.com/get/mysql80-community-release-el9.noarch.rpm
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+curl: (35) OpenSSL SSL_connect: Connection reset by peer in connection to dev.mysql.com:443
+[slunam@QVL-M0SLPOMYS00 iiq_install]$ ^C
+[slunam@QVL-M0SLPOMYS00 iiq_install]$ ^C
+[slunam@QVL-M0SLPOMYS00 iiq_install]$ sudo dnf --setopt=proxy=http://your-proxy-server:port install -y https://dev.mysql.com/get/mysql80-community-release-el9.noarch.rpm
+Updating Subscription Management repositories.
+Red Hat Enterprise Linux 9 for x86_64 - BaseOS (RPMs)                                                                        0.0  B/s |   0  B     00:00
+Errors during downloading metadata for repository 'rhel-9-for-x86_64-baseos-rpms':
+  - Curl error (5): Couldn't resolve proxy name for https://mty-tob-prhs000.dombase.net/pulp/repos/Default_Organization/Library/RHEL9/content/dist/rhel9/9/x86_64/baseos/os/repodata/repomd.xml [Unsupported proxy syntax in 'http://your-proxy-server:port']
+Error: Failed to download metadata for repo 'rhel-9-for-x86_64-baseos-rpms': Cannot download repomd.xml: Curl error (5): Couldn't resolve proxy name for https://mty-tob-prhs000.dombase.net/pulp/repos/Default_Organization/Library/RHEL9/content/dist/rhel9/9/x86_64/baseos/os/repodata/repomd.xml [Unsupported proxy syntax in 'http://your-proxy-server:port']
+[slunam@QVL-M0SLPOMYS00 iiq_install]$ ^C
+[slunam@QVL-M0SLPOMYS00 iiq_install]$ sudo dnf module list mysql
+Updating Subscription Management repositories.
+Red Hat Enterprise Linux 9 for x86_64 - BaseOS (RPMs)                                                                         33 kB/s | 2.4 kB     00:00
+Red Hat Enterprise Linux 9 for x86_64 - AppStream (RPMs)                                                                      39 kB/s | 2.8 kB     00:00
+Error: No matching Modules to list
+[slunam@QVL-M0SLPOMYS00 iiq_install]$ sudo dnf install -y mysql-server
+Updating Subscription Management repositories.
+Red Hat Enterprise Linux 9 for x86_64 - BaseOS (RPMs)                                                                         33 kB/s | 2.4 kB     00:00
+Red Hat Enterprise Linux 9 for x86_64 - AppStream (RPMs)                                                                      38 kB/s | 2.8 kB     00:00
+Package mysql-community-server-8.4.10-1.el9.x86_64 is already installed.
+Dependencies resolved.
+Nothing to do.
+Complete!
