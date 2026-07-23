@@ -1,0 +1,24 @@
+sudo tee /etc/systemd/system/tomcat.service <<EOF
+[Unit]
+Description=Apache Tomcat 9 (IdentityIQ)
+After=network.target mysqld.service
+
+[Service]
+Type=forking
+Environment=JAVA_HOME=$JAVA_HOME
+Environment=CATALINA_PID=/opt/tomcat/temp/tomcat.pid
+Environment=CATALINA_HOME=/opt/tomcat
+Environment=CATALINA_BASE=/opt/tomcat
+Environment=CATALINA_OPTS=-Xms1024M -Xmx2048M -server -XX:+UseG1GC --add-exports=java.naming/com.sun.jndi.ldap=ALL-UNNAMED
+ExecStart=/opt/tomcat/bin/startup.sh
+ExecStop=/opt/tomcat/bin/shutdown.sh
+User=tomcat
+Group=tomcat
+RestartSec=10
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+sudo systemctl daemon-reload
