@@ -1,0 +1,22 @@
+PS C:\Users\slunam\AppData\Local\Programs\Microsoft VS Code> & C:\Users\slunam\AppData\Local\Python\pythoncore-3.14-64\python.exe c:/Users/slunam/Documents/Snyk/ScannerBase/INICIAR_SnykScannerGUI.py
+Exception ignored while calling deallocator <function Image.__del__ at 0x00000181B90F8D50>:
+Traceback (most recent call last):
+  File "C:\Users\slunam\AppData\Local\Python\pythoncore-3.14-64\Lib\tkinter\__init__.py", line 4272, in __del__
+    self.tk.call('image', 'delete', self.name)
+RuntimeError: main thread is not in main loop
+Exception ignored while calling deallocator <function Image.__del__ at 0x00000181B90F8D50>:
+Traceback (most recent call last):
+  File "C:\Users\slunam\AppData\Local\Python\pythoncore-3.14-64\Lib\tkinter\__init__.py", line 4272, in __del__
+    self.tk.call('image', 'delete', self.name)
+RuntimeError: main thread is not in main loop
+Exception ignored while calling deallocator <function Variable.__del__ at 0x00000181B9084300>:
+Traceback (most recent call last):
+  File "C:\Users\slunam\AppData\Local\Python\pythoncore-3.14-64\Lib\tkinter\__init__.py", line 416, in __del__
+    if self._tk.getboolean(self._tk.call("info", "exists", self._name)):
+RuntimeError: main thread is not in main loop
+Exception ignored while calling deallocator <function Image.__del__ at 0x00000181B90F8D50>:
+Traceback (most recent call last):
+  File "C:\Users\slunam\AppData\Local\Python\pythoncore-3.14-64\Lib\tkinter\__init__.py", line 4272, in __del__
+    self.tk.call('image', 'delete', self.name)
+RuntimeError: main thread is not in main loop
+Tcl_AsyncDelete: async handler deleted by the wrong thread
