@@ -1,0 +1,31 @@
+Fundamentos y cultura
+
+¿Diferencia entre DevSecOps y seguridad al final del ciclo? Seguridad al final es un gate que bloquea o aprueba cuando ya es tarde y caro corregir. DevSecOps integra controles automatizados en cada etapa del pipeline (código, build, deploy, runtime) para detectar temprano y no frenar la entrega.
+¿Cómo balanceas velocidad vs. controles? Automatizando lo más posible para que la seguridad no dependa de un humano revisando manualmente. Se definen políticas de riesgo (qué severidad bloquea vs. qué solo alerta) para no frenar todo por cualquier hallazgo.
+¿Qué es "shift left"? Mover la detección de vulnerabilidades lo más temprano posible: IDE, pre-commit, PR, en vez de esperar a producción. Ejemplo: SAST corriendo en el editor o como pre-commit hook, no solo en el pipeline.
+
+CI/CD y pipelines
+
+¿Qué escaneos y en qué etapa? Secrets scanning y SAST en pre-commit/PR; SCA (dependencias) en build; escaneo de imagen de contenedor antes de push a registry; DAST/IAST en ambiente de staging, no en prod directo.
+¿Qué haces si un escaneo bloquea un deploy urgente? Se evalúa el hallazgo: si es explotable y crítico, no se negocia. Si es bajo riesgo o falso positivo, existe un proceso de excepción documentado y con dueño (no un "salto" silencioso), con fecha de remediación.
+¿Cómo manejas falsos positivos? Ajustando reglas/políticas de la herramienta y creando listas de supresión justificadas y auditables. Si el ruido es alto, el equipo deja de confiar en la herramienta, así que hay que curarlo activamente.
+
+Contenedores e infraestructura
+
+¿Cómo aseguras una imagen Docker? Imagen base mínima (distroless o alpine), sin correr como root, escaneo de vulnerabilidades antes de push, multi-stage build para no dejar herramientas de compilación ni secretos en la imagen final.
+¿Qué es distroless y por qué? Imagen sin shell, package manager ni utilidades extra — solo el runtime y el binario. Reduce la superficie de ataque porque un atacante no tiene herramientas para moverse lateralmente si compromete el contenedor.
+¿Secretos en Kubernetes? Nunca en variables de entorno planas ni en el manifiesto. Usar un vault externo (Vault, AWS Secrets Manager) con inyección en runtime, o al menos Kubernetes Secrets con encryption at rest y RBAC estricto.
+
+Gestión de vulnerabilidades
+
+¿Cómo priorizas? CVSS es el punto de partida, pero lo que manda es explotabilidad real: ¿está expuesto a internet?, ¿hay exploit público?, ¿el componente vulnerable realmente se ejecuta (reachability)? Una vulnerabilidad crítica en código muerto pesa menos que una media en un endpoint público.
+¿Qué es SBOM? Inventario de todos los componentes y dependencias de una aplicación (Software Bill of Materials). Sirve para saber rápido si estás expuesto cuando sale una vulnerabilidad nueva (ej. Log4Shell), sin tener que auditar todo desde cero.
+
+IaC
+
+¿Herramientas para escanear Terraform/CloudFormation? Checkov, tfsec o Snyk IaC, corriendo en el PR antes del apply — buscan misconfiguraciones (buckets públicos, security groups abiertos, falta de encryption) antes de que lleguen a existir en la nube.
+
+Situacional
+
+Credencial hardcodeada en historial de commits. No basta con borrarla del código actual: hay que rotarla/revocarla de inmediato (asumir que ya está comprometida), luego limpiar el historial (git filter-repo/BFG) o considerar el repo comprometido si es grave.
+Un dev quiere saltarse el escaneo por el deadline. Se ofrece una excepción formal con aprobación y fecha de remediación, no un bypass silencioso. La conversación es sobre riesgo aceptado y quién lo firma, no sobre "sí o no" a la seguridad.
