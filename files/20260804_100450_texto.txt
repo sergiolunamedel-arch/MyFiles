@@ -1,1 +1,0 @@
-sudo -u tomcat /opt/tomcat/webapps/identityiq/WEB-INF/bin/iiq encrypt 'p0$ooiw%7HS|k_>>'
