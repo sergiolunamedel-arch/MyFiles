@@ -1,4 +1,0 @@
-ENC='1:ACP:PEGA_AQUI_EL_RESULTADO'
-sudo sed -i "s|^dataSource.password=.*|dataSource.password=${ENC}|" /opt/tomcat/webapps/identityiq/WEB-INF/classes/iiq.properties
-sudo sed -i "s|^pluginsDataSource.password=.*|pluginsDataSource.password=${ENC}|" /opt/tomcat/webapps/identityiq/WEB-INF/classes/iiq.properties
-sudo sed -i "s|^dataSourceAccessHistory.password=.*|dataSourceAccessHistory.password=${ENC}|" /opt/tomcat/webapps/identityiq/WEB-INF/classes/iiq.properties
