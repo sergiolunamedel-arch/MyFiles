@@ -1,0 +1,3 @@
+mysql -h 127.0.0.1 -P 3306 -u identityiq -p'p0$ooiw%7HS|k_>>' identityiq -e "SELECT 1;"
+mysql -h 127.0.0.1 -P 3306 -u identityiqah -p'p0$ooiw%7HS|k_>>' identityiqah -e "SELECT 1;"
+mysql -h 127.0.0.1 -P 3306 -u identityiqPlugin -p'p0$ooiw%7HS|k_>>' identityiqPlugin -e "SELECT 1;"
