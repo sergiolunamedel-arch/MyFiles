@@ -1,0 +1,9 @@
+cat > /tmp/same_pw.sql << 'SQLEOF'
+ALTER USER 'identityiqah'@'%' IDENTIFIED BY 'p0$ooiw%7HS|k_>>';
+ALTER USER 'identityiqah'@'localhost' IDENTIFIED BY 'p0$ooiw%7HS|k_>>';
+ALTER USER 'identityiqPlugin'@'%' IDENTIFIED BY 'p0$ooiw%7HS|k_>>';
+ALTER USER 'identityiqPlugin'@'localhost' IDENTIFIED BY 'p0$ooiw%7HS|k_>>';
+FLUSH PRIVILEGES;
+SQLEOF
+mysql -u root -p'Temporal123' < /tmp/same_pw.sql
+shred -u /tmp/same_pw.sql
