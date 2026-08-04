@@ -1,1 +1,0 @@
-sudo grep -E '^(dataSource|pluginsDataSource|dataSourceAccessHistory)\.password=' /opt/tomcat/webapps/identityiq/WEB-INF/classes/iiq.properties
