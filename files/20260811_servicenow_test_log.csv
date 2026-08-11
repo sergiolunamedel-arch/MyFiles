@@ -1,0 +1,5 @@
+timestamp,scenario,status,sys_id,request_number,error,cleanup_status,cleanup_error
+2026-08-11T09:57:41,sast_sca,400,,,"{""error"":{""message"":""Mandatory Variables are required"",""detail"":""""},""status"":""failure""}",omitido,
+2026-08-11T09:57:41,dast,400,,,"{""error"":{""message"":""Mandatory Variables are required"",""detail"":""""},""status"":""failure""}",omitido,
+2026-08-11T09:57:41,api,200,f8ea62cb936e4f50af38b6ea6aba10e3,REQ0026056,,omitido,
+2026-08-11T09:57:41,secretos,400,,,"{""error"":{""message"":""Mandatory Variables are required"",""detail"":""""},""status"":""failure""}",omitido,
