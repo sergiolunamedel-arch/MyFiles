@@ -1,0 +1,15 @@
+Diagnóstico actualizado (ahora mucho más específico)
+
+El Flow (o Workflow) atado a este catalog item casi con certeza tiene una condición explícita tipo "self-service": compara el valor de esas variables del solicitante contra la identidad real del usuario autenticado que hace la llamada a la API (gs.getUserID() / gs.getUserName() / el campo requested_for), y:
+
+Si coinciden (estás pidiendo "para ti mismo") → salta aprobación, no crea tareas, y cierra el REQ como Closed Complete de inmediato.
+Si NO coinciden (pides "a nombre de otra persona", como con Yessica) → sigue el camino normal: queda abierto pendiente de aprobación/tareas.
+
+Esto es un patrón bastante común y documentado en instancias de ServiceNow ("solicitudes para uno mismo se auto-aprueban/auto-completan").
+
+Qué buscar exactamente cuando abras el Flow/Workflow
+
+Con este dato ya no tienes que revisar todo el flujo a ciegas — busca puntualmente:
+
+Un paso de condición/IF (o un script) que compare nombre_del_solicitante, correo_del_solicitante o id_del_solicitante (las variables del catalog item) contra el usuario autenticado (gs.getUserID(), gs.getUserName(), gs.getUser().getEmail()) o contra el campo requested_for/opened_by del REQ.
+El branch que sigue esa condición cuando es verdadera — ahí debería estar el "Update Record" que pone state = 3 (Closed Complete) y salta el "Ask for Approval"/creación de Catalog Task.
