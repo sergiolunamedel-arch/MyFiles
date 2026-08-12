@@ -1,0 +1,17 @@
+SecDevOps Banco Base — dependency boot log
+Run started : 2026-08-11 19:50:17
+Status      : completed successfully
+------------------------------------------------------------
+[19:50:17] jinja2: already satisfied
+[19:50:17] selenium: already satisfied
+[19:50:17] webdriver_manager: already satisfied
+[19:50:17] pynput: already satisfied
+[19:50:17] yaml: already satisfied
+[19:50:17] requests: already satisfied
+[19:50:17] send2trash: already satisfied
+[19:50:19] node/npm: already satisfied
+[19:50:19] [secrets] git-secrets ready (cached): C:\Users\slunam\AppData\Local\vuln-scanner\git-secrets\git-secrets
+[19:51:37] [snyk] could not query latest version via npm: TimeoutExpired(['npm.cmd', 'view', 'snyk', 'version'], 30)
+[19:51:37] snyk-cli: already satisfied (could not determine the latest version (offline or no npm) — skipping check)
+[19:51:41] snyk prewarm: CLI cargado en caché del SO
+[19:51:41] Motor listo.
