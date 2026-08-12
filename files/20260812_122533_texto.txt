@@ -1,0 +1,26 @@
+
+curl "https://bancobasedev.service-now.com/api/sn_sc/servicecatalog/items/799044769396c750af38b6ea6aba1080/order_now" \
+--request POST \
+--header "Accept:application/json" \
+--header "Content-Type:application/json" \
+--data "{
+  \"sysparm_quantity\": \"1\",
+    \"variables\": {
+    \"id_del_solicitante\": \"slunam\",
+    \"nombre_del_solicitante\": \"Sergio Luna Medel\",
+    \"correo_del_solicitante\": \"slunam@bancobase.com\",
+    \"objetivo_de_la_solicitud\": \"Obtener solicitudes\",
+    \"nombre_de_la_aplicaci_n\": \"TEST\",
+    \"ambiente\": \"Desarrollo\",
+    \"sast_sca\": \"true\",
+    \"modo_ejecucion\" : \"Baseline\",
+    \"clasificaci_n_de_la_aplicaci_n\": \"MDP\",
+    \"prioridad_\": \"Media\",
+    \"owner_de_la_aplicaci_n2\": \"URL de la API\",
+    \"descripci_n_de_la_solicitud_justificaci_n\": \"TEST DES\",
+    \"cuentas_con_url\": \"url de la api\",
+    \"Organizacion_3\": \"TEST\",
+    \"url_de_la_api\": \"TEST\",
+    \"tecnologia_api\": \"TEST\"
+  }
+}"
