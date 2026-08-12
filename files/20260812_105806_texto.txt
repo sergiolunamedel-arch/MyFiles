@@ -1,0 +1,7 @@
+Línea	Versión parcheada (jul 2026)
+Java 26 (no-LTS)	26.0.2
+Java 25 (LTS)	25.0.4
+Java 21 (LTS)	21.0.12
+Java 17 (LTS)	17.0.20
+Java 11 (LTS)	11.0.32
+Java 8	8u501
