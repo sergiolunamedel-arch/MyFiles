@@ -1,0 +1,43 @@
+C:\Users\agarciasi\Downloads\ScannerBase\ScannerBase\Reports\gfb-backofficemiddleoffice-api\report_20260812_114525_code+sca+secrets\code+sca+secrets+agarciasi_20260812.zip  (sca/sast/dast/api/secrets sheets + summary)
+[report] Secrets HTML → C:\Users\agarciasi\Downloads\ScannerBase\ScannerBase\Reports\gfb-backofficemiddleoffice-api\report_20260812_114525_code+sca+secrets\code+sca+secrets+agarciasi_20260812_secrets.html
+[history] recorded scan — remediated 0, new 22 since last CODE+SCA+SECRETS run
+[inventory] scan recorded for app 'gfb-backofficemiddleoffice-api'
+[gate] INCOMPLETE  (critical=0 high=7 medium=12 low=3 secrets_crit_high=7)  — CODE/SCA did not complete; re-run before treating this as FAIL
+[report] HTML: C:\Users\agarciasi\Downloads\ScannerBase\ScannerBase\Reports\gfb-backofficemiddleoffice-api\report_20260812_114525_code+sca+secrets\code+sca+secrets+agarciasi_20260812.html
+[report] CSV:  C:\Users\agarciasi\Downloads\ScannerBase\ScannerBase\Reports\gfb-backofficemiddleoffice-api\report_20260812_114525_code+sca+secrets\code+sca+secrets+agarciasi_20260812.zip
+[scan] pipeline: CODE+SCA
+[scan] output → C:\Users\agarciasi\Downloads\ScannerBase\ScannerBase\Reports\gfb-backofficemiddleoffice-api\report_20260812_120800_code+sca
+[snyk] CLI ready (1.1306.3)
+[scan] running 2 stages concurrently
+[scan] $ snyk test --all-projects --detection-depth=10 --strict-out-of-sync=false --skip-unresolved --org=7c545e26-1865-4ce9-a2e5-2b8c1c215e62 --json  (cwd=C:\Users\agarciasi\projects\dominio\onboarding\gfb-backofficemiddleoffice-api)
+[scan] $ snyk code test --org=7c545e26-1865-4ce9-a2e5-2b8c1c215e62 --json  (cwd=C:\Users\agarciasi\projects\dominio\onboarding\gfb-backofficemiddleoffice-api)
+{
+  "ok": false,
+  "error": "Snyk Code is not supported for your current organization: ``.",
+  "path": "C:\\Users\\agarciasi\\projects\\dominio\\onboarding\\gfb-backofficemiddleoffice-api"
+}
+[scan][diag] raw Snyk error envelope for this failure (full detail — helps tell a version/org/proxy problem apart from a code problem): {
+  "ok": false,
+  "error": "Snyk Code is not supported for your current organization: ``.",
+  "path": "C:\\Users\\agarciasi\\projects\\dominio\\onboarding\\gfb-backofficemiddleoffice-api"
+}
+[scan][diag] snyk binary: C:\Users\agarciasi\AppData\Roaming\npm\snyk.CMD  version: 1.1306.3
+[scan] code failed: SnykScanError('Snyk scan could not analyse the target (nothing scannable here): Snyk Code is not supported for your current organization: ``.')
+[scan][diag] raw Snyk error envelope for this failure (full detail — helps tell a version/org/proxy problem apart from a code problem): {
+  "ok": false,
+  "error": "Org 7c545e26-1865-4ce9-a2e5-2b8c1c215e62 was not found or you may not have the correct permissions to access the org. Try re-running with the --org flag.",
+  "path": "C:\\Users\\agarciasi\\projects\\dominio\\onboarding\\gfb-backofficemiddleoffice-api"
+}
+[scan][diag] snyk binary: C:\Users\agarciasi\AppData\Roaming\npm\snyk.CMD  version: 1.1306.3
+[scan] sca failed: SnykScanError('SCA scan could not analyse the target (nothing scannable here): Org 7c545e26-1865-4ce9-a2e5-2b8c1c215e62 was not found or you may not have the correct permissions to access the org. Try re-running with the --org flag.')
+[scan] ⚠ CODE/SCA did not complete — this run's totals and gate result are INCOMPLETE, not a confirmed clean scan.
+[snyk] ⚠ Snyk sigue rechazando la solicitud para CODE/SCA incluso tras la reinstalación automática de esta sesión — puede requerir revisión manual (versión de CLI, organización, proxy).
+[report] building cumulative report (all scan types merged)
+[servicenow] etapa(s) estática(s) incompleta(s) — se omite sincronización de ticket de repositorio
+[scan] cumulative total: 22  crit=0  high=7  med=12  low=3  secrets=22
+[report] CSV bundle (ZIP): C:\Users\agarciasi\Downloads\ScannerBase\ScannerBase\Reports\gfb-backofficemiddleoffice-api\report_20260812_120800_code+sca\code+sca+agarciasi_20260812.zip  (sca/sast/dast/api/secrets sheets + summary)
+[history] recorded scan — remediated 0, new 0 since last CODE+SCA run
+[inventory] scan recorded for app 'gfb-backofficemiddleoffice-api'
+[gate] INCOMPLETE  (critical=0 high=7 medium=12 low=3 secrets_crit_high=7)  — CODE/SCA did not complete; re-run before treating this as FAIL
+[report] HTML: C:\Users\agarciasi\Downloads\ScannerBase\ScannerBase\Reports\gfb-backofficemiddleoffice-api\report_20260812_120800_code+sca\code+sca+agarciasi_20260812.html
+[report] CSV:  C:\Users\agarciasi\Downloads\ScannerBase\ScannerBase\Reports\gfb-backofficemiddleoffice-api\report_20260812_120800_code+sca\code+sca+agarciasi_20260812.zip
