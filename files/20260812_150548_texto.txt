@@ -1,0 +1,24 @@
+--- Historial de cambios de sc_request/cc09606f3b228790434f009c24e45a19 (quién cambió qué, y cuándo) ---
+  2026-08-12 13:47:08  [Integration_user]  work_notes: 'JOURNAL FIELD ADDITION' -> 'RITM0025812 - assigned to 
+
+'
+  2026-08-12 13:47:08  [Integration_user]  work_notes: 'JOURNAL FIELD ADDITION' -> 'RITM0025812 - assigned to 
+
+'
+  2026-08-12 13:47:09  [system]  work_notes: 'JOURNAL FIELD ADDITION' -> 'RITM0025812 - assigned to 
+
+'
+  2026-08-12 13:47:09  [system]  work_notes: 'JOURNAL FIELD ADDITION' -> 'RITM0025812 - assigned to 
+
+'
+  2026-08-12 13:47:09  [system]  state: '1' -> '3'
+  2026-08-12 13:47:09  [system]  work_notes: 'JOURNAL FIELD ADDITION' -> 'RITM0025812 - assigned to 
+
+'
+  2026-08-12 13:47:09  [system]  closed_at: '' -> '2026-08-12 19:47:09'
+  2026-08-12 13:47:09  [system]  work_notes: 'JOURNAL FIELD ADDITION' -> 'RITM0025812 - assigned to 
+
+'
+  2026-08-12 13:47:09  [system]  active: '1' -> '0'
+  >>> Si el cambio de 'state' a Closed/Cancelled aparece con un usuario del sistema, una cuenta de servicio, o un Flow/Workflow (no tu usuario real y no justo después del mensaje 'Limpiando tickets de prueba...' en el log de este script), el cierre lo está haciendo ServiceNow del lado del servidor, no este script.
+[status] Listo
