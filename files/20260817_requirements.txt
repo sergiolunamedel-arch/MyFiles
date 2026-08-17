@@ -1,0 +1,6 @@
+requests
+Jinja2
+selenium
+webdriver-manager
+pynput
+Send2Trash
