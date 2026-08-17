@@ -1,0 +1,13 @@
+SecDevOps Banco Base — dependency boot log
+Run started : 2026-08-17 16:56:34
+Status      : failed
+------------------------------------------------------------
+[16:56:34] jinja2: already satisfied
+[16:56:34] selenium: already satisfied
+[16:56:34] webdriver_manager: already satisfied
+[16:56:34] pynput: already satisfied
+[16:56:34] yaml: not found — installing PyYAML…
+[16:56:35] ERROR: Can not perform a '--user' install. User site-packages are not visible in this virtualenv.
+[16:56:35] pip: retrying via trusted-host (corporate TLS proxy?)
+[16:56:36] ERROR: Can not perform a '--user' install. User site-packages are not visible in this virtualenv.
+[16:56:36] FATAL: CalledProcessError(1, ['C:\\Users\\Sinuhe\\Downloads\\ScannerBase\\ScannerBase\\.venv\\Scripts\\python.exe', '-m', 'pip', 'install', '--user', '--disable-pip-version-check', '--upgrade', 'PyYAML'])
