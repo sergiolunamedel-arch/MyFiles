@@ -1,0 +1,48 @@
+sobre los nodos de la bd:
+10.49.50.8 mty-ale-psql127 (Windows)
+
+10.49.50.9 mty-ale-psql128 (Windows)
+ambos traen un kb de windows publicado en agosto
+The remote host is missing one of the following rollup KBs : 
+  - 5120242
+  - 5120229
+
+  - C:\Windows\system32\ntoskrnl.exe has not been patched.
+    Remote version : 10.0.20348.5386
+    Should be      : 10.0.20348.5499
+Tú, 33 min
+el servicio que se corrió fue un basic network scan?
+Alma Nallely Herrera Mendoza, 33 min
+asi es , por agente
+Tú, 33 min
+madre mía, tengo que corregir
+porque me salió en cero
+Alma Nallely Herrera Mendoza, 32 min
+estos son los agentes
+Citó aCitó aEnviado por Túmadre mía, tengo que corregirFin de la cita presiona L para vincular al mensaje originalFin de la cita presiona L para vincular al mensaje originalel tuyo tambien fue por agente?
+Tú, 31 min
+no, veo que hay que seleccionarlos en scans con ips internas
+se instala un agente por server?
+Alma Nallely Herrera Mendoza, 31 min
+si asi es
+es manual
+uno por uno
+vaya si se libera un nuevo servidor, efra y mario de infra, ya se la saben y le instalan el agente
+se ejecuta un comando para el linkeo
+del agente con la consola central y ya con eso yo lo veo en linea
+el comando lo ejecutan ellos al momento de la instalacion
+Tú, 29 min
+:O
+va trataré de vincular primero el scanner con esos
+Alma Nallely Herrera Mendoza, 29 min
+necesitas la info de los comandos a ejecutar para el linkeo del agente
+?
+jajaj sorry es que  no entiendo bien lo que estas ejecutando, pero cualquier cosa dime y te la paso
+Tú, 28 min
+Primero sin comandos, ahorita te confirmo si se pudo
+Con esos servers qué ya tienen el agente
+Alma Nallely Herrera Mendoza, 28 min
+vavava
+si no te contesto rapido por aqui mandame whats, pero aqui ando vale
+Tú, 27 min
+Oks
