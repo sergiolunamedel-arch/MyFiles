@@ -1,0 +1,23 @@
+10.48.49.29 mty-ale-pvol005 (Linux)
+10.49.50.8 mty-ale-psql127 (Windows)
+10.49.50.9 mty-ale-psql128 (Windows)
+MTY-ALE-QPGS015    10.51.54.35 linux  
+MTY-ALE-PVOL000 10.48.49.18 linux
+MTY-ALE-PSQL129 10.49.50.3 windows  
+MTY-ALE-PSQL130 10.49.50.4 windows
+
+- https://10.48.36.37:8834/
+	slunam
+	PHPRxSzhIw&Tcbo7pm
+- https://10.48.4.37:8834/
+	slunam
+	PHPRxSzhIw&Tcbo7pm
+- https://10.48.196.37:8834/
+	slunam
+	PHPRxSzhIw&Tcbo7pm
+- Security Center: https://qro-ale-ptsc001/:
+	slunam
+	Pass de red
+
+Access key: aacdcecc85b8469eb53a0495822d8a48
+Secret key: ec79209b141343e09ef556baa3d1a8f5
