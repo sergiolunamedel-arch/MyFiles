@@ -1,0 +1,32 @@
+SecDevOps Banco Base — dependency boot log
+Run started : 2026-08-26 15:45:59
+Status      : completed successfully
+------------------------------------------------------------
+[15:45:59] jinja2: already satisfied
+[15:45:59] selenium: already satisfied
+[15:45:59] webdriver_manager: already satisfied
+[15:45:59] pynput: already satisfied
+[15:45:59] yaml: already satisfied
+[15:45:59] requests: already satisfied
+[15:45:59] send2trash: already satisfied
+[15:46:01] node/npm: already satisfied
+[15:46:02] [secrets] git-secrets ready (cached): C:\Users\slunam\AppData\Local\vuln-scanner\git-secrets\git-secrets
+[15:46:11] [snyk] instalación desactualizada detectada (installed 1.1306.3, latest 1.1307.0) — forzando reinstalación limpia automáticamente (sin preguntar)…
+[15:46:11] [snyk] === reinstalación limpia solicitada — esto cerrará la sesión de Snyk ===
+[15:46:11] [snyk] npm uninstall -g snyk
+[15:46:19] removed 33 packages in 6s
+[15:46:23] Error al buscar en el origen, los resultados no se incluirán: msstore
+No se encontró ningún paquete que coincida con los criterios de entrada.
+[15:46:23] [snyk] scoop uninstall snyk
+[15:46:27] ERROR 'snyk' isn't installed.
+[15:46:27] [snyk] no local Snyk config file found (nothing to remove)
+[15:46:27] [tls] trusting corporate proxy via NODE_EXTRA_CA_CERTS=C:\Users\slunam\AppData\Local\Temp\bbscanner_corp_ca.pem
+[15:46:28] [snyk] npm install -g snyk
+[15:46:28] $ npm.cmd install -g snyk
+[15:47:25] 
+added 10 packages in 54s
+
+[15:47:32] [snyk] CLI ready (1.1307.0)
+[15:47:32] [snyk] reinstalación limpia completa — binario activo: C:\Users\slunam\AppData\Local\fnm_multishells\37840_1787592627997\snyk.CMD (1.1307.0) — inicie sesión de nuevo antes de escanear.
+[15:47:38] snyk prewarm: CLI cargado en caché del SO
+[15:47:38] Motor listo.
