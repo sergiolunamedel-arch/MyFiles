@@ -1,0 +1,7 @@
+Fase	Actividad	Fechas	Duración
+1	Integración con OKTA	1–4 sept (mar–vie)	4 días
+2	Agregar identidades: AD y Google	7–8 sept (lun–mar)	2 días
+3	Configurar Altas, Bajas, Cambios (JML)	9–15 sept (mié–mar)	1 semana
+4	Cambio de contraseña + desbloqueo de cuenta	16–18 sept (mié–vie)	3 días
+5	Pruebas UAT + capacitación	21–22 sept (lun–mar)	2 días
+—	Go-live	23 sept (mié)	—
