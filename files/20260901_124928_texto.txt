@@ -1,0 +1,1 @@
+SSO Login URL: https://secure.bancobase.com/app/bancobase_sailpointqa_1/exk26kbz4jdxOIcVU1d8/sso/saml — Public X.509 Certificate: pega el bloque completo -----BEGIN CERTIFICATE----- ... -----END CERTIFICATE----- que ya te compartí — si aparece "Identity Provider Issuer URL": http://www.okta.com/exk26kbz4jdxOIcVU1d8
