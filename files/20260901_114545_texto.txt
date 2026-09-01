@@ -1,0 +1,4 @@
+Perdon Checo, te pase la liga de las instrucciones de Okta por error. Lo que necesitas para configurar de tu lado es nuestra Metadata de Okta, es esta URL:
+https://secure.bancobase.com/app/exk26kbz4jdxOIcVU1d8/sso/saml/metadata
+
+Si Sailpoint te pide los campos por separado me dices y te los mando.
