@@ -1,0 +1,15 @@
+Hola Gilberto,
+
+Como lo platicamos, te comparto la solicitud del certificado para el sitio de seguridad interna que estamos dando de alta en Okta.
+
+Datos del certificado:
+- Hostname / Common Name: scan.bancobase.com
+- Tipo de certificado: interno (firmado por la CA interna)
+- Uso: habilitar HTTPS en el servidor para poder integrar el sitio como aplicación en Okta
+
+Adjunto el archivo CSR (scan.bancobase.com.csr) generado en el servidor.
+
+Quedo al pendiente de cualquier dato adicional que necesiten para procesar la solicitud.
+
+Saludos,
+Checho
