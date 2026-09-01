@@ -1,0 +1,26 @@
+# 1. Generar la llave privada (guárdala, NO se envía a nadie)
+openssl genrsa -out scan.bancobase.com.key 2048
+
+# 2. Crear un archivo de config con el SAN (obligatorio hoy en día, los navegadores ya no confían solo en el CN)
+cat > san.cnf << 'EOF'
+[req]
+distinguished_name = dn
+req_extensions = v3_req
+prompt = no
+
+[dn]
+C = MX
+ST = Nuevo Leon
+L = Monterrey
+O = Banco Base
+CN = scan.bancobase.com
+
+[v3_req]
+subjectAltName = @alt_names
+
+[alt_names]
+DNS.1 = scan.bancobase.com
+EOF
+
+# 3. Generar el CSR
+openssl req -new -key scan.bancobase.com.key -out scan.bancobase.com.csr -config san.cnf
