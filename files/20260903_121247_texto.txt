@@ -1,0 +1,1 @@
+sudo vim /opt/cloudgateway/apache-tomcat-9.0.104/webapps/CloudGateway/WEB-INF/classes/iiq.properties
