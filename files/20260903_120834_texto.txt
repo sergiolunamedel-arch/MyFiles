@@ -1,2 +1,0 @@
-cd /opt/cloudgateway/apache-tomcat-9.0.104/webapps/CloudGateway/WEB-INF/bin
-sudo -u tomcat ./cib encrypt keystorePassword
