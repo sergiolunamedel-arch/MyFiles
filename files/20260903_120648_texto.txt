@@ -1,0 +1,2 @@
+cd /opt/cloudgateway/apache-tomcat-9.0.104
+sudo -u tomcat keytool -keystore cibkeystore.jck -storetype jceks -genseckey -alias 2 -keysize 128 -keyAlg AES
