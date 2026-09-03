@@ -1,4 +1,0 @@
-[slunam@QVL-M0SLPOMYS00 bin]$ ps -ef | grep -i cloudgateway
-slunam   1000434  999560  0 12:26 pts/2    00:00:00 grep --color=auto -i cloudgateway
-[slunam@QVL-M0SLPOMYS00 bin]$ tail -50 /opt/cloudgateway/apache-tomcat-9.0.104/logs/catalina.out
-tail: cannot open '/opt/cloudgateway/apache-tomcat-9.0.104/logs/catalina.out' for reading: Permission denied
