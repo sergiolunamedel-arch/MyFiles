@@ -1,0 +1,2 @@
+keyStore.file=/opt/cloudgateway/apache-tomcat-9.0.104/cibkeystore.jck
+keyStore.password=PEGA_AQUI_EL_VALOR_ENCRIPTADO
