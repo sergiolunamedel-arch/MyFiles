@@ -1,0 +1,3 @@
+sudo cp /opt/tomcat/webapps/identityiq/WEB-INF/bin/win/IQService.zip ~/IQService.zip
+sudo chown $(whoami):$(whoami) ~/IQService.zip
+ls -la ~/IQService.zip
