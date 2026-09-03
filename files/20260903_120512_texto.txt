@@ -1,0 +1,6 @@
+sudo mkdir -p /opt/cloudgateway
+sudo mv /opt/cloudgateway_staging/* /opt/cloudgateway/
+sudo rmdir /opt/cloudgateway_staging
+sudo chown -R tomcat:tomcat /opt/cloudgateway
+sudo chmod +x /opt/cloudgateway/apache-tomcat-9.0.104/bin/*.sh
+sudo chmod +x /opt/cloudgateway/apache-tomcat-9.0.104/webapps/CloudGateway/WEB-INF/bin/*
