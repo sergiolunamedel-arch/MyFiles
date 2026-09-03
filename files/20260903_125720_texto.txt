@@ -1,7 +1,0 @@
-[slunam@QVL-M0SLPOMYS00 ~]$ grep -n -i "keystore\|certificate\|SSLHostConfig" /o                                                                             pt/cloudgateway/apache-tomcat-9.0.104/conf/server.xml
-92:                         keystoreFile="keystore/mykeystore.keystore" keystore                                                                             Pass="trustno1"
-106:        <SSLHostConfig>
-107:          <Certificate certificateKeyFile="conf/localhost-rsa-key.pem"
-108:                       certificateFile="conf/localhost-rsa-cert.pem"
-109:                       certificateChainFile="conf/localhost-rsa-chain.pem"
-111:        </SSLHostConfig>
