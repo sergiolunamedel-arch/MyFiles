@@ -1,0 +1,95 @@
+[slunam@QVL-M0SLPOMYS00 bin]$ sudo tail -50 /opt/cloudgateway/apache-tomcat-9.0.104/logs/catalina.out
+[sudo] password for slunam:
+03-Sep-2026 12:23:59.723 INFO [main] org.apache.tomcat.util.net.AbstractEndpoint.logCertificate Connector [https-jsse-nio-8443], TLS virtual host [_default_], certificate type [UNDEFINED] configured from keystore [keystore/mykeystore.keystore] using alias [tomcat] with trust store [null]
+03-Sep-2026 12:23:59.733 INFO [main] org.apache.catalina.startup.Catalina.load Server initialization in [776] milliseconds
+03-Sep-2026 12:23:59.781 INFO [main] org.apache.catalina.core.StandardService.startInternal Starting service [Catalina]
+03-Sep-2026 12:23:59.781 INFO [main] org.apache.catalina.core.StandardEngine.startInternal Starting Servlet engine: [Apache Tomcat/9.0.104]
+03-Sep-2026 12:23:59.786 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory [/opt/cloudgateway/apache-tomcat-9.0.104/webapps/CloudGateway]
+Container successfully initialized
+03-Sep-2026 12:24:09.600 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory [/opt/cloudgateway/apache-tomcat-9.0.104/webapps/CloudGateway] has finished in [9,813] ms
+03-Sep-2026 12:24:09.600 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory [/opt/cloudgateway/apache-tomcat-9.0.104/webapps/ROOT]
+03-Sep-2026 12:24:09.613 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory [/opt/cloudgateway/apache-tomcat-9.0.104/webapps/ROOT] has finished in [13] ms
+03-Sep-2026 12:24:09.614 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory [/opt/cloudgateway/apache-tomcat-9.0.104/webapps/docs]
+03-Sep-2026 12:24:09.628 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory [/opt/cloudgateway/apache-tomcat-9.0.104/webapps/docs] has finished in [14] ms
+03-Sep-2026 12:24:09.628 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory [/opt/cloudgateway/apache-tomcat-9.0.104/webapps/host-manager]
+03-Sep-2026 12:24:09.647 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory [/opt/cloudgateway/apache-tomcat-9.0.104/webapps/host-manager] has finished in [19] ms
+03-Sep-2026 12:24:09.648 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory [/opt/cloudgateway/apache-tomcat-9.0.104/webapps/manager]
+03-Sep-2026 12:24:09.662 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory [/opt/cloudgateway/apache-tomcat-9.0.104/webapps/manager] has finished in [14] ms
+03-Sep-2026 12:24:09.665 INFO [main] org.apache.coyote.AbstractProtocol.start Starting ProtocolHandler ["https-jsse-nio-8443"]
+03-Sep-2026 12:24:09.677 INFO [main] org.apache.catalina.startup.Catalina.start Server startup in [9943] milliseconds
+03-Sep-2026 12:24:09.680 SEVERE [main] org.apache.catalina.core.StandardServer.await Failed to create server shutdown socket on address [localhost] and port [8005] (base port [8005] and offset [0])
+        java.net.BindException: Address already in use
+                at java.base/sun.nio.ch.Net.bind0(Native Method)
+                at java.base/sun.nio.ch.Net.bind(Net.java:567)
+                at java.base/sun.nio.ch.Net.bind(Net.java:556)
+                at java.base/sun.nio.ch.NioSocketImpl.bind(NioSocketImpl.java:648)
+                at java.base/java.net.ServerSocket.bind(ServerSocket.java:388)
+                at java.base/java.net.ServerSocket.<init>(ServerSocket.java:274)
+                at org.apache.catalina.core.StandardServer.await(StandardServer.java:537)
+                at org.apache.catalina.startup.Catalina.await(Catalina.java:829)
+                at org.apache.catalina.startup.Catalina.start(Catalina.java:777)
+                at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+                at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+                at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+                at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+                at org.apache.catalina.startup.Bootstrap.start(Bootstrap.java:345)
+                at org.apache.catalina.startup.Bootstrap.main(Bootstrap.java:476)
+03-Sep-2026 12:24:09.681 INFO [main] org.apache.coyote.AbstractProtocol.pause Pausing ProtocolHandler ["https-jsse-nio-8443"]
+03-Sep-2026 12:24:09.686 INFO [main] org.apache.catalina.core.StandardService.stopInternal Stopping service [Catalina]
+Sep 03, 2026 12:24:09 PM com.sun.faces.config.ConfigureListener contextDestroyed
+WARNING: Unexpected state during contextDestroyed: no ConfigManager instance in current ServletContext but one is expected to exist.
+03-Sep-2026 12:24:09.739 WARNING [main] org.apache.catalina.loader.WebappClassLoaderBase.clearReferencesThreads The web application [CloudGateway] appears to have started a thread named [Log4j2-TF-2-Scheduled-1] but has failed to stop it. This is very likely to create a memory leak. Stack trace of thread:
+ java.base@17.0.19/jdk.internal.misc.Unsafe.park(Native Method)
+ java.base@17.0.19/java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:252)
+ java.base@17.0.19/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.awaitNanos(AbstractQueuedSynchronizer.java:1679)
+ java.base@17.0.19/java.util.concurrent.ScheduledThreadPoolExecutor$DelayedWorkQueue.take(ScheduledThreadPoolExecutor.java:1182)
+ java.base@17.0.19/java.util.concurrent.ScheduledThreadPoolExecutor$DelayedWorkQueue.take(ScheduledThreadPoolExecutor.java:899)
+ java.base@17.0.19/java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:1062)
+ java.base@17.0.19/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1122)
+ java.base@17.0.19/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+ java.base@17.0.19/java.lang.Thread.run(Thread.java:840)
+03-Sep-2026 12:24:09.751 INFO [main] org.apache.coyote.AbstractProtocol.stop Stopping ProtocolHandler ["https-jsse-nio-8443"]
+03-Sep-2026 12:24:09.762 INFO [main] org.apache.coyote.AbstractProtocol.destroy Destroying ProtocolHandler ["https-jsse-nio-8443"]
+[slunam@QVL-M0SLPOMYS00 bin]$ ^C
+[slunam@QVL-M0SLPOMYS00 bin]$ cd /opt/cloudgateway/apache-tomcat-9.0.104/bin
+[slunam@QVL-M0SLPOMYS00 bin]$ sudo -u tomcat ./shutdown.sh 2>/dev/null
+Using CATALINA_BASE:   /opt/cloudgateway/apache-tomcat-9.0.104
+Using CATALINA_HOME:   /opt/cloudgateway/apache-tomcat-9.0.104
+Using CATALINA_TMPDIR: /opt/cloudgateway/apache-tomcat-9.0.104/temp
+Using JRE_HOME:        /
+Using CLASSPATH:       /opt/cloudgateway/apache-tomcat-9.0.104/bin/bootstrap.jar:/opt/cloudgateway/apache-tomcat-9.0.104/bin/tomcat-juli.jar
+Using CATALINA_OPTS:
+[slunam@QVL-M0SLPOMYS00 bin]$ sudo -u tomcat JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java)))) ./startup.sh
+Using CATALINA_BASE:   /opt/cloudgateway/apache-tomcat-9.0.104
+Using CATALINA_HOME:   /opt/cloudgateway/apache-tomcat-9.0.104
+Using CATALINA_TMPDIR: /opt/cloudgateway/apache-tomcat-9.0.104/temp
+Using JRE_HOME:        /usr/lib/jvm/java-17-openjdk-17.0.19.0.10-2.el9.x86_64
+Using CLASSPATH:       /opt/cloudgateway/apache-tomcat-9.0.104/bin/bootstrap.jar:/opt/cloudgateway/apache-tomcat-9.0.104/bin/tomcat-juli.jar
+Using CATALINA_OPTS:
+Tomcat started.
+[slunam@QVL-M0SLPOMYS00 bin]$ sleep 3
+[slunam@QVL-M0SLPOMYS00 bin]$ ps -ef | grep -i cloudgateway
+tomcat   1000565       1 99 12:29 ?        00:00:17 /usr/lib/jvm/java-17-openjdk-17.0.19.0.10-2.el9.x86_64/bin/java -Djava.util.logging.config.file=/opt/cloudgateway/apache-tomcat-9.0.104/conf/logging.properties -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager -Djdk.tls.ephemeralDHKeySize=2048 -Djava.protocol.handler.pkgs=org.apache.catalina.webresources -Dsun.io.useCanonCaches=false -Dorg.apache.catalina.security.SecurityListener.UMASK=0027 -Dignore.endorsed.dirs= -classpath /opt/cloudgateway/apache-tomcat-9.0.104/bin/bootstrap.jar:/opt/cloudgateway/apache-tomcat-9.0.104/bin/tomcat-juli.jar -Dcatalina.base=/opt/cloudgateway/apache-tomcat-9.0.104 -Dcatalina.home=/opt/cloudgateway/apache-tomcat-9.0.104 -Djava.io.tmpdir=/opt/cloudgateway/apache-tomcat-9.0.104/temp org.apache.catalina.startup.Bootstrap start
+slunam   1000636  999560  0 12:30 pts/2    00:00:00 grep --color=auto -i cloudgateway
+[slunam@QVL-M0SLPOMYS00 bin]$ sudo tail -20 /opt/cloudgateway/apache-tomcat-9.0.104/logs/catalina.out
+03-Sep-2026 12:29:59.392 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.io.tmpdir=/opt/cloudgateway/apache-tomcat-9.0.104/temp
+03-Sep-2026 12:29:59.394 INFO [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent The Apache Tomcat Native library which allows using OpenSSL was not found on the java.library.path: [/usr/java/packages/lib:/usr/lib64:/lib64:/lib:/usr/lib]
+03-Sep-2026 12:29:59.637 INFO [main] org.apache.coyote.AbstractProtocol.init Initializing ProtocolHandler ["https-jsse-nio-8443"]
+03-Sep-2026 12:29:59.818 INFO [main] org.apache.tomcat.util.net.AbstractEndpoint.logCertificate Connector [https-jsse-nio-8443], TLS virtual host [_default_], certificate type [UNDEFINED] configured from keystore [keystore/mykeystore.keystore] using alias [tomcat] with trust store [null]
+03-Sep-2026 12:29:59.826 INFO [main] org.apache.catalina.startup.Catalina.load Server initialization in [619] milliseconds
+03-Sep-2026 12:29:59.857 INFO [main] org.apache.catalina.core.StandardService.startInternal Starting service [Catalina]
+03-Sep-2026 12:29:59.857 INFO [main] org.apache.catalina.core.StandardEngine.startInternal Starting Servlet engine: [Apache Tomcat/9.0.104]
+03-Sep-2026 12:29:59.862 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory [/opt/cloudgateway/apache-tomcat-9.0.104/webapps/CloudGateway]
+Container successfully initialized
+03-Sep-2026 12:30:10.207 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory [/opt/cloudgateway/apache-tomcat-9.0.104/webapps/CloudGateway] has finished in [10,345] ms
+03-Sep-2026 12:30:10.208 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory [/opt/cloudgateway/apache-tomcat-9.0.104/webapps/ROOT]
+03-Sep-2026 12:30:10.222 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory [/opt/cloudgateway/apache-tomcat-9.0.104/webapps/ROOT] has finished in [14] ms
+03-Sep-2026 12:30:10.222 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory [/opt/cloudgateway/apache-tomcat-9.0.104/webapps/docs]
+03-Sep-2026 12:30:10.237 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory [/opt/cloudgateway/apache-tomcat-9.0.104/webapps/docs] has finished in [15] ms
+03-Sep-2026 12:30:10.237 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory [/opt/cloudgateway/apache-tomcat-9.0.104/webapps/host-manager]
+03-Sep-2026 12:30:10.259 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory [/opt/cloudgateway/apache-tomcat-9.0.104/webapps/host-manager] has finished in [22] ms
+03-Sep-2026 12:30:10.259 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory [/opt/cloudgateway/apache-tomcat-9.0.104/webapps/manager]
+03-Sep-2026 12:30:10.274 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory [/opt/cloudgateway/apache-tomcat-9.0.104/webapps/manager] has finished in [14] ms
+03-Sep-2026 12:30:10.276 INFO [main] org.apache.coyote.AbstractProtocol.start Starting ProtocolHandler ["https-jsse-nio-8443"]
+03-Sep-2026 12:30:10.293 INFO [main] org.apache.catalina.startup.Catalina.start Server startup in [10466] milliseconds
+[slunam@QVL-M0SLPOMYS00 bin]$
