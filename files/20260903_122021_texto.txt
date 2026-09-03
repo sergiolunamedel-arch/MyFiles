@@ -1,7 +1,0 @@
-cd /opt/cloudgateway/apache-tomcat-9.0.104/bin
-sudo -u tomcat ./startup.sh
-
-Confirma que levantó:
-
-bash
-curl -k -I https://localhost:8443
