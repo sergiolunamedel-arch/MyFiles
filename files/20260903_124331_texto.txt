@@ -1,0 +1,56 @@
+[slunam@QVL-M0SLPOMYS00 bin]$ cd /opt/cloudgateway/apache-tomcat-9.0.104/bin
+[slunam@QVL-M0SLPOMYS00 bin]$ sudo -u tomcat JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java)))) ./shutdown.sh
+[sudo] password for slunam:
+Using CATALINA_BASE:   /opt/cloudgateway/apache-tomcat-9.0.104
+Using CATALINA_HOME:   /opt/cloudgateway/apache-tomcat-9.0.104
+Using CATALINA_TMPDIR: /opt/cloudgateway/apache-tomcat-9.0.104/temp
+Using JRE_HOME:        /usr/lib/jvm/java-17-openjdk-17.0.19.0.10-2.el9.x86_64
+Using CLASSPATH:       /opt/cloudgateway/apache-tomcat-9.0.104/bin/bootstrap.jar:/opt/cloudgateway/apache-tomcat-9.0.104/bin/tomcat-juli.jar
+Using CATALINA_OPTS:
+NOTE: Picked up JDK_JAVA_OPTIONS:  --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.lang.invoke=ALL-UNNAMED --add-opens=java.base/java.lang.reflect=ALL-UNNAMED --add-opens=java.base/java.io=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.base/java.util.concurrent=ALL-UNNAMED --add-opens=java.rmi/sun.rmi.transport=ALL-UNNAMED
+[slunam@QVL-M0SLPOMYS00 bin]$ sudo sed -i 's/<Server port="8005" shutdown="SHUTDOWN">/<Server port="8006" shutdown="SHUTDOWN">/' /opt/cloudgateway/apache-tomcat-9.0.104/conf/server.xml
+[slunam@QVL-M0SLPOMYS00 bin]$ sudo tee /opt/cloudgateway/apache-tomcat-9.0.104/bin/setenv.sh <<'EOF'
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-17.0.19.0.10-2.el9.x86_64
+EOF
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-17.0.19.0.10-2.el9.x86_64
+[slunam@QVL-M0SLPOMYS00 bin]$ sudo chown tomcat:tomcat /opt/cloudgateway/apache-tomcat-9.0.104/bin/setenv.sh
+[slunam@QVL-M0SLPOMYS00 bin]$ sudo chmod +x /opt/cloudgateway/apache-tomcat-9.0.104/bin/setenv.sh
+[slunam@QVL-M0SLPOMYS00 bin]$ sudo -u tomcat /opt/cloudgateway/apache-tomcat-9.0.104/bin/startup.sh
+Using CATALINA_BASE:   /opt/cloudgateway/apache-tomcat-9.0.104
+Using CATALINA_HOME:   /opt/cloudgateway/apache-tomcat-9.0.104
+Using CATALINA_TMPDIR: /opt/cloudgateway/apache-tomcat-9.0.104/temp
+Using JRE_HOME:        /usr/lib/jvm/java-17-openjdk-17.0.19.0.10-2.el9.x86_64
+Using CLASSPATH:       /opt/cloudgateway/apache-tomcat-9.0.104/bin/bootstrap.jar:/opt/cloudgateway/apache-tomcat-9.0.104/bin/tomcat-juli.jar
+Using CATALINA_OPTS:
+Tomcat started.
+[slunam@QVL-M0SLPOMYS00 bin]$ ps -ef | grep -i cloudgateway
+tomcat   1003317       1 99 12:42 ?        00:00:11 /usr/lib/jvm/java-17-openjdk-17.0.19.0.10-2.el9.x86_64/bin/java -Djava.util.logging.config.file=/opt/cloudgateway/apache-tomcat-9.0.104/conf/logging.properties -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager -Djdk.tls.ephemeralDHKeySize=2048 -Djava.protocol.handler.pkgs=org.apache.catalina.webresources -Dsun.io.useCanonCaches=false -Dorg.apache.catalina.security.SecurityListener.UMASK=0027 -Dignore.endorsed.dirs= -classpath /opt/cloudgateway/apache-tomcat-9.0.104/bin/bootstrap.jar:/opt/cloudgateway/apache-tomcat-9.0.104/bin/tomcat-juli.jar -Dcatalina.base=/opt/cloudgateway/apache-tomcat-9.0.104 -Dcatalina.home=/opt/cloudgateway/apache-tomcat-9.0.104 -Djava.io.tmpdir=/opt/cloudgateway/apache-tomcat-9.0.104/temp org.apache.catalina.startup.Bootstrap start
+slunam   1003344  999560  0 12:42 pts/2    00:00:00 grep --color=auto -i cloudgateway
+[slunam@QVL-M0SLPOMYS00 bin]$ sudo tail -20 /opt/cloudgateway/apache-tomcat-9.0.104/logs/catalina.out
+03-Sep-2026 12:42:52.878 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: --add-opens=java.base/java.util.concurrent=ALL-UNNAMED
+03-Sep-2026 12:42:52.879 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: --add-opens=java.rmi/sun.rmi.transport=ALL-UNNAMED
+03-Sep-2026 12:42:52.879 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.util.logging.config.file=/opt/cloudgateway/apache-tomcat-9.0.104/conf/logging.properties
+03-Sep-2026 12:42:52.879 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager
+03-Sep-2026 12:42:52.879 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djdk.tls.ephemeralDHKeySize=2048
+03-Sep-2026 12:42:52.880 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.protocol.handler.pkgs=org.apache.catalina.webresources
+03-Sep-2026 12:42:52.880 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dsun.io.useCanonCaches=false
+03-Sep-2026 12:42:52.880 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dorg.apache.catalina.security.SecurityListener.UMASK=0027
+03-Sep-2026 12:42:52.880 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dignore.endorsed.dirs=
+03-Sep-2026 12:42:52.880 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dcatalina.base=/opt/cloudgateway/apache-tomcat-9.0.104
+03-Sep-2026 12:42:52.880 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dcatalina.home=/opt/cloudgateway/apache-tomcat-9.0.104
+03-Sep-2026 12:42:52.880 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.io.tmpdir=/opt/cloudgateway/apache-tomcat-9.0.104/temp
+03-Sep-2026 12:42:52.882 INFO [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent The Apache Tomcat Native library which allows using OpenSSL was not found on the java.library.path: [/usr/java/packages/lib:/usr/lib64:/lib64:/lib:/usr/lib]
+03-Sep-2026 12:42:53.141 INFO [main] org.apache.coyote.AbstractProtocol.init Initializing ProtocolHandler ["https-jsse-nio-8443"]
+03-Sep-2026 12:42:53.340 INFO [main] org.apache.tomcat.util.net.AbstractEndpoint.logCertificate Connector [https-jsse-nio-8443], TLS virtual host [_default_], certificate type [UNDEFINED] configured from keystore [keystore/mykeystore.keystore] using alias [tomcat] with trust store [null]
+03-Sep-2026 12:42:53.348 INFO [main] org.apache.catalina.startup.Catalina.load Server initialization in [663] milliseconds
+03-Sep-2026 12:42:53.382 INFO [main] org.apache.catalina.core.StandardService.startInternal Starting service [Catalina]
+03-Sep-2026 12:42:53.383 INFO [main] org.apache.catalina.core.StandardEngine.startInternal Starting Servlet engine: [Apache Tomcat/9.0.104]
+03-Sep-2026 12:42:53.388 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory [/opt/cloudgateway/apache-tomcat-9.0.104/webapps/CloudGateway]
+Container successfully initialized
+[slunam@QVL-M0SLPOMYS00 bin]$ curl -k -I https://localhost:8443
+HTTP/1.1 200
+Content-Type: text/html;charset=UTF-8
+Date: Thu, 03 Sep 2026 18:43:06 GMT
+Server: Apache
+
+[slunam@QVL-M0SLPOMYS00 bin]$
