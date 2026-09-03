@@ -1,7 +1,0 @@
-bash
-sed -n '80,115p' /opt/cloudgateway/apache-tomcat-9.0.104/conf/server.xml
-
-Eso me da el <Connector port="8443" ...> completo con todos sus atributos, y confirmo si el archivo mykeystore.keystore referenciado existe de verdad en disco antes de tocar nada:
-
-bash
-find /opt/cloudgateway/apache-tomcat-9.0.104 -iname "mykeystore.keystore"
