@@ -1,0 +1,10 @@
+sudo mkdir -p /opt/cloudgateway/apache-tomcat-9.0.104/logs
+sudo mkdir -p /opt/cloudgateway/apache-tomcat-9.0.104/temp
+sudo mkdir -p /opt/cloudgateway/apache-tomcat-9.0.104/work
+sudo chown -R tomcat:tomcat /opt/cloudgateway/apache-tomcat-9.0.104/logs /opt/cloudgateway/apache-tomcat-9.0.104/temp /opt/cloudgateway/apache-tomcat-9.0.104/work
+
+Reintenta:
+
+bash
+cd /opt/cloudgateway/apache-tomcat-9.0.104/bin
+sudo -u tomcat ./startup.sh
