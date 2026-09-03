@@ -1,0 +1,22 @@
+
+C:\iqservice>IQService.exe -i
+port 5050 is available!
+
+Running a transacted installation.
+
+Beginning the Install phase of the installation.
+Installing service IQService-Instance1...
+Service IQService-Instance1 has been successfully installed.
+Creating EventLog source IQService-Instance1 in log Application...
+
+The Install phase completed successfully, and the Commit phase is beginning.
+
+The Commit phase completed successfully.
+
+The transacted install has completed.
+"SailPoint IQService-Instance1" installed successfully and configured on TLS port 5050
+Note: This instance of IQService is configured to listen on TLS port so please ensure to enable TLS configuration flag from source/ application and follow the steps from guide to configure the TLS for IQService along with Client Authentication.
+
+C:\iqservice>IQService.exe -s
+Starting the IQService instance
+IQService-Instance1 Started Successfully...
