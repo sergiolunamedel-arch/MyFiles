@@ -1,1 +1,0 @@
-scp: /home/slunam/iiq_install/cloudgateway_staging/identityiq-CloudGateway-8.5.zip: No space left on device
