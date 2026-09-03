@@ -1,1 +1,0 @@
-ls -la /opt/cloudgateway/apache-tomcat-9.0.104/webapps/CloudGateway/WEB-INF/bin
