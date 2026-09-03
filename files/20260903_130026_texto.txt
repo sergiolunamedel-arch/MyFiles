@@ -1,0 +1,17 @@
+cd /opt/cloudgateway/apache-tomcat-9.0.104/keystore
+sudo mv mykeystore.keystore mykeystore.keystore.bak
+
+sudo -u tomcat keytool -genkeypair -alias tomcat -keyalg RSA -keysize 2048 -sigalg SHA256withRSA -validity 3650 \
+  -keystore mykeystore.keystore -storepass trustno1 -keypass trustno1 \
+  -dname "CN=localhost, OU=IGA, O=BancoBase, L=CDMX, ST=CDMX, C=MX"
+
+Con -dname explícito, keytool no te va a hacer las preguntas interactivas (nombre, organización, etc.) — genera el cert de una vez con RSA 2048 + SHA256, que sí cumple con lo que exige Java 17.
+
+Reinicia el Cloud Gateway para que tome el certificado nuevo:
+
+bash
+sudo -u tomcat /opt/cloudgateway/apache-tomcat-9.0.104/bin/shutdown.sh
+sleep 2
+sudo -u tomcat /opt/cloudgateway/apache-tomcat-9.0.104/bin/startup.sh
+sleep 3
+curl -k -I https://localhost:8443
