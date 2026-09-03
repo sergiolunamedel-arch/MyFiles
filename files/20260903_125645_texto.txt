@@ -1,0 +1,1 @@
+grep -n -i "keystore\|certificate\|SSLHostConfig" /opt/cloudgateway/apache-tomcat-9.0.104/conf/server.xml
