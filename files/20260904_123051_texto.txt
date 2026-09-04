@@ -1,0 +1,28 @@
+Windows PowerShell
+Copyright (C) Microsoft Corporation. Todos los derechos reservados.
+
+Instale la versión más reciente de PowerShell para obtener nuevas características y mejoras. https://aka.ms/PSWindows
+
+Cargar los perfiles personales y de sistema tardó 531ms.
+PS C:\windows\system32> cd C:\Users\slunam\Desktop\temp
+PS C:\Users\slunam\Desktop\temp> openssl x509 -in wildcard_base_mx.pem -noout -serial -fingerprint -sha256
+openssl : El término 'openssl' no se reconoce como nombre de un cmdlet, función, archivo de script o programa
+ejecutable. Compruebe si escribió correctamente el nombre o, si incluyó una ruta de acceso, compruebe que dicha ruta
+es correcta e inténtelo de nuevo.
+En línea: 1 Carácter: 1
++ openssl x509 -in wildcard_base_mx.pem -noout -serial -fingerprint -sh ...
++ ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (openssl:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+PS C:\Users\slunam\Desktop\temp> openssl
+openssl : El término 'openssl' no se reconoce como nombre de un cmdlet, función, archivo de script o programa
+ejecutable. Compruebe si escribió correctamente el nombre o, si incluyó una ruta de acceso, compruebe que dicha ruta
+es correcta e inténtelo de nuevo.
+En línea: 1 Carácter: 1
++ openssl
++ ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (openssl:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+PS C:\Users\slunam\Desktop\temp>
