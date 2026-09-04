@@ -1,0 +1,40 @@
+[status] Ejecutando…
+[config] Ambiente ServiceNow: Producción (https://bancobase.service-now.com)
+[config] Limpieza automática (cancelar al terminar): ACTIVADA
+--- [DRY RUN] sast_sca+dast+api+secretos+triage+servidor ---
+{
+  "sysparm_quantity": "1",
+  "variables": {
+    "id_del_solicitante": "slunam",
+    "nombre_del_solicitante": "Sergio Luna Medel",
+    "correo_del_solicitante": "slunam@bancobase.com",
+    "objetivo_de_la_solicitud": "Obtener solicitudes de escaneo y limpieza de falsos positivos",
+    "nombre_de_la_aplicaci_n": "Prueba General",
+    "ambiente": "Producción",
+    "modo_ejecucion": "Baseline",
+    "clasificaci_n_de_la_aplicaci_n": "MDP",
+    "prioridad_": "Media",
+    "owner_de_la_aplicaci_n2": "URL de la API",
+    "descripci_n_de_la_solicitud_justificaci_n": "Solicitud de escaneo de seguridad conforme al calendario de revisiones periódicas.",
+    "cuentas_con_url": "URL de la API",
+    "sast_sca": "true",
+    "dast": "true",
+    "api": "true",
+    "escaneo_de_secretos": "true",
+    "triage": "true",
+    "servidor_tenable": "true",
+    "organizaci_n_en_snyk": "TEST-ORG",
+    "requiere_triage": "No",
+    "url_objetivo": "https://test.bancobase.com",
+    "urls_a_excluir": "[]",
+    "usar_cuenta_de_servicio_del_equipo": "Si",
+    "tecnologia_api": "REST",
+    "url_de_la_api": "https://test.bancobase.com/api",
+    "repositorio_s": "[{\"name\": \"test-repo\"}]",
+    "ruta_monorepo": "/",
+    "direcci_nes_ip_o_hostnames": "10.0.0.1;10.0.0.2"
+  }
+}
+
+(dry-run: nada se envió ni se guardó en el log)
+
