@@ -1,1 +1,0 @@
-openssl x509 -in wildcard_base_mx.pem -noout -serial -fingerprint -sha256
