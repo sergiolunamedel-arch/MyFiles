@@ -1,0 +1,45 @@
+Aquí tienes el mismo procedimiento pero con PowerShell (en tu Windows), ya con el id de Active Directory - QA que me diste:
+
+powershell
+$file = "C:\ruta\a\identity_objectconfig_prod.xml"
+$content = Get-Content -Path $file -Raw
+
+# 1. Restaurar el id original de QA en el propio ObjectConfig (evita el Duplicate entry)
+$content = $content.Replace(
+  '<ObjectConfig name="Identity">',
+  '<ObjectConfig id="0a32315395c816138195c8ed2659011e" name="Identity">'
+)
+
+# 2. Apuntar las referencias de Intelexion a la app real de QA
+$content = $content.Replace(
+  'id="0a32315395cf1fac8195d031ebe30254" name="BancoBase-Application-IntelexionWebService"',
+  'id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"'
+)
+
+# 3. Apuntar la referencia de AD (usada por el atributo email) a tu AD real de QA
+$content = $content.Replace(
+  'id="0a32315395ca16b58195ceda3f73069c" name="BancoBase-Application-DirectorioActivo"',
+  'id="0a323693a068141d81a0b54d3b0b0650" name="Active Directory - QA"'
+)
+
+# Guardar sin BOM (un BOM antes del <?xml ...?> puede causar error de parseo)
+[System.IO.File]::WriteAllText($file, $content, (New-Object System.Text.UTF8Encoding($false)))
+
+Verifica que los reemplazos sí ocurrieron antes de pegar nada, contando ocurrencias:
+
+powershell
+"Intelexion - QA: " + (Select-String -Path $file -Pattern 'name="Intelexion - QA"').Count
+"Active Directory - QA: " + (Select-String -Path $file -Pattern 'name="Active Directory - QA"').Count
+"Quedan referencias viejas de Intelexion prod: " + (Select-String -Path $file -Pattern 'BancoBase-Application-IntelexionWebService').Count
+"Quedan referencias viejas de AD prod: " + (Select-String -Path $file -Pattern 'BancoBase-Application-DirectorioActivo').Count
+
+Los dos primeros números deben ser mayores a 0 (el de Intelexion debería salir ~50, uno por cada ObjectAttribute), y los dos últimos deben salir en 0. Si algún conteo no cuadra, no sigas — el texto que pegaste originalmente puede tener una diferencia de mayúsculas/espacios contra lo que busqué.
+
+Para pegarlo en el navegador:
+
+powershell
+notepad $file
+
+Selecciona todo (Ctrl+A), copia (Ctrl+C), y pégalo en el editor de Debug reemplazando completamente lo que había ahí. Dale Save.
+
+Recordatorio de lo pendiente si el Save vuelve a tronar: los tres RuleRef (BancoBase-IdentityMap-Inactive, BancoBase-identityMap-type, BancoBase-IdentityMap-MX) casi seguro no existen todavía en QA — si el log se queja de eso, esos tres Rules se exportan/importan igual (Object Browser → Class Rule).
