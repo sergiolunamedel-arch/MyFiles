@@ -1,0 +1,37 @@
+[slunam@QVL-M0SLPOMYS00 ~]$ sudo -u tomcat /opt/tomcat/webapps/identityiq/WEB-INF/bin/iiq console
+[sudo] password for slunam:
+Sorry, try again.
+[sudo] password for slunam:
+adding exports for Java 17
+iiq.hostname : QVL-M0SLPOMYS00-console
+> import /home/slunam/identity_objectconfig_prod.xml
+sailpoint.tools.GeneralException: /home/slunam/identity_objectconfig_prod.xml (Permission denied)
+2026-09-25T14:05:18,547 ERROR main sailpoint.tools.Console:594 - /home/slunam/identity_objectconfig_prod.xml (Permission denied)
+sailpoint.tools.GeneralException: /home/slunam/identity_objectconfig_prod.xml (Permission denied)
+        at sailpoint.tools.Util.readBinaryFile(Util.java:2438) ~[identityiq.jar:8.5 Build fb6698fe9f4-20250709-205815]
+        at sailpoint.tools.Util.readFile(Util.java:2491) ~[identityiq.jar:8.5 Build fb6698fe9f4-20250709-205815]
+        at sailpoint.server.SailPointConsole.cmdImport(SailPointConsole.java:2107) ~[identityiq.jar:8.5 Build fb6698fe9f4-20250709-205815]
+        at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
+        at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
+        at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
+        at java.lang.reflect.Method.invoke(Method.java:569) ~[?:?]
+        at sailpoint.tools.Console.callMethod(Console.java:908) ~[identityiq.jar:8.5 Build fb6698fe9f4-20250709-205815]
+        at sailpoint.tools.Console.executeCommand(Console.java:643) ~[identityiq.jar:8.5 Build fb6698fe9f4-20250709-205815]
+        at sailpoint.tools.Console.doCommand(Console.java:586) [identityiq.jar:8.5 Build fb6698fe9f4-20250709-205815]
+        at sailpoint.tools.Console.interactiveCommand(Console.java:454) [identityiq.jar:8.5 Build fb6698fe9f4-20250709-205815]
+        at sailpoint.tools.Console.interactiveConsole(Console.java:394) [identityiq.jar:8.5 Build fb6698fe9f4-20250709-205815]
+        at sailpoint.tools.Console.run(Console.java:92) [identityiq.jar:8.5 Build fb6698fe9f4-20250709-205815]
+        at sailpoint.server.SailPointConsole.run(SailPointConsole.java:688) [identityiq.jar:8.5 Build fb6698fe9f4-20250709-205815]
+        at sailpoint.server.SailPointConsole.main(SailPointConsole.java:612) [identityiq.jar:8.5 Build fb6698fe9f4-20250709-205815]
+        at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
+        at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
+        at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
+        at java.lang.reflect.Method.invoke(Method.java:569) ~[?:?]
+        at sailpoint.launch.Launcher.main(Launcher.java:248) [identityiq.jar:8.5 Build fb6698fe9f4-20250709-205815]
+Caused by: java.io.FileNotFoundException: /home/slunam/identity_objectconfig_prod.xml (Permission denied)
+        at java.io.FileInputStream.open0(Native Method) ~[?:?]
+        at java.io.FileInputStream.open(FileInputStream.java:216) ~[?:?]
+        at java.io.FileInputStream.<init>(FileInputStream.java:157) ~[?:?]
+        at java.io.FileInputStream.<init>(FileInputStream.java:111) ~[?:?]
+        at sailpoint.tools.Util.readBinaryFile(Util.java:2431) ~[identityiq.jar:8.5 Build fb6698fe9f4-20250709-205815]
+        ... 19 more
