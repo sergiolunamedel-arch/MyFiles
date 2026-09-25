@@ -1,0 +1,508 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE ObjectConfig PUBLIC "sailpoint.dtd" "sailpoint.dtd">
+<ObjectConfig created="1742832739929" id="0a32315395c816138195c8ed2659011e" modified="1754462141071" name="Identity">
+  <Attributes>
+    <Map>
+      <entry key="defaultIdentityType">
+        <value>
+          <IdentityTypeDefinition name="IIQ_default">
+            <DisallowedAttributes>
+              <String>softwareVersion</String>
+              <String>administrator</String>
+            </DisallowedAttributes>
+          </IdentityTypeDefinition>
+        </value>
+      </entry>
+      <entry key="identityTypeDefinitions">
+        <value>
+          <List>
+            <IdentityTypeDefinition displayName="identity_type_employee" name="employee">
+              <DisallowedAttributes>
+                <String>softwareVersion</String>
+                <String>administrator</String>
+              </DisallowedAttributes>
+            </IdentityTypeDefinition>
+            <IdentityTypeDefinition displayName="identity_type_contractor" name="contractor">
+              <DisallowedAttributes>
+                <String>softwareVersion</String>
+                <String>administrator</String>
+              </DisallowedAttributes>
+            </IdentityTypeDefinition>
+            <IdentityTypeDefinition displayName="identity_type_partner" name="partner">
+              <DisallowedAttributes>
+                <String>softwareVersion</String>
+                <String>administrator</String>
+              </DisallowedAttributes>
+            </IdentityTypeDefinition>
+            <IdentityTypeDefinition displayName="identity_type_rpa" name="rpa">
+              <DisallowedAttributes>
+                <String>manager</String>
+              </DisallowedAttributes>
+              <ManagerCertifierAttribute>administrator</ManagerCertifierAttribute>
+            </IdentityTypeDefinition>
+            <IdentityTypeDefinition displayName="identity_type_service" name="service">
+              <DisallowedAttributes>
+                <String>softwareVersion</String>
+              </DisallowedAttributes>
+              <ManagerCertifierAttribute>administrator</ManagerCertifierAttribute>
+            </IdentityTypeDefinition>
+          </List>
+        </value>
+      </entry>
+    </Map>
+  </Attributes>
+  <ObjectAttribute displayName="att_user_name" name="name" silent="true" system="true" type="string"/>
+  <ObjectAttribute displayName="att_detected_roles" groupFactory="true" name="bundles" system="true" type="string"/>
+  <ObjectAttribute displayName="att_detected_role_summary" name="bundleSummary" silent="true" system="true" type="string"/>
+  <ObjectAttribute displayName="att_assigned_roles" groupFactory="true" name="assignedRoles" system="true" type="string"/>
+  <ObjectAttribute displayName="att_assigned_role_summary" name="assignedRoleSummary" silent="true" system="true" type="string"/>
+  <ObjectAttribute displayName="att_exceptions" name="exceptions" silent="true" system="true" type="string"/>
+  <ObjectAttribute displayName="att_last_refresh" name="lastRefresh" silent="true" system="true" type="string"/>
+  <ObjectAttribute displayName="att_last_login" name="lastLogin" silent="true" system="true" type="string"/>
+  <ObjectAttribute displayName="att_capabilities" name="capabilities" system="true" type="string"/>
+  <ObjectAttribute displayName="att_composite_score" name="scorecard.compositeScore" silent="true" system="true" type="string"/>
+  <ObjectAttribute displayName="att_rights" name="rights" system="true" type="string"/>
+  <ObjectAttribute displayName="att_workgroups" name="workgroups" system="true" type="string"/>
+  <ObjectAttribute displayName="att_software_version" name="softwareVersion" standard="true" type="string"/>
+  <ObjectAttribute displayName="att_administrator" name="administrator" standard="true" type="sailpoint.object.Identity"/>
+  <ObjectAttribute displayName="att_manager_status" name="managerStatus" system="true" type="boolean"/>
+  <ObjectAttribute displayName="att_first_name" name="firstname" standard="true" type="string">
+    <AttributeSource name="Nombre">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_last_name" name="lastname" standard="true" type="string">
+    <AttributeSource name="ApellidoPaterno">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_display_name" name="displayName" standard="true" type="string">
+    <AttributeSource name="idPersona">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_administrador" editMode="ReadOnly" name="administrador" namedColumn="true" type="string">
+    <AttributeSource name="Administrador">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_second_last_name" editMode="ReadOnly" name="second_last_name" namedColumn="true" type="string">
+    <AttributeSource name="ApellidoMaterno">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_centroresp" editMode="ReadOnly" name="centroresp" namedColumn="true" type="string">
+    <AttributeSource name="CentroResp">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_ciudad" editMode="ReadOnly" name="ciudad" namedColumn="true" type="string">
+    <AttributeSource name="Ciudad">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_clavearea" editMode="ReadOnly" name="clavearea" namedColumn="true" type="string">
+    <AttributeSource name="ClaveArea">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_clavecccontaagrupado" editMode="ReadOnly" name="clavecccontaagrupado" namedColumn="true" type="string">
+    <AttributeSource name="ClaveCCContaAgrupado">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_claveplaza" editMode="ReadOnly" name="claveplaza" namedColumn="true" type="string">
+    <AttributeSource name="ClavePlaza">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_claveplazabanxico" editMode="ReadOnly" name="claveplazabanxico" namedColumn="true" type="string">
+    <AttributeSource name="ClavePlazaBanxico">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_codigopostal" editMode="ReadOnly" name="codigopostal" namedColumn="true" type="string">
+    <AttributeSource name="codigoPostal">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_correoelectronico" editMode="ReadOnly" name="correoelectronico" namedColumn="true" type="string">
+    <AttributeSource name="CorreoElectronico">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_departamentocc" editMode="ReadOnly" name="departamentocc" namedColumn="true" type="string">
+    <AttributeSource name="DepartamentoCC">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_direcciongeneral" editMode="ReadOnly" name="direcciongeneral" namedColumn="true" type="string">
+    <AttributeSource name="DireccionGeneral">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_empresa" editMode="ReadOnly" name="empresa" namedColumn="true" type="string">
+    <AttributeSource name="Empresa">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_estado" editMode="ReadOnly" name="estado" namedColumn="true" type="string">
+    <AttributeSource name="Estado">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_etiqueta1" editMode="ReadOnly" name="etiqueta1" namedColumn="true" type="string">
+    <AttributeSource name="Etiqueta1">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_etiqueta3" editMode="ReadOnly" name="etiqueta3" namedColumn="true" type="string">
+    <AttributeSource name="Etiqueta3">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_etiqueta4" editMode="ReadOnly" name="etiqueta4" namedColumn="true" type="string">
+    <AttributeSource name="Etiqueta4">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_extension" editMode="ReadOnly" name="extension" namedColumn="true" type="string">
+    <AttributeSource name="Extension">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_fechaalta" editMode="ReadOnly" name="fechaalta" namedColumn="true" type="string">
+    <AttributeSource name="FechaAlta">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_fechabaja" editMode="ReadOnly" name="fechabaja" namedColumn="true" type="string">
+    <AttributeSource name="FechaBaja">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_gerencia" editMode="ReadOnly" name="gerencia" namedColumn="true" type="string">
+    <AttributeSource name="Gerencia">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_idempleado" editMode="ReadOnly" name="idempleado" namedColumn="true" type="string">
+    <AttributeSource name="IdEmpleado">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_nip" editMode="ReadOnly" name="nip" namedColumn="true" type="string">
+    <AttributeSource name="NIP">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_nipjefe" editMode="ReadOnly" name="nipjefe" namedColumn="true" type="string">
+    <AttributeSource name="NIPJefe">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_nombre" editMode="ReadOnly" name="nombre" namedColumn="true" type="string">
+    <AttributeSource name="Nombre">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_posiciondescription" editMode="ReadOnly" name="posiciondescription" namedColumn="true" type="string">
+    <AttributeSource name="PosicionDescription">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_posicionid" editMode="ReadOnly" name="posicionid" namedColumn="true" type="string">
+    <AttributeSource name="PosicionID">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_status1" editMode="ReadOnly" name="status1" namedColumn="true" type="string">
+    <AttributeSource name="Status">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_telefonooficina" editMode="ReadOnly" name="telefonooficina" namedColumn="true" type="string">
+    <AttributeSource name="TelefonoOficina">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_tipo" editMode="ReadOnly" name="tipo" namedColumn="true" type="string">
+    <AttributeSource name="Tipo">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_useridjefe" editMode="ReadOnly" name="useridjefe" namedColumn="true" type="string">
+    <AttributeSource name="UserIDJefe">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_usuariored" editMode="ReadOnly" name="usuariored" namedColumn="true" type="string">
+    <AttributeSource name="UsuarioRed">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_clavedireccion" editMode="ReadOnly" name="clavedireccion" namedColumn="true" type="string">
+    <AttributeSource name="ClaveDireccion">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_claveetiqueta1" editMode="ReadOnly" name="claveetiqueta1" namedColumn="true" type="string">
+    <AttributeSource name="ClaveEtiqueta1">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_clavejerarquiafiltrado" editMode="ReadOnly" name="clavejerarquiafiltrado" namedColumn="true" type="string">
+    <AttributeSource name="ClaveJerarquiaFiltrado">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_fechaaltapersona" editMode="ReadOnly" name="fechaaltapersona" namedColumn="true" type="string">
+    <AttributeSource name="FechaAltaPersona">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_fechalastupdate" editMode="ReadOnly" name="fechalastupdate" namedColumn="true" type="string">
+    <AttributeSource name="fechaLastUpdate">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_fechaultimaactualizacion" editMode="ReadOnly" name="fechaultimaactualizacion" namedColumn="true" type="string">
+    <AttributeSource name="FechaUltimaActualizacion">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_fechaultimaactualizacionpersona" editMode="ReadOnly" name="fechaultimaactualizacionpersona" namedColumn="true" type="string">
+    <AttributeSource name="FechaUltimaActualizacionPersona">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_procesobaja" editMode="ReadOnly" name="procesobaja" namedColumn="true" type="string">
+    <AttributeSource name="ProcesoBaja">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_fecha1" editMode="ReadOnly" name="fecha1" namedColumn="true" type="string">
+    <AttributeSource name="fecha1">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_fecha2" editMode="ReadOnly" name="fecha2" namedColumn="true" type="string">
+    <AttributeSource name="fecha2">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_area" editMode="ReadOnly" name="area" namedColumn="true" type="string">
+    <AttributeSource name="Area">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_idpersona" editMode="ReadOnly" name="idpersona" namedColumn="true" type="string">
+    <AttributeSource name="idPersona">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_inactive" editMode="ReadOnly" name="inactive" standard="true" type="boolean">
+    <AttributeSource name="AppRule: BancoBase-IdentityMap-Inactive BancoBase-Application-Intelexion">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+      <RuleRef>
+        <Reference class="sailpoint.object.Rule" id="0a32315395ca16b58195cde8ee2804f7" name="BancoBase-IdentityMap-Inactive"/>
+      </RuleRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_email" editMode="ReadOnly" name="email" standard="true" type="string">
+    <AttributeSource name="mail">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a068141d81a0b54d3b0b0650" name="Active Directory - QA"/>
+      </ApplicationRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_manager" editMode="ReadOnly" groupFactory="true" name="manager" standard="true" type="sailpoint.object.Identity">
+    <AttributeSource name="NIPJefe">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_calle" editMode="ReadOnly" name="calle" namedColumn="true" type="string">
+    <AttributeSource name="Calle">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_direccion" editMode="ReadOnly" name="direccion" namedColumn="true" type="string">
+    <AttributeSource name="Direccion">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_posicionjefe" editMode="ReadOnly" name="posicionjefe" namedColumn="true" type="string">
+    <AttributeSource name="PosicionJefe">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_identity_type" editMode="ReadOnly" name="type" standard="true" type="string">
+    <AttributeSource name="AppRule: BancoBase-identityMap-type Intelexion - QA">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+      <RuleRef>
+        <Reference class="sailpoint.object.Rule" id="0a32315395ca16b58195cde9667704f8" name="BancoBase-identityMap-type"/>
+      </RuleRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_plaza" editMode="ReadOnly" name="plaza" namedColumn="true" type="string">
+    <AttributeSource name="Plaza">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_plazabanxico" editMode="ReadOnly" name="plazabanxico" namedColumn="true" type="string">
+    <AttributeSource name="PlazaBanxico">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_genero" editMode="ReadOnly" name="genero" namedColumn="true" type="string">
+    <AttributeSource name="Genero">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_fechaultimaactualizacionempleado" editMode="ReadOnly" name="fechaultimaactualizacionempleado" namedColumn="true" type="string">
+    <AttributeSource name="fechaUltimaActualizacionEmpleado">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_cccontaagrupado" editMode="ReadOnly" name="cccontaagrupado" namedColumn="true" type="string">
+    <AttributeSource name="CCContaAgrupado">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="att_clavecentroresp" editMode="ReadOnly" name="clavecentroresp" namedColumn="true" type="string">
+    <AttributeSource name="ClaveCentroResp">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+    </AttributeSource>
+  </ObjectAttribute>
+  <ObjectAttribute displayName="pais" editMode="ReadOnly" name="pais" namedColumn="true" type="string">
+    <RuleRef>
+      <Reference class="sailpoint.object.Rule" id="0a32315396e91bda819704817b7c2c7d" name="BancoBase-IdentityMap-MX"/>
+    </RuleRef>
+    <AttributeSource name="AppRule: BancoBase-IdentityMap-MX Intelexion - QA">
+      <ApplicationRef>
+        <Reference class="sailpoint.object.Application" id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"/>
+      </ApplicationRef>
+      <RuleRef>
+        <Reference class="sailpoint.object.Rule" id="0a32315396e91bda819704817b7c2c7d" name="BancoBase-IdentityMap-MX"/>
+      </RuleRef>
+    </AttributeSource>
+  </ObjectAttribute>
+</ObjectConfig>
