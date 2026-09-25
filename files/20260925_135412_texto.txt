@@ -1,0 +1,6 @@
+PS C:\Users\slunam\Downloads\Sailpoint files\Prod> . 'C:\Users\slunam\Downloads\Sailpoint files\Prod\Replacer.ps1'
+Intelexion - QA: 62
+Active Directory - QA: 1
+Quedan referencias de Intelexion prod: 0
+Quedan referencias de AD prod: 0
+ObjectConfig tiene id restaurado: 0
