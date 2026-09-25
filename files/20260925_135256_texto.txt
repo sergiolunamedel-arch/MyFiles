@@ -1,0 +1,41 @@
+$file = "C:\Users\slunam\Downloads\Sailpoint files\Prod\identity_objectconfig_prod.xml"
+$content = Get-Content -Path $file -Raw
+
+# 1. Restaurar el id original de QA en el propio ObjectConfig (evita el Duplicate entry)
+$content = $content.Replace(
+  '<ObjectConfig name="Identity">',
+  '<ObjectConfig id="0a32315395c816138195c8ed2659011e" name="Identity">'
+)
+
+# 2. Apuntar las referencias de Intelexion a la app real de QA (ApplicationRef con id+name)
+$content = $content.Replace(
+  'id="0a32315395cf1fac8195d031ebe30254" name="BancoBase-Application-IntelexionWebService"',
+  'id="0a323693a0b5123d81a0c51dc43f3334" name="Intelexion - QA"'
+)
+
+# 3. Apuntar la referencia de AD (usada por el atributo email) a tu AD real de QA
+$content = $content.Replace(
+  'id="0a32315395ca16b58195ceda3f73069c" name="BancoBase-Application-DirectorioActivo"',
+  'id="0a323693a068141d81a0b54d3b0b0650" name="Active Directory - QA"'
+)
+
+# 4. Limpiar las dos menciones sueltas de la app de prod dentro de AttributeSource/@name
+#    (son solo texto descriptivo, no referencias reales, pero así no dice "prod" en la UI de QA)
+$content = $content.Replace(
+  'AppRule: BancoBase-identityMap-type BancoBase-Application-IntelexionWebService',
+  'AppRule: BancoBase-identityMap-type Intelexion - QA'
+)
+$content = $content.Replace(
+  'AppRule: BancoBase-IdentityMap-MX BancoBase-Application-IntelexionWebService',
+  'AppRule: BancoBase-IdentityMap-MX Intelexion - QA'
+)
+
+# Guardar sin BOM (un BOM antes del <?xml ...?> puede causar error de parseo)
+[System.IO.File]::WriteAllText($file, $content, (New-Object System.Text.UTF8Encoding($false)))
+
+# --- Verificación ---
+"Intelexion - QA: " + (Select-String -Path $file -Pattern 'Intelexion - QA').Count
+"Active Directory - QA: " + (Select-String -Path $file -Pattern 'Active Directory - QA').Count
+"Quedan referencias de Intelexion prod: " + (Select-String -Path $file -Pattern 'BancoBase-Application-IntelexionWebService').Count
+"Quedan referencias de AD prod: " + (Select-String -Path $file -Pattern 'BancoBase-Application-DirectorioActivo').Count
+"ObjectConfig tiene id restaurado: " + (Select-String -Path $file -Pattern '<ObjectConfig id="0a32315395c816138195c8ed2659011e"').Count
