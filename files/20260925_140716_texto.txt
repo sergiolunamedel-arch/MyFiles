@@ -1,0 +1,18 @@
+El usuario tomcat no tiene permiso para leer dentro de /home/slunam/ (los home directories normalmente son 700, solo accesibles por su dueño). Muévelo a un lugar neutral como /tmp:
+
+bash
+sudo cp /home/slunam/identity_objectconfig_prod.xml /tmp/identity_objectconfig_prod.xml
+sudo chmod 644 /tmp/identity_objectconfig_prod.xml
+
+Y dentro del iiq console (si ya se cerró, vuelve a entrar):
+
+bash
+sudo -u tomcat /opt/tomcat/webapps/identityiq/WEB-INF/bin/iiq console
+import /tmp/identity_objectconfig_prod.xml
+
+Si aun así da Permission denied, revisa que /tmp no tenga alguna restricción rara de montaje (noexec no aplica a lectura, pero por si acaso) y confirma permisos:
+
+bash
+ls -l /tmp/identity_objectconfig_prod.xml
+
+Debe mostrar algo como -rw-r--r-- — con eso cualquier usuario, incluido tomcat, puede leerlo.
