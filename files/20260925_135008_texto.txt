@@ -1,0 +1,9 @@
+PS C:\Users\slunam\Downloads\Sailpoint files\Prod> "Intelexion - QA: " + (Select-String -Path $file -Pattern 'name="Intelexion - QA"').Count
+Intelexion - QA: 60
+PS C:\Users\slunam\Downloads\Sailpoint files\Prod> "Active Directory - QA: " + (Select-String -Path $file -Pattern 'name="Active Directory - QA"').Count
+Active Directory - QA: 1
+PS C:\Users\slunam\Downloads\Sailpoint files\Prod> "Quedan referencias viejas de Intelexion prod: " + (Select-String -Path $file -Pattern 'BancoBase-Application-IntelexionWebService').Count
+Quedan referencias viejas de Intelexion prod: 2
+PS C:\Users\slunam\Downloads\Sailpoint files\Prod> "Quedan referencias viejas de AD prod: " + (Select-String -Path $file -Pattern 'BancoBase-Application-DirectorioActivo').Count            
+Quedan referencias viejas de AD prod: 0
+PS C:\Users\slunam\Downloads\Sailpoint files\Prod> 
