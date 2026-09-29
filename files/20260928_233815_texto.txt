@@ -1,0 +1,18 @@
+1. Verifica que están ahí y son legibles
+ls -la /home/slunam/*.xml
+
+Como son tuyos y están en tu propio home, no deberías necesitar chmod. Si por lo que sea alguno se ve con permisos raros (por ejemplo si los subiste con otro usuario), corre:
+
+chmod 644 /home/slunam/*.xml
+2. Importar — mismo fix de antes (root + parado en bin por el classpath), pero apuntando a tu home
+
+Uno por uno, en este orden exacto:
+
+sudo bash -c 'cd /opt/tomcat/webapps/identityiq/WEB-INF/bin && ./iiq console import /home/slunam/BancoBase-Application-DirectorioActivo-Correlation-Config-2.xml'
+sudo bash -c 'cd /opt/tomcat/webapps/identityiq/WEB-INF/bin && ./iiq console import /home/slunam/BancoBase-Application-DirectorioActivo-PasswordPolicy.xml'
+sudo bash -c 'cd /opt/tomcat/webapps/identityiq/WEB-INF/bin && ./iiq console import /home/slunam/BancoBase-Custom-CountryData.xml'
+sudo bash -c 'cd /opt/tomcat/webapps/identityiq/WEB-INF/bin && ./iiq console import /home/slunam/Active_Directory_-_QA_Valid_Countries.xml'
+sudo bash -c 'cd /opt/tomcat/webapps/identityiq/WEB-INF/bin && ./iiq console import /home/slunam/Active_Directory_-_QA_Valid_Domains.xml'
+sudo bash -c 'cd /opt/tomcat/webapps/identityiq/WEB-INF/bin && ./iiq console import /home/slunam/BancoBase-AD-BeforeProvisioningRule.xml'
+sudo bash -c 'cd /opt/tomcat/webapps/identityiq/WEB-INF/bin && ./iiq console import /home/slunam/BancoBase-AD-AfterProvisioningRule.xml'
+sudo bash -c 'cd /opt/tomcat/webapps/identityiq/WEB-INF/bin && ./iiq console import /home/slunam/Active_Directory_-_QA.xml'
