@@ -1,8 +1,0 @@
-sudo /opt/tomcat/webapps/identityiq/WEB-INF/bin/iiq console import /opt/iiq-imports/BancoBase-Application-DirectorioActivo-Correlation-Config-2.xml
-sudo /opt/tomcat/webapps/identityiq/WEB-INF/bin/iiq console import /opt/iiq-imports/BancoBase-Application-DirectorioActivo-PasswordPolicy.xml
-sudo /opt/tomcat/webapps/identityiq/WEB-INF/bin/iiq console import /opt/iiq-imports/BancoBase-Custom-CountryData.xml
-sudo /opt/tomcat/webapps/identityiq/WEB-INF/bin/iiq console import "/opt/iiq-imports/Active_Directory_-_QA_Valid_Countries.xml"
-sudo /opt/tomcat/webapps/identityiq/WEB-INF/bin/iiq console import "/opt/iiq-imports/Active_Directory_-_QA_Valid_Domains.xml"
-sudo /opt/tomcat/webapps/identityiq/WEB-INF/bin/iiq console import /opt/iiq-imports/BancoBase-AD-BeforeProvisioningRule.xml
-sudo /opt/tomcat/webapps/identityiq/WEB-INF/bin/iiq console import /opt/iiq-imports/BancoBase-AD-AfterProvisioningRule.xml
-sudo /opt/tomcat/webapps/identityiq/WEB-INF/bin/iiq console import "/opt/iiq-imports/Active_Directory_-_QA.xml"
