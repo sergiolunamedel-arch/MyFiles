@@ -1,0 +1,10 @@
+sudo mkdir -p /opt/iiq-imports
+sudo chown $(whoami):$(whoami) /opt/iiq-imports
+chmod 755 /opt/iiq-imports
+mv /tmp/*.xml /opt/iiq-imports/
+sudo chown $(whoami):$(whoami) /opt/iiq-imports/*.xml
+chmod 644 /opt/iiq-imports/*.xml
+
+Verifica que quedaron ahí y son tuyos:
+
+ls -la /opt/iiq-imports/
