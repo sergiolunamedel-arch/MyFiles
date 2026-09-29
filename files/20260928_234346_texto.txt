@@ -1,0 +1,22 @@
+sudo cp "/home/slunam/BancoBase-Application-DirectorioActivo-Correlation-Config-2.xml" /tmp/
+sudo cp "/home/slunam/BancoBase-Application-DirectorioActivo-PasswordPolicy.xml" /tmp/
+sudo cp "/home/slunam/BancoBase-Custom-CountryData.xml" /tmp/
+sudo cp "/home/slunam/Active_Directory_-_QA_Valid_Countries.xml" /tmp/
+sudo cp "/home/slunam/Active_Directory_-_QA_Valid_Domains.xml" /tmp/
+sudo cp "/home/slunam/BancoBase-AD-BeforeProvisioningRule.xml" /tmp/
+sudo cp "/home/slunam/BancoBase-AD-AfterProvisioningRule.xml" /tmp/
+sudo cp "/home/slunam/Active_Directory_-_QA.xml" /tmp/
+sudo chmod 644 /tmp/BancoBase-Application-DirectorioActivo-Correlation-Config-2.xml /tmp/BancoBase-Application-DirectorioActivo-PasswordPolicy.xml /tmp/BancoBase-Custom-CountryData.xml "/tmp/Active_Directory_-_QA_Valid_Countries.xml" "/tmp/Active_Directory_-_QA_Valid_Domains.xml" /tmp/BancoBase-AD-BeforeProvisioningRule.xml /tmp/BancoBase-AD-AfterProvisioningRule.xml "/tmp/Active_Directory_-_QA.xml"
+2. Entrar a la consola como tomcat (una sola vez)
+sudo -u tomcat /opt/tomcat/webapps/identityiq/WEB-INF/bin/iiq console
+3. Dentro del prompt >, uno por uno, en este orden exacto (espera a ver el resultado de cada uno antes de escribir el siguiente):
+import /tmp/BancoBase-Application-DirectorioActivo-Correlation-Config-2.xml
+import /tmp/BancoBase-Application-DirectorioActivo-PasswordPolicy.xml
+import /tmp/BancoBase-Custom-CountryData.xml
+import /tmp/Active_Directory_-_QA_Valid_Countries.xml
+import /tmp/Active_Directory_-_QA_Valid_Domains.xml
+import /tmp/BancoBase-AD-BeforeProvisioningRule.xml
+import /tmp/BancoBase-AD-AfterProvisioningRule.xml
+import /tmp/Active_Directory_-_QA.xml
+4. Al terminar los 8:
+quit
