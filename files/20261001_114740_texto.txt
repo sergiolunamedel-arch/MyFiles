@@ -1,1 +1,0 @@
-sudo grep -i -E "webservices|empleados|api.bancobase.com" /opt/tomcat/logs/catalina.out | tail -100
