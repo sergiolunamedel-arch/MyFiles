@@ -1,7 +1,0 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE CorrelationConfig PUBLIC "sailpoint.dtd" "sailpoint.dtd">
-<CorrelationConfig created="1743024082054" id="0a32315395d21a0b8195d454cc86028b" modified="1743024112597" name="BancoBase-Application-GoogleWorkspace Correlation Config (2)">
-  <AttributeAssignments>
-    <Filter operation="EQ" property="email" value="primaryEmail"/>
-  </AttributeAssignments>
-</CorrelationConfig>
