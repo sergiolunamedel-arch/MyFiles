@@ -1,0 +1,11 @@
+Cópialo a /tmp y dale lectura:
+bash
+   sudo cp /home/slunam/Active_Directory_-_QA_forms-prod.xml /tmp/Active_Directory_-_QA_forms-prod.xml
+   sudo chmod 644 /tmp/Active_Directory_-_QA_forms-prod.xml
+Abre la consola como tomcat:
+bash
+   sudo -u tomcat /opt/tomcat/webapps/identityiq/WEB-INF/bin/iiq console
+Importa y espera la respuesta:
+   import /tmp/Active_Directory_-_QA_forms-prod.xml
+
+Debe imprimir Application:Active Directory - QA y ningún stack trace. Luego escribe quit.
