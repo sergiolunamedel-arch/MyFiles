@@ -1,0 +1,3 @@
+Cuenta	Para qué sirve	¿Necesita correo?
+Cuenta de servicio (nueva, o la que ya usa IIQ)	Es la que ejecuta el desbloqueo y el reset en AD.	No
+Psotest	Es el usuario de prueba al que se le hace el bloqueo y el desbloqueo, solo desde IIQ.	No por ahora (solo si lo correlacionamos por email en IIQ)
