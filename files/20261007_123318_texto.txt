@@ -1,1 +1,0 @@
-Get-ADDefaultDomainPasswordPolicy y Get-ADFineGrainedPasswordPolicy -Filter *
