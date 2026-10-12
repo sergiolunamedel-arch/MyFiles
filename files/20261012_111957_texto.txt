@@ -1,0 +1,2 @@
+Get-ADUser <tu_sAMAccountName> -Properties adminCount,MemberOf,LockedOut,badPwdCount,mail |
+  Select-Object SamAccountName,adminCount,mail,LockedOut,badPwdCount,MemberOf
