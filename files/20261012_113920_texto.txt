@@ -1,6 +1,0 @@
-Get-Service : Cannot find any service with service name 'IQService'.
-At line:1 char:1
-+ Get-Service IQService
-+ ~~~~~~~~~~~~~~~~~~~~~
-    + CategoryInfo          : ObjectNotFound: (IQService:String) [Get-Service], ServiceCommandException
-    + FullyQualifiedErrorId : NoServiceFoundForGivenName,Microsoft.PowerShell.Commands.GetServiceCommand
