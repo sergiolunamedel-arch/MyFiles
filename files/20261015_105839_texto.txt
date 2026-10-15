@@ -1,0 +1,77 @@
+Details for Application Account DOMBASE\aaceves
+accountFlags	
+Normal User Account
+cn	
+aaceves
+department	
+MEDIOS DE PAGO
+description	
+443500-12400-126107-320
+displayName	
+Alejandro Aceves Sanchez
+distinguishedName	
+CN=aaceves,OU=Guadalajara,OU=Foraneos,OU=Usuarios,DC=dombase,DC=net
+givenName	
+ALEJANDRO
+homeMDB	
+CN=GRALMTY4,CN=Databases,CN=Exchange Administrative Group (FYDIBOHF23SPDLT),CN=Administrative Groups,CN=dombase,CN=Microsoft Exchange,CN=Services,CN=Configuration,DC=dombase,DC=net
+l	
+GUADALAJARA
+mail	
+aaceves@bancobase.com
+mailNickname	
+aaceves
+manager	
+CN=gsalas,OU=Matriz,OU=Usuarios,DC=dombase,DC=net
+memberOf	
+CN=G_Citrix_OnBase_Prod,OU=Azure_Groups,OU=Security_Groups,OU=Banco_Base,DC=dombase,DC=net 
+CN=G_Citrix_Siglo_Producción,OU=Service_Groups,OU=Security_Groups,OU=Banco_Base,DC=dombase,DC=net 
+CN=G_GoogleSync_Service,OU=Service_Groups,OU=Security_Groups,OU=Banco_Base,DC=dombase,DC=net 
+CN=G_Oracle_Prd,OU=Azure_Groups,OU=Security_Groups,OU=Banco_Base,DC=dombase,DC=net 
+CN=G_Tob_Wifi_Branch_Offices,OU=Department_Groups,OU=Security_Groups,OU=Banco_Base,DC=dombase,DC=net 
+CN=G_Toe_Wifi_USRS_Floor_6,OU=Department_Groups,OU=Security_Groups,OU=Banco_Base,DC=dombase,DC=net 
+CN=G_Toe_Wifi_USRS_GDL,OU=Department_Groups,OU=Security_Groups,OU=Banco_Base,DC=dombase,DC=net 
+CN=GP_UPGRADE_GROUP,OU=Grupos,DC=dombase,DC=net 
+CN=Grupo DEPOSITOS CLIENTES,OU=Usuarios,DC=dombase,DC=net 
+CN=Grupo MENSAJERIA MTY,OU=Usuarios,DC=dombase,DC=net 
+CN=No_PrintScreen,OU=Grupos,DC=dombase,DC=net 
+CN=Perfil_Navegacion_1,OU=Azure_Groups,OU=Security_Groups,OU=Banco_Base,DC=dombase,DC=net 
+mobile	
+(33) 1894 0560
+msDS-PrincipalName	
+DOMBASE\aaceves
+msExchRecipientTypeDetails	
+1
+msNPAllowDialin	
+Not Set
+objectClass	
+organizationalPerson
+person
+top
+user
+objectSid	
+S-1-5-21-3180279565-2411908611-402430510-14777
+objectType	
+user
+objectguid	
+{8f5c6d64-ec18-4010-89d5-cbb1c9bc357e}
+physicalDeliveryOfficeName	
+GUADALAJARA
+postOfficeBox	
+443500-12400-126107-320
+postalCode	
+44639
+sAMAccountName	
+aaceves
+sn	
+ACEVES SANCHEZ
+st	
+JALISCO
+streetAddress	
+AVE.TERRANOVA #1455 - 302 COL. PROVIDENCIA 4A. SECC
+telephoneNumber	
+(33) 3648-9300
+title	
+MENSAJERO
+userPrincipalName	
+aaceves@bancobase.com
