@@ -1,0 +1,33 @@
+mysql> SELECT i.id, i.name, a.name AS app
+    -> FROM spt_identity i
+    -> JOIN spt_link l ON l.identity_id = i.id
+    -> JOIN spt_application a ON a.id = l.application
+    -> WHERE a.name = 'Intelexion - QA'
+    -> LIMIT 5;
++----------------------------------+-------+-----------------+
+| id                               | name  | app             |
++----------------------------------+-------+-----------------+
+| 0a323693a0d9121a81a0eb15535660a7 | 1     | Intelexion - QA |
+| 0a323693a0d9121a81a0eb15dafb6a0f | 15554 | Intelexion - QA |
+| 0a323693a0d9121a81a0eb15db1a6a11 | 15555 | Intelexion - QA |
+| 0a323693a0d9121a81a0eb165bb5717f | 15556 | Intelexion - QA |
+| 0a323693a0d9121a81a0eb15da776a07 | 15557 | Intelexion - QA |
++----------------------------------+-------+-----------------+
+5 rows in set (0.01 sec)
+
+mysql> SELECT i.id, i.name, a.name AS app
+    -> FROM spt_identity i
+    -> JOIN spt_link l ON l.identity_id = i.id
+    -> JOIN spt_application a ON a.id = l.application
+    -> WHERE a.name = 'Active Directory - QA'
+    -> LIMIT 5;
++----------------------------------+-------------------+-----------------------+
+| id                               | name              | app                   |
++----------------------------------+-------------------+-----------------------+
+| 0a323693a0b5123d81a0b642e91b00bc | DOMBASE\aaceves   | Active Directory - QA |
+| 0a323693a0b5123d81a0b642e98d00ca | DOMBASE\aaguayo   | Active Directory - QA |
+| 0a323693a0b5123d81a0b642e9df00dd | DOMBASE\aaguilarm | Active Directory - QA |
+| 0a323693a0b5123d81a0b642ea1200e6 | DOMBASE\aaguilars | Active Directory - QA |
+| 0a323693a0b5123d81a0b642eac80127 | DOMBASE\aalcaraz  | Active Directory - QA |
++----------------------------------+-------------------+-----------------------+
+5 rows in set (0.00 sec)
