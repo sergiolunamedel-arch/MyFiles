@@ -1,0 +1,85 @@
+Details for Application Account 15554
+Administrador	
+'
+ApellidoMaterno	
+OROZCO
+ApellidoPaterno	
+QUIROZ
+CCContaAgrupado	
+DIRECCION OFICINA LEON
+Calle	
+Ave. Arq. Pedro Ramirez Vázquez Edificio 4 Piso 7 200
+CentroResp	
+LEON
+Ciudad	
+San Pedro Garza García
+ClaveCCContaAgrupado	
+416020
+ClaveCentroResp	
+126128
+ClaveDireccion	
+410
+ClaveEtiqueta1	
+3
+ClaveJerarquiaFiltrado	
+5
+ClavePlaza	
+126128
+ClavePlazaBanxico	
+255
+CorreoElectronico	
+SQUIROZ@BANCOBASE.COM
+DepartamentoCC	
+DIRECCION OFICINA LEON
+Direccion	
+DIRECCION COMERCIAL
+DireccionGeneral	
+DIRECCION GENERAL BANCO BASE
+Empresa	
+PRESIDENCIA EJECUTIVA DEL CONSEJO
+Estado	
+Nuevo León
+Etiqueta1	
+CAMBIARIO
+Etiqueta3	
+BANCO
+Etiqueta4	
+FRONT
+FechaAlta	
+03/10/2022
+FechaAltaPersona	
+12/10/2022
+FechaUltimaActualizacion	
+23/01/2023
+FechaUltimaActualizacionPersona	
+20/10/2022
+Genero	
+Femenino
+Gerencia	
+DIRECCION OFICINA LEON
+IdEmpleado	
+2745
+Nombre	
+SANDRA LIZET
+Pais	
+México
+Plaza	
+LEON
+PlazaBanxico	
+LEON
+ProcesoBaja	
+No
+Status	
+Baja
+UsuarioRed	
+DOMBASE\squiroz
+codigoPostal	
+66269
+fecha1	
+2023-01-23T11:03:34.06
+fecha2	
+2022-10-20T11:54:14.49
+fechaLastUpdate	
+Oct 20 2022 11:54AM
+idPersona	
+15554
