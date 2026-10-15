@@ -1,1 +1,0 @@
-sudo grep -E '^dataSource\.(url|username)=' /opt/tomcat/webapps/identityiq/WEB-INF/classes/iiq.properties
