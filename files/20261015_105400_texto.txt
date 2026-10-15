@@ -1,0 +1,16 @@
+SELECT COUNT(*) AS total_ad,
+       SUM(l.attributes LIKE '%key="employeeID"%') AS con_employeeid
+FROM spt_link l
+JOIN spt_application a ON a.id = l.application
+WHERE a.name = 'Active Directory - QA';
+
+Y cómo se ve el valor en algunas cuentas:
+
+sql
+SELECT l.native_identity,
+       SUBSTRING(l.attributes, LOCATE('key="employeeID"', l.attributes), 50) AS fragmento
+FROM spt_link l
+JOIN spt_application a ON a.id = l.application
+WHERE a.name = 'Active Directory - QA'
+  AND l.attributes LIKE '%key="employeeID"%'
+LIMIT 5;
