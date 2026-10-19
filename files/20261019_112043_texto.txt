@@ -1,0 +1,1 @@
+SELECT name, extended1, extended2 FROM spt_identity WHERE name='4102';
