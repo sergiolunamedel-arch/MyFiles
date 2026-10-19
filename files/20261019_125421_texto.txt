@@ -1,9 +1,0 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE CorrelationConfig PUBLIC "sailpoint.dtd" "sailpoint.dtd">
-<CorrelationConfig created="1743023639172" id="0a32315395d21a0b8195d44e0a84027b" modified="1745550360468" name="BancoBase-Application-DirectorioActivo Correlation Config (2)">
-  <AttributeAssignments>
-    <Filter operation="EQ" property="name" value="employeeID"/>
-    <Filter operation="EQ" property="correoelectronico" value="mail"/>
-    <Filter operation="EQ" property="idempleado" value="employeeID"/>
-  </AttributeAssignments>
-</CorrelationConfig>
