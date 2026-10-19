@@ -1,0 +1,17 @@
+> ^C[slunam@QVL-M0SLPOMYS00 ~]$ s-u tomcat /opt/tomcat/webapps/identityiq/WEB-INF/bin/iiq console
+adding exports for Java 17
+iiq.hostname : QVL-M0SLPOMYS00-console
+> export /tmp/ad-qa.xml Application "Active Directory - QA"
+Unknown class: Active Directory - QA
+Application:
+  Cloud Gateway QCL-M0SLPOMYS00
+  Active Directory - QA
+  Intelexion - QA
+  GoogleWorkspace QA
+> export /tmp/ad-qa.xml Application "Active Directory - QA"
+Unknown class: Active Directory - QA
+Application:
+  Cloud Gateway QCL-M0SLPOMYS00
+  Active Directory - QA
+  Intelexion - QA
+  GoogleWorkspace QA
