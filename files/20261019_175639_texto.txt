@@ -1,0 +1,24 @@
+> ^C[slunam@QVL-M0SLPOMYS00 ~]$ s-u tomcat /opt/tomcat/webapps/identityiq/WEB-INF/bin/iiq console
+adding exports for Java 17
+iiq.hostname : QVL-M0SLPOMYS00-console
+> export /tmp/ad-qa.xml Application "Active Directory - QA"
+Unknown class: Active Directory - QA
+Application:
+  Cloud Gateway QCL-M0SLPOMYS00
+  Active Directory - QA
+  Intelexion - QA
+  GoogleWorkspace QA
+> export /tmp/ad-qa.xml Application "Active Directory - QA"
+Unknown class: Active Directory - QA
+Application:
+  Cloud Gateway QCL-M0SLPOMYS00
+  Active Directory - QA
+  Intelexion - QA
+  GoogleWorkspace QA
+> ^C[slunam@QVL-M0SLPOMYS00 ~]$ quit
+-bash: quit: command not found
+[slunam@QVL-M0SLPOMYS00 ~]$ grep -n -E 'key="(IQServiceHost|IQServicePort|useTLSForIQService|IQServiceUser)"' /tmp/ad-qa.xml
+60:                <entry key="IQServiceHost" value="10.50.53.86"/>
+62:                <entry key="IQServicePort" value="5050"/>
+63:                <entry key="IQServiceUser" value="BANCOBASE\usr_qasailpoint"/>
+64:                <entry key="useTLSForIQService">
