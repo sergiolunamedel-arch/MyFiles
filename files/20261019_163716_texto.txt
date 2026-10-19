@@ -1,0 +1,37 @@
+Con el respaldo listo, sigue la importación de LCM. Todo en el Linux de QA, como root o con sudo.
+
+1. Confirma que existe el archivo (prompt $ o #):
+
+bash
+ls -l /opt/tomcat/webapps/identityiq/WEB-INF/config/init-lcm.xml
+
+Si no existe, dímelo y paramos aquí.
+
+2. Impórtalo. El primer comando abre la consola, y lo que sigue se escribe en su prompt >:
+
+bash
+sudo -u tomcat /opt/tomcat/webapps/identityiq/WEB-INF/bin/iiq console
+import init-lcm.xml
+
+Espera a que termine (la salida es larga) antes de escribir quit. Si no encuentra el archivo por nombre corto, usa la ruta completa del paso 1. Revisa que no aparezca Exception ni not found. Si algo falla, pégame el error completo y no sigas.
+
+3. Reinicia Tomcat (prompt $):
+
+bash
+sudo systemctl restart tomcat
+sudo journalctl -u tomcat -f
+
+Espera Server startup in [...] milliseconds (1 a 3 minutos) y sal del log con Ctrl+C.
+
+4. Verifica en la UI, entrando como spadmin por login.jsf?prompt=true (por el túnel):
+
+Debug → Object Browser → QuickLink: deben aparecer Manage Passwords, Manage Accounts, Request Access, etc., además de los 8 base.
+En el engranaje debe haber System Setup / Lifecycle Manager, y en Global Settings → Login Configuration la pestaña User Reset.
+Busca Manage Accounts en Home o en el menú superior. Si el QuickLink existe pero spadmin no lo ve, es un tema de población o de rol; dime qué ves y lo resolvemos.
+
+Rollback si algo sale mal, con Tomcat detenido (prompt $, el password se teclea en el prompt):
+
+bash
+gunzip -c /var/tmp/identityiq_pre-lcm_2026-10-19.sql.gz | mysql -h 127.0.0.1 -P 3306 -u identityiq -p identityiq
+
+Mándame la salida del import (o al menos el final y si hubo errores) y lo que veas en el paso 4. Con Manage Accounts disponible hacemos el B1, el bloqueo de slunam.
