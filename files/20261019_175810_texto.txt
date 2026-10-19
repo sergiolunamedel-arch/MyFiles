@@ -1,0 +1,7 @@
+PS C:\Users\usr_qasailpoint> Get-Content C:\iqservice\IQTrace.log -Tail 6
+10/19/2026 17:17:18 : RpcHandler [ Thread-6 ] ERROR : "An Exception occurred while accepting new client requestSystem.IO.IOException: The handshake failed due to an unexpected packet format.
+   at sailpoint.rpcserver.RpcHandler.AuthenticateServer(X509Certificate2 serverCertificate, SslProtocols sslprotocol, Boolean initialCall)
+   at sailpoint.rpcserver.RpcHandler..ctor(Hashtable services, Hashtable registry, TcpClient client, String port, Boolean useTLS, String subject, String tlsVersion, String registeredClients, String serialNumber)"
+10/19/2026 17:44:27 : RpcHandler [ Thread-6 ] ERROR : "An Exception occurred while accepting new client requestSystem.IO.IOException: The handshake failed due to an unexpected packet format.
+   at sailpoint.rpcserver.RpcHandler.AuthenticateServer(X509Certificate2 serverCertificate, SslProtocols sslprotocol, Boolean initialCall)
+   at sailpoint.rpcserver.RpcHandler..ctor(Hashtable services, Hashtable registry, TcpClient client, String port, Boolean useTLS, String subject, String tlsVersion, String registeredClients, String serialNumber)"
