@@ -1,6 +1,0 @@
-SELECT i.name, i.email, a.name AS app, l.native_identity
-FROM spt_identity i
-LEFT JOIN spt_link l ON l.identity_id = i.id
-LEFT JOIN spt_application a ON a.id = l.application
-WHERE i.email LIKE '%slunam%'
-ORDER BY i.name, a.name;
