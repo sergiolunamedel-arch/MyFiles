@@ -1,0 +1,32 @@
+2. Copia a /tmp (prompt $):
+
+bash
+sudo cp /home/slunam/BancoBase-Test-Unlock.xml /tmp/BancoBase-Test-Unlock.xml
+sudo chmod 644 /tmp/BancoBase-Test-Unlock.xml
+
+3. Abre la consola e importa (el primer comando es la shell; lo demás va en el prompt >):
+
+bash
+sudo -u tomcat /opt/tomcat/webapps/identityiq/WEB-INF/bin/iiq console
+import /tmp/BancoBase-Test-Unlock.xml
+
+Debe imprimir Rule:BancoBase-Test-Unlock sin errores.
+
+4. Ejecútala:
+
+rule BancoBase-Test-Unlock
+
+Imprime un resultado largo (el proyecto de provisioning en XML). Luego quit. Mándame esa salida, o al menos lo que diga cerca de status, Failed o error. Los nombres de métodos de Provisioner están por confirmar en 8.5; si da error de compilación, pégamelo.
+
+5. Verifica sin acceso a AD, desde cmd (la contraseña real se teclea en el prompt, no en el comando):
+
+net use \\MTY-ALE-PMDC002.dombase.net\IPC$ /user:dombase\slunam
+net use * /delete
+
+Cómo interpretar el resultado
+
+Conecta o no marca 1909: SailPoint sí puede desbloquear. Los permisos y el IQService están bien; solo falta que el botón sepa que la cuenta está bloqueada, y eso lo resuelve el workflow propio (lo armo yo).
+La regla reporta error de permisos, o sigue bloqueada: el problema es la delegación en AD (A3 de 16.11). En ese caso pide a AD que te desbloquee a mano y revisamos qué cuenta ejecuta la operación (usrsailqa o usr_qasailpoint).
+Aborta (“ABORTADO...”): algún dato no coincide (email o DN); no tocó nada, pégame el mensaje.
+
+Mientras corres eso, una verificación de solo lectura para confirmar mi hipótesis: Debug → Object Browser → Application → Active Directory - QA, y busca en el XML lockoutTime e IIQLocked. Dime si aparecen en el schema de cuentas. Si no, y prod sí los tiene, esa es la diferencia que nos falta.
