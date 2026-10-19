@@ -1,5 +1,0 @@
-SELECT i.name AS identidad, a.name AS app
-FROM spt_link l
-JOIN spt_identity i ON i.id = l.identity_id
-JOIN spt_application a ON a.id = l.application
-WHERE l.native_identity LIKE '%aandrade%';
