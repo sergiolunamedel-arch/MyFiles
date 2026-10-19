@@ -1,0 +1,16 @@
+-- ¿Dónde está hoy cada cuenta de aandrade?
+SELECT i.name AS identidad, a.name AS app, l.native_identity
+FROM spt_link l
+JOIN spt_identity i ON i.id = l.identity_id
+JOIN spt_application a ON a.id = l.application
+WHERE l.native_identity LIKE '%aandrade%' OR l.display_name LIKE '%aandrade%';
+
+-- Panorama actual
+SELECT a.name AS app,
+       COUNT(*) AS total,
+       SUM(i.name REGEXP '^[0-9]+$') AS en_identidad_buena,
+       SUM(i.name NOT REGEXP '^[0-9]+$') AS en_huerfana
+FROM spt_link l
+JOIN spt_application a ON a.id = l.application
+JOIN spt_identity i ON i.id = l.identity_id
+GROUP BY a.name;
