@@ -1,0 +1,9 @@
+bash
+mysql -h 10.50.54.147 -P 3306 -u identityiq -p identityiq -e "SHOW COLUMNS FROM spt_identity LIKE 'extended%';"
+
+Debe listar al menos extended1 hasta extended10. Mándame lo que imprima, aunque sea un error. Si sale vacío, no sigas: habría que crearlas con ALTER TABLE y te doy el SQL.
+
+También confirma que el respaldo se generó:
+
+bash
+ls -lh ~/identityiq_antes_extended_*.sql.gz
