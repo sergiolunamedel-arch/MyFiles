@@ -1,0 +1,16 @@
+bash
+df -h /var /home
+umask 077
+mysqldump -u root -p --single-transaction --routines identityiq | gzip > /var/tmp/identityiq_pre-lcm_2026-10-19.sql.gz
+ls -lh /var/tmp/identityiq_pre-lcm_2026-10-19.sql.gz
+
+El archivo debe pesar al menos varios MB. Si pesa unos pocos KB, falló (contraseña mala) y no sigas.
+
+Confirma que existe el archivo de LCM:
+bash
+sudo ls -l /opt/tomcat/webapps/identityiq/WEB-INF/config/init-lcm.xml
+Impórtalo. El primer comando abre la consola, y lo que sigue se escribe en su prompt >:
+bash
+sudo -u tomcat /opt/tomcat/webapps/identityiq/WEB-INF/bin/iiq console
+import init-lcm.xml
+quit
