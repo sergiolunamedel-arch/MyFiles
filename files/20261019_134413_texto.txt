@@ -1,0 +1,29 @@
+[root@QVL-M0SLPOMYS00 bin]# ./iiq console
+adding exports for Java 17
+iiq.hostname : QVL-M0SLPOMYS00-console
+> import /tmp/limpieza.xml
+Rule:BancoBase-Limpieza-Huerfanas
+> rule BancoBase-Limpieza-Huerfanas
+MODO: SIMULACRO (no borra)
+Filtro: (todas)
+Revisadas: 8917 | Candidatas: 4819 | Borradas: 0 | Saltadas: 1
+  DOMBASE\aaceves  (cuentas: 0)
+  DOMBASE\aaguayo  (cuentas: 0)
+  DOMBASE\aaguilarm  (cuentas: 0)
+  DOMBASE\aaguilars  (cuentas: 0)
+  DOMBASE\aalcaraz  (cuentas: 0)
+  DOMBASE\aalmaguer  (cuentas: 0)
+  DOMBASE\aalvarado  (cuentas: 0)
+  DOMBASE\aalvaradom  (cuentas: 0)
+  DOMBASE\aalvareza  (cuentas: 0)
+  DOMBASE\aalvarezg  (cuentas: 0)
+  DOMBASE\aalvarezs  (cuentas: 0)
+  DOMBASE\aalvizo  (cuentas: 0)
+  DOMBASE\aaranda  (cuentas: 0)
+  DOMBASE\aarreola  (cuentas: 0)
+  DOMBASE\aarroyo  (cuentas: 0)
+  DOMBASE\aarroyoa  (cuentas: 0)
+  DOMBASE\abanda  (cuentas: 0)
+  DOMBASE\abarrera  (cuentas: 0)
+  DOMBASE\abarrerac  (cuentas: 0)
+  DOMBASE\abarreraj  (cuentas: 0)
