@@ -1,0 +1,21 @@
+mysql> SELECT name, extended1, extended2 FROM spt_identity
+    -> WHERE name = 'DOMBASE\\aandrade' OR extended2 LIKE 'aandrade@%' OR name LIKE 'aandrade@%';
++------------------------+-----------+------------------------+
+| name                   | extended1 | extended2              |
++------------------------+-----------+------------------------+
+| DOMBASE\aandrade       | NULL      | NULL                   |
+| aandrade@bancobase.com | NULL      | NULL                   |
+| 15877                  | 3050      | AANDRADE@BANCOBASE.COM |
++------------------------+-----------+------------------------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT COUNT(*) AS total_ad,
+    ->        SUM(l.attributes LIKE '%key="employeeID"%') AS con_employeeid
+    -> FROM spt_link l JOIN spt_application a ON a.id = l.application
+    -> WHERE a.name = 'Active Directory - QA';
++----------+----------------+
+| total_ad | con_employeeid |
++----------+----------------+
+|     2198 |            993 |
++----------+----------------+
+1 row in set (0.07 sec)
