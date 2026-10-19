@@ -1,5 +1,0 @@
-[slunam@QVL-M0SLPOMYS00 ~]$ cd /opt/tomcat/webapps/identityiq/WEB-INF/bin
--bash: cd: /opt/tomcat/webapps/identityiq/WEB-INF/bin: Permission denied
-[slunam@QVL-M0SLPOMYS00 ~]$ sudo cd /opt/tomcat/webapps/identityiq/WEB-INF/bin
-[slunam@QVL-M0SLPOMYS00 ~]$ ./iiq console
--bash: ./iiq: No such file or directory
