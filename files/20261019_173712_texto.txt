@@ -1,0 +1,1 @@
+Get-WinEvent -FilterHashtable @{LogName='Application'; StartTime=(Get-Date).AddMinutes(-90)} | Where-Object { $_.LevelDisplayName -in 'Error','Warning' } | Select-Object TimeCreated,ProviderName,Message | Format-List
