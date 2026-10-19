@@ -1,0 +1,25 @@
+Prueba 1 (solo lectura, Linux, prompt $): compara el Java de Tomcat con el de la consola.
+
+bash
+ps -u tomcat -o args= | grep -o '^/[^ ]*java' | sort -u
+sudo -u tomcat bash -c 'readlink -f "$(command -v java)"; java -version 2>&1 | head -1'
+
+Si el segundo comando da error por bash, usa sudo -u tomcat java -version. Dime las rutas de Java que aparezcan en cada uno. Si son distintas, ahí está la diferencia.
+
+Prueba 2: correr la misma regla dentro de Tomcat, con la tarea “Run Rule”. Como estás desbloqueado, el Unlock es inocuo (no hay nada que desbloquear) y prueba el canal sin tener que bloquearte de nuevo ni molestar a AD:
+
+En la UI, como spadmin: Setup → Tasks → New Task → Run Rule (el nombre exacto del tipo está por confirmar).
+Nombre Test Unlock slunam y Rule BancoBase-Test-Unlock. Ejecuta (Run Now).
+Mira el resultado de la tarea. Si no muestra el texto de la regla, revisa el log de Tomcat para ver si aparece Connection reset:
+bash
+sudo tail -n 80 /opt/tomcat/logs/catalina.out
+En el Windows, comprueba si el IQTrace.log registró otro handshake failed a la hora de la ejecución:
+powershell
+Get-Content C:\iqservice\IQTrace.log -Tail 5
+
+Cómo leer la prueba 2
+
+Sin errores (resultado committed) y sin entrada nueva en IQTrace.log: el canal funciona desde Tomcat. El fallo era de la JVM de la consola, y el workflow o QuickLink propio funcionará. Entonces sí te bloqueo de nuevo para la prueba real.
+Mismo Connection reset y otro handshake en el log: el problema es del TLS entre el conector y el IQService, no de la consola. Entonces revisamos cómo está configurado el IQService (versión de TLS, certificado) frente a la app de AD.
+
+Mándame el resultado de la prueba 1 y de la 2, y de paso confirma que sigues desbloqueado.
