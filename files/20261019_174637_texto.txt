@@ -1,0 +1,81 @@
+[slunam@QVL-M0SLPOMYS00 ~]$ sudo tail -n 80 /opt/tomcat/logs/catalina.out
+        at org.apache.catalina.core.ContainerBase.startInternal(ContainerBase.java:765)
+        at org.apache.catalina.core.StandardEngine.startInternal(StandardEngine.java:209)
+        at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:170)
+        at org.apache.catalina.core.StandardService.startInternal(StandardService.java:433)
+        at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:170)
+        at org.apache.catalina.core.StandardServer.startInternal(StandardServer.java:879)
+        at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:170)
+        at org.apache.catalina.startup.Catalina.start(Catalina.java:861)
+        at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+        at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+        at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+        at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+        at org.apache.catalina.startup.Bootstrap.start(Bootstrap.java:348)
+        at org.apache.catalina.startup.Bootstrap.main(Bootstrap.java:485)
+
+19-Oct-2026 16:39:29.022 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory [/opt/tomcat/webapps/identityiq] has finished in [25,707] ms
+19-Oct-2026 16:39:29.026 INFO [main] org.apache.coyote.AbstractProtocol.start Starting ProtocolHandler ["http-nio-8080"]
+19-Oct-2026 16:39:29.042 INFO [main] org.apache.catalina.startup.Catalina.start Server startup in [26499] milliseconds
+2026-10-19T16:39:42,938  WARN http-nio-8080-exec-1 saml.common.binding.SAMLBindingSupport:93 - Relay state exceeds 80 bytes: http://localhost:8080/identityiq/define/identity/identity.jsf?id=0a323693a0d9121a81a0eb159c7f6657
+2026-10-19T17:44:27,381 ERROR QuartzScheduler_Worker-4 sailpoint.connector.ADLDAPConnector:5622 - 1416297052 Exception occurred in handling Object Request
+sailpoint.tools.GeneralException: Connection reset
+        at sailpoint.connector.RPCService.execute(RPCService.java:559) ~[connector-bundle-directories.jar:8.5]
+        at sailpoint.connector.ADLDAPConnector.handleObjectRequest(ADLDAPConnector.java:6699) ~[connector-bundle-directories.jar:8.5]
+        at sailpoint.connector.ADLDAPConnector.provision(ADLDAPConnector.java:5613) ~[connector-bundle-directories.jar:8.5]
+        at sailpoint.connector.ConnectorProxy.provision(ConnectorProxy.java:1222) ~[connector-bundle-identityiq.jar:8.5]
+        at sailpoint.integration.ConnectorExecutor.provision(ConnectorExecutor.java:160) ~[identityiq.jar:8.5 Build fb6698fe9f4-20250709-205815]
+        at sailpoint.provisioning.PlanEvaluator.provision(PlanEvaluator.java:1825) ~[identityiq.jar:8.5 Build fb6698fe9f4-20250709-205815]
+        at sailpoint.provisioning.PlanEvaluator.execute(PlanEvaluator.java:1145) ~[identityiq.jar:8.5 Build fb6698fe9f4-20250709-205815]
+        at sailpoint.provisioning.PlanEvaluator.execute(PlanEvaluator.java:849) ~[identityiq.jar:8.5 Build fb6698fe9f4-20250709-205815]
+        at sailpoint.provisioning.PlanEvaluator.execute(PlanEvaluator.java:741) ~[identityiq.jar:8.5 Build fb6698fe9f4-20250709-205815]
+        at sailpoint.api.Provisioner.execute(Provisioner.java:1652) ~[identityiq.jar:8.5 Build fb6698fe9f4-20250709-205815]
+        at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
+        at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
+        at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
+        at java.lang.reflect.Method.invoke(Method.java:569) ~[?:?]
+        at bsh.Reflect.invokeMethod(Reflect.java:166) ~[bsh-2.1.8.jar:2.1.8 2018-10-02 08:36:04]
+        at bsh.Reflect.invokeObjectMethod(Reflect.java:99) ~[bsh-2.1.8.jar:2.1.8 2018-10-02 08:36:04]
+        at bsh.Name.invokeMethod(Name.java:858) ~[bsh-2.1.8.jar:2.1.8 2018-10-02 08:36:04]
+        at bsh.BSHMethodInvocation.eval(BSHMethodInvocation.java:75) ~[bsh-2.1.8.jar:2.1.8 2018-10-02 08:36:04]
+        at bsh.BSHPrimaryExpression.eval(BSHPrimaryExpression.java:102) ~[bsh-2.1.8.jar:2.1.8 2018-10-02 08:36:04]
+        at bsh.BSHPrimaryExpression.eval(BSHPrimaryExpression.java:47) ~[bsh-2.1.8.jar:2.1.8 2018-10-02 08:36:04]
+        at bsh.BSHBlock.evalBlock(BSHBlock.java:130) ~[bsh-2.1.8.jar:2.1.8 2018-10-02 08:36:04]
+        at bsh.BSHBlock.eval(BSHBlock.java:80) ~[bsh-2.1.8.jar:2.1.8 2018-10-02 08:36:04]
+        at bsh.BSHBlock.eval(BSHBlock.java:46) ~[bsh-2.1.8.jar:2.1.8 2018-10-02 08:36:04]
+        at bsh.BSHTryStatement.eval(BSHTryStatement.java:88) ~[bsh-2.1.8.jar:2.1.8 2018-10-02 08:36:04]
+        at bsh.Interpreter.eval(Interpreter.java:664) ~[bsh-2.1.8.jar:2.1.8 2018-10-02 08:36:04]
+        at bsh.Interpreter.eval(Interpreter.java:758) ~[bsh-2.1.8.jar:2.1.8 2018-10-02 08:36:04]
+        at bsh.Interpreter.eval(Interpreter.java:747) ~[bsh-2.1.8.jar:2.1.8 2018-10-02 08:36:04]
+        at bsh.util.BeanShellBSFEngine.eval(BeanShellBSFEngine.java:186) ~[bsh-2.1.8.jar:2.1.8 2018-10-02 08:36:04]
+        at org.apache.bsf.BSFManager$5.run(BSFManager.java:445) ~[bsf.jar:?]
+        at java.security.AccessController.doPrivileged(AccessController.java:569) [?:?]
+        at org.apache.bsf.BSFManager.eval(BSFManager.java:442) [bsf.jar:?]
+        at sailpoint.server.BSFRuleRunner.eval(BSFRuleRunner.java:264) [identityiq.jar:8.5 Build fb6698fe9f4-20250709-205815]
+        at sailpoint.server.BSFRuleRunner.runRule(BSFRuleRunner.java:233) [identityiq.jar:8.5 Build fb6698fe9f4-20250709-205815]
+        at sailpoint.server.InternalContext.runRule(InternalContext.java:1331) [identityiq.jar:8.5 Build fb6698fe9f4-20250709-205815]
+        at sailpoint.server.InternalContext.runRule(InternalContext.java:1303) [identityiq.jar:8.5 Build fb6698fe9f4-20250709-205815]
+        at sailpoint.task.RuleExecutor.runRule(RuleExecutor.java:181) [identityiq.jar:8.5 Build fb6698fe9f4-20250709-205815]
+        at sailpoint.task.RuleExecutor.execute(RuleExecutor.java:121) [identityiq.jar:8.5 Build fb6698fe9f4-20250709-205815]
+        at sailpoint.api.TaskManager.runSync(TaskManager.java:981) [identityiq.jar:8.5 Build fb6698fe9f4-20250709-205815]
+        at sailpoint.api.TaskManager.runSync(TaskManager.java:764) [identityiq.jar:8.5 Build fb6698fe9f4-20250709-205815]
+        at sailpoint.scheduler.JobAdapter.execute(JobAdapter.java:128) [identityiq.jar:8.5 Build fb6698fe9f4-20250709-205815]
+        at org.quartz.core.JobRunShell.run(JobRunShell.java:202) [quartz-2.3.2.jar:?]
+        at org.quartz.simpl.SimpleThreadPool$WorkerThread.run(SimpleThreadPool.java:573) [quartz-2.3.2.jar:?]
+Caused by: java.net.SocketException: Connection reset
+        at sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:328) ~[?:?]
+        at sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:355) ~[?:?]
+        at sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:808) ~[?:?]
+        at java.net.Socket$SocketInputStream.read(Socket.java:966) ~[?:?]
+        at sun.nio.cs.StreamDecoder.readBytes(StreamDecoder.java:287) ~[?:?]
+        at sun.nio.cs.StreamDecoder.implRead(StreamDecoder.java:330) ~[?:?]
+        at sun.nio.cs.StreamDecoder.read(StreamDecoder.java:190) ~[?:?]
+        at java.io.InputStreamReader.read(InputStreamReader.java:177) ~[?:?]
+        at java.io.BufferedReader.fill(BufferedReader.java:162) ~[?:?]
+        at java.io.BufferedReader.readLine(BufferedReader.java:329) ~[?:?]
+        at java.io.BufferedReader.readLine(BufferedReader.java:396) ~[?:?]
+        at sailpoint.connector.RPCService.readStringFromSocket(RPCService.java:367) ~[connector-bundle-directories.jar:8.5]
+        at sailpoint.connector.RPCService.readResponseFromInputStream(RPCService.java:878) ~[connector-bundle-directories.jar:8.5]
+        at sailpoint.connector.RPCService.parseResponse(RPCService.java:854) ~[connector-bundle-directories.jar:8.5]
+        at sailpoint.connector.RPCService.execute(RPCService.java:538) ~[connector-bundle-directories.jar:8.5]
+        ... 41 more
