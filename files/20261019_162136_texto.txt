@@ -1,9 +1,0 @@
-C:\Users\slunam>nltest /dsgetdc:dombase.net
-           DC: \\MTY-ALE-PMDC002.dombase.net
-      Dirección: \\10.48.36.3
-     GUID del DOM: 79fe2b56-65fd-4ff9-b1fb-7dca3d03f4b2
-     Nombre del DOM: dombase.net
-  Nombre del bosque: dombase.net
- Nombre de sitio DC: AlestraMonterrey
-        Marcas: GC DS LDAP KDC TIMESERV WRITABLE DNS_DC DNS_DOMAIN DNS_FOREST FULL_SECRET WS DS_8 DS_9 DS_10 LISTA DE CLAVES
-El comando se completó correctamente
