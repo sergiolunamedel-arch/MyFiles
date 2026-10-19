@@ -1,0 +1,3 @@
+SELECT i.name, l.native_identity, l.created, l.modified, l.attributes
+FROM spt_link l JOIN spt_identity i ON i.id = l.identity_id
+WHERE l.native_identity LIKE '%aandrade%' \G
