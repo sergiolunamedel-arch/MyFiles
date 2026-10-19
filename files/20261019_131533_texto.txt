@@ -1,0 +1,6 @@
+[root@QVL-M0SLPOMYS00 bin]# sed -i 's/<Rule name="BancoBase-Limpieza-Huerfanas" type="Standard">/<Rule name="BancoBase-Limpieza-Huerfanas">/' /tmp/limpieza.xml
+[root@QVL-M0SLPOMYS00 bin]# grep -n '<Rule ' /tmp/limpieza.xml
+3:<Rule name="BancoBase-Limpieza-Huerfanas">
+[root@QVL-M0SLPOMYS00 bin]# import /tmp/limpieza.xml
+-bash: import: command not found
+[root@QVL-M0SLPOMYS00 bin]#
