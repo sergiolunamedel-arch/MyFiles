@@ -1,0 +1,4 @@
+SELECT COUNT(*) AS total,
+       SUM(email IS NOT NULL) AS con_email,
+       SUM(manager IS NOT NULL) AS con_manager
+FROM spt_identity;
