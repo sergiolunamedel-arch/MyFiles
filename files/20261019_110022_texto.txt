@@ -1,0 +1,5 @@
+bash
+mysqldump -h 10.50.54.147 -P 3306 -u identityiq -p --single-transaction --no-tablespaces identityiq | gzip > ~/identityiq_antes_extended_$(date +%F).sql.gz
+bash
+ls -l /opt/tomcat/webapps/identityiq/WEB-INF/classes/sailpoint/object/*Extended.hbm.xml
+sudo cat /opt/tomcat/webapps/identityiq/WEB-INF/classes/sailpoint/object/IdentityExtended.hbm.xml
