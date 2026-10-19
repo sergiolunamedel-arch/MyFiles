@@ -1,0 +1,7 @@
+sudo cp /home/slunam/BancoBase-AD-BeforeProvisioningRule.xml /tmp/BancoBase-AD-BeforeProvisioningRule.xml
+sudo chmod 644 /tmp/BancoBase-AD-BeforeProvisioningRule.xml
+sudo -u tomcat /opt/tomcat/webapps/identityiq/WEB-INF/bin/iiq console
+En el prompt >:
+import /tmp/BancoBase-AD-BeforeProvisioningRule.xml
+rule BancoBase-Test-Unlock
+quit
