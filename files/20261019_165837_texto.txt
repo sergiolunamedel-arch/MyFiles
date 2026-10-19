@@ -1,1 +1,0 @@
-net use \\MTY-ALE-PMDC002.dombase.net\IPC$ /user:dombase\slunam ClaveMala1!
