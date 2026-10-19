@@ -1,4 +1,0 @@
-bash
-sudo grep -n "extended" /opt/tomcat/webapps/identityiq/WEB-INF/classes/sailpoint/object/IdentityExtended.hbm.xml | head -40
-bash
-mysql -h 10.50.54.147 -P 3306 -u identityiq -p identityiq -e "SHOW COLUMNS FROM spt_identity LI
