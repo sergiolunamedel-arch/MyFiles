@@ -1,0 +1,11 @@
+[root@QVL-M0SLPOMYS00 bin]# ./iiq console
+adding exports for Java 17
+iiq.hostname : QVL-M0SLPOMYS00-console
+> import /tmp/limpieza.xml
+Rule:BancoBase-Limpieza-Huerfanas
+> rule BancoBase-Limpieza-Huerfanas
+MODO: SIMULACRO (no borra)
+Filtro: aandrade
+Revisadas: 8919 | Candidatas: 2 | Borradas: 0 | Saltadas: 1
+  DOMBASE\aandrade  (cuentas: 2)
+  aandrade@bancobase.com  (cuentas: 0)
