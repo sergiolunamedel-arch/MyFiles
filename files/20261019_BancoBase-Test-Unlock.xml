@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE Rule PUBLIC "sailpoint.dtd" "sailpoint.dtd">
+<Rule name="BancoBase-Test-Unlock">
+  <Description>Prueba de un solo uso: Unlock sobre la cuenta de AD de slunam (identidad 26634) en Active Directory - QA. Aborta si algo no coincide.</Description>
+  <Source><![CDATA[
+import sailpoint.object.*;
+import sailpoint.api.*;
+import java.util.*;
+
+String IDENTITY = "26634";
+String APP = "Active Directory - QA";
+String NI = "CN=slunam,OU=Aguascalientes,OU=Foraneos,OU=Usuarios,DC=dombase,DC=net";
+String EMAIL = "slunam@bancobase.com";
+
+StringBuilder sb = new StringBuilder();
+
+Identity ident = context.getObjectByName(Identity.class, IDENTITY);
+if (ident == null) { return "ABORTADO: no existe la identidad " + IDENTITY; }
+if (ident.getEmail() == null || !EMAIL.equalsIgnoreCase(ident.getEmail())) {
+  return "ABORTADO: el email de la identidad no es " + EMAIL;
+}
+
+boolean linkOk = false;
+List links = ident.getLinks();
+if (links != null) {
+  for (Object o : links) {
+    Link l = (Link) o;
+    if (APP.equals(l.getApplicationName()) && NI.equalsIgnoreCase(l.getNativeIdentity())) { linkOk = true; }
+  }
+}
+if (!linkOk) { return "ABORTADO: la identidad no tiene la cuenta " + NI + " en " + APP; }
+
+ProvisioningPlan plan = new ProvisioningPlan();
+plan.setIdentity(ident);
+ProvisioningPlan.AccountRequest ar = new ProvisioningPlan.AccountRequest();
+ar.setApplication(APP);
+ar.setNativeIdentity(NI);
+ar.setOperation(ProvisioningPlan.AccountRequest.Operation.Unlock);
+plan.add(ar);
+
+try {
+  Provisioner p = new Provisioner(context);
+  p.compile(plan);
+  p.execute();
+  ProvisioningProject proj = p.getProject();
+  sb.append("Unlock enviado. Resultado del proyecto:\n");
+  sb.append(proj.toXml());
+} catch (Throwable t) {
+  sb.append("ERROR al ejecutar el Unlock: ").append(t.toString());
+}
+return sb.toString();
+  ]]></Source>
+</Rule>
