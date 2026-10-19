@@ -1,0 +1,4 @@
+SELECT COLLATION_NAME FROM information_schema.COLUMNS
+WHERE table_schema='identityiq' AND table_name='spt_identity' AND column_name='extended2';
+
+SELECT name, extended2 FROM spt_identity WHERE extended2 = 'aandrade@bancobase.com';
