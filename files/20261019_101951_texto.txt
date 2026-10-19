@@ -1,2 +1,0 @@
-mysql -h 10.50.54.147 -P 3306 -u identityiq -p identityiq -e "SHOW COLUMNS FROM spt_identity LIKE 'correoelectronico';"
-sudo grep -rl correoelectronico /opt/tomcat/webapps/identityiq/WEB-INF/classes/sailpoint/object/
