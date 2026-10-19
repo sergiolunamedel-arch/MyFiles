@@ -1,0 +1,16 @@
+[root@QVL-M0SLPOMYS00 bin]# df -h /var /home
+Filesystem                 Size  Used Avail Use% Mounted on
+/dev/mapper/vg--rhel-var    15G  1.1G   14G   8% /var
+/dev/mapper/vg--rhel-home  5.0G  2.6G  2.4G  53% /home
+[root@QVL-M0SLPOMYS00 bin]# umask 077
+[root@QVL-M0SLPOMYS00 bin]# mysqldump -u root -p --single-transaction --routines identityiq | gzip > /var/tmp/identityiq_pre-lcm_2026-10-19.sql.gz
+Enter password:
+mysqldump: Got error: 1045: Access denied for user 'root'@'localhost' (using password: YES) when trying to connect
+[root@QVL-M0SLPOMYS00 bin]# mysqldump -u root -p --single-transaction --routines identityiq | gzip > /var/tmp/identityiq_pre-lcm_2026-10-19.sql.gz
+Enter password:
+mysqldump: Got error: 1045: Access denied for user 'root'@'localhost' (using password: YES) when trying to connect
+[root@QVL-M0SLPOMYS00 bin]# 1:ACP:YWr/v8FoIF/ji7YmDDjbnvQaAqFEkznTFInI/jvIQ6dSRK+omhcpekzAIz/uEDR0
+-bash: 1:ACP:YWr/v8FoIF/ji7YmDDjbnvQaAqFEkznTFInI/jvIQ6dSRK+omhcpekzAIz/uEDR0: No such file or directory
+[root@QVL-M0SLPOMYS00 bin]# mysqldump -u root -p --single-transaction --routines identityiq | gzip > /var/tmp/identityiq_pre-lcm_2026-10-19.sql.gz
+Enter password:
+mysqldump: Got error: 1045: Access denied for user 'root'@'localhost' (using password: YES) when trying to connect
