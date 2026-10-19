@@ -1,0 +1,4 @@
+cd /opt/tomcat/webapps/identityiq/WEB-INF/bin
+./iiq console
+> import /tmp/limpieza.xml
+> rule BancoBase-Limpieza-Huerfanas
