@@ -1,0 +1,49 @@
+09/18/2026 10:35:38 : RpcHandler [ Thread-7 ] ERROR : "An Exception occurred while accepting new client requestSystem.IO.IOException: Authentication failed because the remote party has closed the transport stream.
+   at sailpoint.rpcserver.RpcHandler.AuthenticateServer(X509Certificate2 serverCertificate, SslProtocols sslprotocol, Boolean initialCall)
+   at sailpoint.rpcserver.RpcHandler..ctor(Hashtable services, Hashtable registry, TcpClient client, String port, Boolean useTLS, String subject, String tlsVersion, String registeredClients, String serialNumber)"
+09/18/2026 12:02:44 : RpcHandler [ Thread-7 ] ERROR : "An Exception occurred while accepting new client requestSystem.IO.IOException: The handshake failed due to an unexpected packet format.
+   at sailpoint.rpcserver.RpcHandler.AuthenticateServer(X509Certificate2 serverCertificate, SslProtocols sslprotocol, Boolean initialCall)
+   at sailpoint.rpcserver.RpcHandler..ctor(Hashtable services, Hashtable registry, TcpClient client, String port, Boolean useTLS, String subject, String tlsVersion, String registeredClients, String serialNumber)"
+09/18/2026 12:02:46 : RpcHandler [ Thread-7 ] ERROR : "An Exception occurred while accepting new client requestSystem.IO.IOException: The handshake failed due to an unexpected packet format.
+   at sailpoint.rpcserver.RpcHandler.AuthenticateServer(X509Certificate2 serverCertificate, SslProtocols sslprotocol, Boolean initialCall)
+   at sailpoint.rpcserver.RpcHandler..ctor(Hashtable services, Hashtable registry, TcpClient client, String port, Boolean useTLS, String subject, String tlsVersion, String registeredClients, String serialNumber)"
+09/18/2026 12:03:00 : RpcHandler [ Thread-7 ] ERROR : "An Exception occurred while accepting new client requestSystem.Security.Authentication.AuthenticationException: A call to SSPI failed, see inner exception. ---> System.ComponentModel.Win32Exception: An unknown error occurred while processing the certificate
+   --- End of inner exception stack trace ---
+   at sailpoint.rpcserver.RpcHandler.AuthenticateServer(X509Certificate2 serverCertificate, SslProtocols sslprotocol, Boolean initialCall)
+   at sailpoint.rpcserver.RpcHandler..ctor(Hashtable services, Hashtable registry, TcpClient client, String port, Boolean useTLS, String subject, String tlsVersion, String registeredClients, String serialNumber)"
+09/18/2026 12:03:00 : RpcHandler [ Thread-7 ] ERROR : "An Exception occurred while accepting new client requestSystem.IO.IOException: Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host. ---> System.Net.Sockets.SocketException: An existing connection was forcibly closed by the remote host
+   at System.Net.Sockets.NetworkStream.Read(Byte[] buffer, Int32 offset, Int32 size)
+   --- End of inner exception stack trace ---
+   at sailpoint.rpcserver.RpcHandler.AuthenticateServer(X509Certificate2 serverCertificate, SslProtocols sslprotocol, Boolean initialCall)
+   at sailpoint.rpcserver.RpcHandler..ctor(Hashtable services, Hashtable registry, TcpClient client, String port, Boolean useTLS, String subject, String tlsVersion, String registeredClients, String serialNumber)"
+09/18/2026 12:08:44 : RpcHandler [ Thread-7 ] ERROR : "An Exception occurred while accepting new client requestSystem.IO.IOException: The handshake failed due to an unexpected packet format.
+   at sailpoint.rpcserver.RpcHandler.AuthenticateServer(X509Certificate2 serverCertificate, SslProtocols sslprotocol, Boolean initialCall)
+   at sailpoint.rpcserver.RpcHandler..ctor(Hashtable services, Hashtable registry, TcpClient client, String port, Boolean useTLS, String subject, String tlsVersion, String registeredClients, String serialNumber)"
+09/18/2026 12:13:10 : RpcHandler [ Thread-7 ] ERROR : "An Exception occurred while accepting new client requestSystem.IO.IOException: Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host. ---> System.Net.Sockets.SocketException: An existing connection was forcibly closed by the remote host
+   at System.Net.Sockets.NetworkStream.Read(Byte[] buffer, Int32 offset, Int32 size)
+   --- End of inner exception stack trace ---
+   at sailpoint.rpcserver.RpcHandler.AuthenticateServer(X509Certificate2 serverCertificate, SslProtocols sslprotocol, Boolean initialCall)
+   at sailpoint.rpcserver.RpcHandler..ctor(Hashtable services, Hashtable registry, TcpClient client, String port, Boolean useTLS, String subject, String tlsVersion, String registeredClients, String serialNumber)"
+09/18/2026 12:58:48 : RpcHandler [ Thread-7 ] ERROR : "An Exception occurred while accepting new client requestSystem.IO.IOException: The handshake failed due to an unexpected packet format.
+   at sailpoint.rpcserver.RpcHandler.AuthenticateServer(X509Certificate2 serverCertificate, SslProtocols sslprotocol, Boolean initialCall)
+   at sailpoint.rpcserver.RpcHandler..ctor(Hashtable services, Hashtable registry, TcpClient client, String port, Boolean useTLS, String subject, String tlsVersion, String registeredClients, String serialNumber)"
+09/18/2026 12:58:54 : RpcHandler [ Thread-10 ] ERROR : "Client Authentication failed with :System.ApplicationException: Client authentication failed with error - The user name or password is incorrect
+   at sailpoint.tools.Impersonator.validateClient(String user, String password, Boolean isReturnError, String logOnProvider)
+   at sailpoint.rpcserver.RpcHandler.authenticateClient(String user, String password, String logOnProvider)"
+09/18/2026 12:59:42 : RpcHandler [ Thread-11 ] ERROR : "Client Authentication failed with :System.ApplicationException: Client authentication failed with error - The user name or password is incorrect
+   at sailpoint.tools.Impersonator.validateClient(String user, String password, Boolean isReturnError, String logOnProvider)
+   at sailpoint.rpcserver.RpcHandler.authenticateClient(String user, String password, String logOnProvider)"
+09/18/2026 14:29:34 : RpcHandler [ Thread-7 ] ERROR : "An Exception occurred while accepting new client requestSystem.IO.IOException: The handshake failed due to an unexpected packet format.
+   at sailpoint.rpcserver.RpcHandler.AuthenticateServer(X509Certificate2 serverCertificate, SslProtocols sslprotocol, Boolean initialCall)
+   at sailpoint.rpcserver.RpcHandler..ctor(Hashtable services, Hashtable registry, TcpClient client, String port, Boolean useTLS, String subject, String tlsVersion, String registeredClients, String serialNumber)"
+09/18/2026 14:29:41 : RpcHandler [ Thread-7 ] ERROR : "An Exception occurred while accepting new client requestSystem.IO.IOException: Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host. ---> System.Net.Sockets.SocketException: An existing connection was forcibly closed by the remote host
+   at System.Net.Sockets.NetworkStream.Read(Byte[] buffer, Int32 offset, Int32 size)
+   --- End of inner exception stack trace ---
+   at sailpoint.rpcserver.RpcHandler.AuthenticateServer(X509Certificate2 serverCertificate, SslProtocols sslprotocol, Boolean initialCall)
+   at sailpoint.rpcserver.RpcHandler..ctor(Hashtable services, Hashtable registry, TcpClient client, String port, Boolean useTLS, String subject, String tlsVersion, String registeredClients, String serialNumber)"
+10/19/2026 17:17:08 : RpcHandler [ Thread-6 ] ERROR : "An Exception occurred while accepting new client requestSystem.IO.IOException: The handshake failed due to an unexpected packet format.
+   at sailpoint.rpcserver.RpcHandler.AuthenticateServer(X509Certificate2 serverCertificate, SslProtocols sslprotocol, Boolean initialCall)
+   at sailpoint.rpcserver.RpcHandler..ctor(Hashtable services, Hashtable registry, TcpClient client, String port, Boolean useTLS, String subject, String tlsVersion, String registeredClients, String serialNumber)"
+10/19/2026 17:17:18 : RpcHandler [ Thread-6 ] ERROR : "An Exception occurred while accepting new client requestSystem.IO.IOException: The handshake failed due to an unexpected packet format.
+   at sailpoint.rpcserver.RpcHandler.AuthenticateServer(X509Certificate2 serverCertificate, SslProtocols sslprotocol, Boolean initialCall)
+   at sailpoint.rpcserver.RpcHandler..ctor(Hashtable services, Hashtable registry, TcpClient client, String port, Boolean useTLS, String subject, String tlsVersion, String registeredClients, String serialNumber)"
