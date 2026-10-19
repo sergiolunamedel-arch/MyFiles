@@ -1,0 +1,142 @@
+mysql> SELECT COUNT(*) AS identidades_sin_cuentas
+    -> FROM spt_identity i
+    -> WHERE NOT EXISTS (SELECT 1 FROM spt_link l WHERE l.identity_id = i.id);
++-------------------------+
+| identidades_sin_cuentas |
++-------------------------+
+|                    3279 |
++-------------------------+
+1 row in set (0.01 sec)
+
+mysql> SELECT COUNT(*) AS huerfanas_AD
+    -> FROM spt_identity WHERE name LIKE 'DOMBASE%';
++--------------+
+| huerfanas_AD |
++--------------+
+|         2146 |
++--------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT cuentas, COUNT(*) AS identidades
+    -> FROM (SELECT identity_id, COUNT(*) AS cuentas FROM spt_link GROUP BY identity_id) t
+    -> GROUP BY cuentas ORDER BY cuentas;
++---------+-------------+
+| cuentas | identidades |
++---------+-------------+
+|       1 |        3724 |
+|       2 |         467 |
+|       3 |        1450 |
++---------+-------------+
+3 rows in set (0.01 sec)
+
+mysql>
+mysql> SELECT COUNT(*) AS total,
+    ->        SUM(email IS NOT NULL) AS con_email,
+    ->        SUM(manager IS NOT NULL) AS con_manager
+    -> FROM spt_identity;
++-------+-----------+-------------+
+| total | con_email | con_manager |
++-------+-----------+-------------+
+|  8920 |      2074 |        1563 |
++-------+-----------+-------------+
+1 row in set (0.01 sec)
+
+mysql>
+mysql> SELECT name FROM spt_identity i
+    -> WHERE name LIKE 'DOMBASE%'
+    ->   AND EXISTS (SELECT 1 FROM spt_link l WHERE l.identity_id = i.id)
+    -> LIMIT 30;
++--------------------+
+| name               |
++--------------------+
+| DOMBASE\884920     |
+| DOMBASE\884921     |
+| DOMBASE\884922     |
+| DOMBASE\884923     |
+| DOMBASE\884924     |
+| DOMBASE\884925     |
+| DOMBASE\884926     |
+| DOMBASE\884927     |
+| DOMBASE\884928     |
+| DOMBASE\884929     |
+| DOMBASE\884930     |
+| DOMBASE\884931     |
+| DOMBASE\884932     |
+| DOMBASE\884933     |
+| DOMBASE\884934     |
+| DOMBASE\aandrade   |
+| DOMBASE\aarroyo    |
+| DOMBASE\abautistar |
+| DOMBASE\acamarillo |
+| DOMBASE\acantu     |
+| DOMBASE\acarrasco  |
+| DOMBASE\acastallan |
+| DOMBASE\achavezo   |
+| DOMBASE\acontreral |
+| DOMBASE\acoria     |
+| DOMBASE\acoronel   |
+| DOMBASE\admaldonad |
+| DOMBASE\aelizalde  |
+| DOMBASE\aespinoza  |
+| DOMBASE\aguascald  |
++--------------------+
+30 rows in set (0.00 sec)
+
+mysql> SELECT name FROM spt_identity i
+    -> WHERE NOT EXISTS (SELECT 1 FROM spt_link l WHERE l.identity_id = i.id)
+    ->   AND name NOT LIKE 'DOMBASE%'
+    -> LIMIT 50;
++--------------------------+
+| name                     |
++--------------------------+
+| aaceves@bancobase.com    |
+| aaguayo@bancobase.com    |
+| aaguilarm@bancobase.com  |
+| aaguilars@bancobase.com  |
+| aalcaraz@bancobase.com   |
+| aalmaguer@bancobase.com  |
+| aalvarado@bancobase.com  |
+| aalvaradom@bancobase.com |
+| aalvareza@bancobase.com  |
+| aalvarezg@bancobase.com  |
+| aalvarezs@bancobase.com  |
+| aalvizo@bancobase.com    |
+| aandrade@bancobase.com   |
+| aaranda@bancobase.com    |
+| aarreola@bancobase.com   |
+| aarroyo@bancobase.com    |
+| aarroyoa@bancobase.com   |
+| abanda@bancobase.com     |
+| abarrera@bancobase.com   |
+| abarrerac@bancobase.com  |
+| abarreraj@bancobase.com  |
+| abautistar@bancobase.com |
+| abosque@bancobase.com    |
+| acaballero@bancobase.com |
+| acalderon@bancobase.com  |
+| acamarillo@bancobase.com |
+| acano@bancobase.com      |
+| acanseco@bancobase.com   |
+| acantu@bancobase.com     |
+| acarbajal@bancobase.com  |
+| acarrasco@bancobase.com  |
+| acastallan@bancobase.com |
+| acastillom@bancobase.com |
+| acastro@bancobase.com    |
+| acastrom@bancobase.com   |
+| acavazosr@bancobase.com  |
+| acepeda@bancobase.com    |
+| achavezm@bancobase.com   |
+| achavezn@bancobase.com   |
+| achavezo@bancobase.com   |
+| acoba@bancobase.com      |
+| acontreral@bancobase.com |
+| acordova@bancobase.com   |
+| acoria@bancobase.com     |
+| acoronel@bancobase.com   |
+| acorro@bancobase.com     |
+| acrisostom@bancobase.com |
+| acruzy@bancobase.com     |
+| adavila@bancobase.com    |
+| adegabriel@bancobase.com |
++--------------------------+
