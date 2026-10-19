@@ -1,0 +1,42 @@
+mysql> SELECT COUNT(*) AS identidades_sin_cuentas
+    -> FROM spt_identity i
+    -> WHERE NOT EXISTS (SELECT 1 FROM spt_link l WHERE l.identity_id = i.id);
++-------------------------+
+| identidades_sin_cuentas |
++-------------------------+
+|                    1408 |
++-------------------------+
+1 row in set (0.01 sec)
+
+mysql> SELECT COUNT(*) AS huerfanas_AD
+    -> FROM spt_identity WHERE name LIKE 'DOMBASE%';
++--------------+
+| huerfanas_AD |
++--------------+
+|         2146 |
++--------------+
+1 row in set (0.01 sec)
+
+mysql> SELECT cuentas, COUNT(*) AS identidades
+    -> FROM (SELECT identity_id, COUNT(*) AS cuentas FROM spt_link GROUP BY identity_id) t
+    -> GROUP BY cuentas ORDER BY cuentas;
++---------+-------------+
+| cuentas | identidades |
++---------+-------------+
+|       1 |        6051 |
+|       2 |        1450 |
+|       3 |           4 |
++---------+-------------+
+3 rows in set (0.01 sec)
+
+mysql> SELECT COUNT(*) AS total,
+    ->        SUM(email IS NOT NULL) AS con_email,
+    ->        SUM(manager IS NOT NULL) AS con_manager
+    -> FROM spt_identity;
++-------+-----------+-------------+
+| total | con_email | con_manager |
++-------+-----------+-------------+
+|  8913 |      2039 |           1 |
++-------+-----------+-------------+
+1 row in set (0.65 sec)
+
