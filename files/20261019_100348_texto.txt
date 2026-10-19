@@ -1,5 +1,0 @@
-SELECT COUNT(*) AS total_ad,
-       SUM(l.attributes LIKE '%key="employeeID"%') AS con_employeeid
-FROM spt_link l
-JOIN spt_application a ON a.id = l.application
-WHERE a.name = 'Active Directory - QA';
