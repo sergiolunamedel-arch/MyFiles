@@ -1,0 +1,81 @@
+mysql> SELECT i.name, l.native_identity, l.created, l.modified, l.attributes
+    -> FROM spt_link l JOIN spt_identity i ON i.id = l.identity_id
+    -> WHERE l.native_identity LIKE '%aandrade%' \G
+*************************** 1. row ***************************
+           name: DOMBASE\aandrade
+native_identity: CN=aandrade,OU=Mexico,OU=Foraneos,OU=Usuarios,DC=dombase,DC=net
+        created: 1789764234490
+       modified: 1792430573144
+     attributes: <Attributes>
+  <Map>
+    <entry key="NetBIOSName"/>
+    <entry key="accountFlags">
+      <value>
+        <List>
+          <String>Normal User Account</String>
+        </List>
+      </value>
+    </entry>
+    <entry key="cn" value="aandrade"/>
+    <entry key="department" value="SUBDIRECCION COMERCIAL CDMX 2"/>
+    <entry key="description" value="419200-5300-134111-180"/>
+    <entry key="displayName" value="Aracely Andrade Alcazar"/>
+    <entry key="distinguishedName" value="CN=aandrade,OU=Mexico,OU=Foraneos,OU=Usuarios,DC=dombase,DC=net"/>
+    <entry key="givenName" value="ARACELY"/>
+    <entry key="l" value="MIGUEL HIDALGO"/>
+    <entry key="mail" value="aandrade@bancobase.com"/>
+    <entry key="manager" value="CN=pmoralesl,OU=Mexico,OU=Foraneos,OU=Usuarios,DC=dombase,DC=net"/>
+    <entry key="memberOf">
+      <value>
+        <List>
+          <String>CN=G_Oracle_Prd,OU=Azure_Groups,OU=Security_Groups,OU=Banco_Base,DC=dombase,DC=net</String>
+          <String>CN=G_Toe_Wifi_USRS_GDL,OU=Department_Groups,OU=Security_Groups,OU=Banco_Base,DC=dombase,DC=net</String>
+          <String>CN=G_BackofficeWeb,OU=Service_Groups,OU=Security_Groups,OU=Banco_Base,DC=dombase,DC=net</String>
+          <String>CN=G_Toe_Wifi_USRS_Floor_6,OU=Department_Groups,OU=Security_Groups,OU=Banco_Base,DC=dombase,DC=net</String>
+          <String>CN=GP_UPGRADE_GROUP,OU=Grupos,DC=dombase,DC=net</String>
+          <String>CN=G_Citrix_OnBase_Prod,OU=Azure_Groups,OU=Security_Groups,OU=Banco_Base,DC=dombase,DC=net</String>
+          <String>CN=G_Tob_Wifi_Branch_Offices,OU=Department_Groups,OU=Security_Groups,OU=Banco_Base,DC=dombase,DC=net</String>
+          <String>CN=Asesor Cambiario,OU=Core Bancario,OU=Grupos,DC=dombase,DC=net</String>
+          <String>CN=G_Tob_Wired_Special_products,OU=Department_Groups,OU=Security_Groups,OU=Banco_Base,DC=dombase,DC=net</String>
+          <String>CN=G_Citrix_BaseBanco_Prod,OU=Service_Groups,OU=Security_Groups,OU=Banco_Base,DC=dombase,DC=net</String>
+          <String>CN=G_Citrix_Siglo_Producción,OU=Service_Groups,OU=Security_Groups,OU=Banco_Base,DC=dombase,DC=net</String>
+          <String>CN=G_Tob_Wifi_Special_products,OU=Department_Groups,OU=Security_Groups,OU=Banco_Base,DC=dombase,DC=net</String>
+          <String>CN=G_Citrix_360T,OU=Service_Groups,OU=Security_Groups,OU=Banco_Base,DC=dombase,DC=net</String>
+          <String>CN=G_Citrix_CoreBancario,OU=Service_Groups,OU=Security_Groups,OU=Banco_Base,DC=dombase,DC=net</String>
+          <String>CN=G_Citrix_Isiloans,OU=Service_Groups,OU=Security_Groups,OU=Banco_Base,DC=dombase,DC=net</String>
+          <String>CN=G_GoogleSync_Service,OU=Service_Groups,OU=Security_Groups,OU=Banco_Base,DC=dombase,DC=net</String>
+          <String>CN=ISI_OPERADOR1,OU=CARTERA ISI,OU=Grupos,DC=dombase,DC=net</String>
+          <String>CN=No_PrintScreen,OU=Grupos,DC=dombase,DC=net</String>
+        </List>
+      </value>
+    </entry>
+    <entry key="msDS-PrincipalName" value="DOMBASE\aandrade"/>
+    <entry key="msNPAllowDialin" value="Not Set"/>
+    <entry key="objectClass">
+      <value>
+        <List>
+          <String>top</String>
+          <String>person</String>
+          <String>organizationalPerson</String>
+          <String>user</String>
+        </List>
+      </value>
+    </entry>
+    <entry key="objectSid" value="S-1-5-21-3180279565-2411908611-402430510-47541"/>
+    <entry key="objectType" value="user"/>
+    <entry key="objectguid" value="{c0890e22-b194-476a-95a6-cdf180a5d794}"/>
+    <entry key="physicalDeliveryOfficeName" value="LOMAS"/>
+    <entry key="postOfficeBox" value="419200-5300-134111-180"/>
+    <entry key="postalCode" value="11000"/>
+    <entry key="sAMAccountName" value="aandrade"/>
+    <entry key="sn" value="ANDRADE ALCAZAR"/>
+    <entry key="st" value="CIUDAD DE MÉXICO"/>
+    <entry key="streetAddress" value="&quot;PERIF. BLVD. MANUEL ÁVILA CAMACHO #36 COL. LOMAS DE CHAPULTEPEC V SECC&quot;"/>
+    <entry key="telephoneNumber" value="(55) 5010 9900 Ext"/>
+    <entry key="title" value="ASESOR CAMBIARIO"/>
+    <entry key="userAccountControl" value="512"/>
+    <entry key="userPrincipalName" value="aandrade@bancobase.com"/>
+  </Map>
+</Attributes>
+
+1 row in set (0.02 sec)
