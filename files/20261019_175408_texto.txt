@@ -1,0 +1,25 @@
+Paso 1: ver cómo está configurada la app (solo lectura)
+
+En el Linux, como $. La sintaxis del export en la consola está por confirmar, y el filtro de grep evita imprimir passwords:
+
+bash
+sudo -u tomcat /opt/tomcat/webapps/identityiq/WEB-INF/bin/iiq console
+> export /tmp/ad-qa.xml Application "Active Directory - QA"
+> quit
+grep -n -E 'key="(IQServiceHost|IQServicePort|useTLSForIQService|IQServiceUser)"' /tmp/ad-qa.xml
+
+Si el export te da error de sintaxis, hazlo por UI: Debug → Object Browser → Application → Active Directory - QA, y busca esas cuatro claves. Mándame solo esas líneas. No pegues nada que empiece con 1:ACP:.
+
+Paso 2: confirma en el Windows qué hizo el IQService a las 17:44
+
+powershell
+Get-Content C:\iqservice\IQTrace.log -Tail 6
+
+Si hay un handshake failed con hora de 17:44, queda confirmado que el cliente llega sin TLS.
+
+Qué esperar
+
+useTLSForIQService falta, está vacío o es false: esa es la causa. El arreglo es poner true en la app de QA. Antes hago el XML corregido, con respaldo previo del actual. No toques el IQService.
+Es true: el cliente sí intenta TLS y hay que revisar el certificado, la versión de TLS y la discrepancia pendiente de IQServiceUser (BANCOBASE\ en la app contra dombase\usr_qasailpoint registrado). Con las cuatro líneas lo veo.
+
+Sigues desbloqueado, así que ninguna de estas pruebas requiere volver a bloquearte todavía.
