@@ -1,0 +1,7 @@
+mysql> SELECT name, extended1, extended2 FROM spt_identity WHERE name='4102';
++------+-----------+-----------------------+
+| name | extended1 | extended2             |
++------+-----------+-----------------------+
+| 4102 | 1381      | AACEVES@BANCOBASE.COM |
++------+-----------+-----------------------+
+1 row in set (0.01 sec)
