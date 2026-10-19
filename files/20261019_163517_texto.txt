@@ -1,8 +1,0 @@
-bash
-mysqldump -h 127.0.0.1 -P 3306 -u identityiq -p --single-transaction --no-tablespaces identityiq | gzip > /var/tmp/identityiq_pre-lcm_2026-10-19.sql.gz
-
-Quité --routines (IIQ no usa rutinas y ese flag pide permisos que el usuario de aplicación no tiene) y agregué --no-tablespaces. Como la tubería oculta errores, verifica:
-
-bash
-ls -lh /var/tmp/identityiq_pre-lcm_2026-10-19.sql.gz
-gzip -t /var/tmp/identityiq_pre-lcm_2026-10-19.sql.gz && echo OK
