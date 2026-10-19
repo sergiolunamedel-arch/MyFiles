@@ -1,0 +1,9 @@
+SELECT COUNT(*) AS total, SUM(email IS NOT NULL) AS con_email, SUM(manager IS NOT NULL) AS con_manager FROM spt_identity;
+
+SELECT n_cuentas, COUNT(*) AS identidades FROM
+  (SELECT identity_id, COUNT(*) AS n_cuentas FROM spt_link GROUP BY identity_id) t
+GROUP BY n_cuentas ORDER BY n_cuentas;
+
+SELECT i.name, a.name AS app FROM spt_link l
+JOIN spt_identity i ON i.id = l.identity_id JOIN spt_application a ON a.id = l.application
+WHERE i.name IN ('4102','15877') ORDER BY i.name, a.name;
