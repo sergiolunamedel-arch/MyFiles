@@ -1,0 +1,10 @@
+[slunam@QVL-M0SLPOMYS00 ~]$ sed -n '60,68p' /tmp/ad-qa.xml
+                <entry key="IQServiceHost" value="10.50.53.86"/>
+                <entry key="IQServicePassword" value="1:ACP:gLwOBWWZX9FSxg/F5V60Wlb/VEa+e/JZdsbToaeSfcjl7n8QPopWZpPcG+Sqp6P1"/>
+                <entry key="IQServicePort" value="5050"/>
+                <entry key="IQServiceUser" value="BANCOBASE\usr_qasailpoint"/>
+                <entry key="useTLSForIQService">
+                  <value>
+                    <Boolean></Boolean>
+                  </value>
+                </entry>
