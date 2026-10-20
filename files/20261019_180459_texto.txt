@@ -1,1 +1,0 @@
-mysql -h 127.0.0.1 -P 3306 -u identityiq -p identityiq -e "select extractvalue(attributes,'//entry[@key=\"useTLSForIQService\"]//Boolean') as tls from spt_application where name='Active Directory - QA'"
