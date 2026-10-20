@@ -1,0 +1,5 @@
+¿Tienen Read/Write lockoutTime sobre slunam, en Effective Access, usr_qasailpoint y usrsailqa? Y en esa misma pantalla, ¿está marcada “Include inheritable permissions from this object’s parent”?
+¿A qué hora aplicaron la delegación, y con “Applies to: Descendant User objects”?
+Si usrsailqa no lo tiene, ¿pueden delegárselo en OU=Usuarios?
+¿Con qué cuenta se ejecuta el desbloqueo en producción?
+¿Pueden confirmar que usrsvcpso no tiene delegaciones y deshabilitarla o eliminarla?
