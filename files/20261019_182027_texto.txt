@@ -1,0 +1,28 @@
+Hola equipo de AD,
+
+Estamos probando en QA el desbloqueo de cuentas de forma autoservicio desde SailPoint IdentityIQ. La cuenta de servicio del IQService ya autentica correctamente, pero al intentar desbloquear una cuenta de prueba AD responde "Access is denied" (HRESULT 0x80070005), por falta de permisos.
+
+Solicitud:
+Delegar a dombase\usr_qasailpoint, sobre la OU siguiente y con aplicación a objetos User descendientes:
+
+OU=Aguascalientes,OU=Foraneos,OU=Usuarios,DC=dombase,DC=net
+
+Permisos (por propiedad):
+- Read lockoutTime
+- Write lockoutTime
+
+En el asistente "Delegate Control": Create a custom task to delegate > Only the following objects in the folder > User objects > Property-specific > Read lockoutTime y Write lockoutTime. No hay una opción predefinida para desbloquear cuentas.
+
+Notas:
+- El alcance es solo esa OU, para validar el flujo con mi cuenta de prueba (slunam). No se solicita nada a nivel dominio.
+- Cuando el flujo esté validado, abriremos una solicitud aparte con el alcance y diseño definitivos.
+- No se solicita permiso de Reset Password en esta etapa.
+
+Para validar el cambio, ¿pueden compartirme el resultado de este comando?
+dsacls "OU=Aguascalientes,OU=Foraneos,OU=Usuarios,DC=dombase,DC=net" | findstr /i usr_qasailpoint
+
+Cuando esté aplicado, necesito que alguien de su equipo esté disponible para desbloquear manualmente mi cuenta slunam si la prueba la deja bloqueada.
+
+Gracias,
+Sergio Luna
+Ciberseguridad Digital, Banco Base
