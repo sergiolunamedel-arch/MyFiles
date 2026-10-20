@@ -1,0 +1,1 @@
+sudo grep -n -A2 'ADLDAPConnector.*ERROR\|ERROR.*ADLDAPConnector' /opt/tomcat/logs/catalina.out | tail -12
