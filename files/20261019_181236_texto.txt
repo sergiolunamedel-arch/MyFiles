@@ -1,4 +1,0 @@
-PS C:\Users\usr_qasailpoint> whoami
-dombase\usr_qasailpoint
-PS C:\Users\usr_qasailpoint> $env:USERDOMAIN
-DOMBASE
