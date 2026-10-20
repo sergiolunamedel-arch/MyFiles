@@ -1,0 +1,7 @@
+PS C:\Users\usr_qasailpoint> Get-Content C:\iqservice\IQTrace.log -Tail 6
+   --- End of inner exception stack trace ---
+   at sailpoint.rpcserver.RpcHandler.AuthenticateServer(X509Certificate2 serverCertificate, SslProtocols sslprotocol, Boolean initialCall)
+   at sailpoint.rpcserver.RpcHandler..ctor(Hashtable services, Hashtable registry, TcpClient client, String port, Boolean useTLS, String subject, String tlsVersion, String registeredClients, String serialNumber)"
+10/19/2026 18:06:18 : RpcHandler [ Thread-5 ] ERROR : "Client Authentication failed with :System.ApplicationException: Client authentication failed with error - The user name or password is incorrect
+   at sailpoint.tools.Impersonator.validateClient(String user, String password, Boolean isReturnError, String logOnProvider)
+   at sailpoint.rpcserver.RpcHandler.authenticateClient(String user, String password, String logOnProvider)"
