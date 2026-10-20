@@ -1,0 +1,34 @@
+      <entry key="domainSettings">
+        <value>
+          <List>
+            <Map>
+              <entry key="authenticationType" value="simple"/>
+              <entry key="authorizationType" value="simple"/>
+              <entry key="domainDN" value="DC=dombase,DC=net"/>
+              <entry key="domainIterateSearchFilter"/>
+              <entry key="domainNetBiosName"/>
+              <entry key="enablePasswordLessAuthenticationForDomain">
+                <value>
+                  <Boolean></Boolean>
+                </value>
+              </entry>
+              <entry key="forestName" value="dombase"/>
+              <entry key="password" value="1:ACP:lyFCWdAo8M09/8px33ml5O9afxQ2rQa20DXFnN+zd0w="/>
+              <entry key="port" value="389"/>
+              <entry key="servers">
+                <value>
+                  <List>
+                    <String>MTY-ALE-PMDC002.dombase.net</String>
+                  </List>
+                </value>
+              </entry>
+              <entry key="useSSL">
+                <value>
+                  <Boolean></Boolean>
+                </value>
+              </entry>
+              <entry key="user" value="dombase\usrsailqa"/>
+            </Map>
+          </List>
+        </value>
+      </entry>
