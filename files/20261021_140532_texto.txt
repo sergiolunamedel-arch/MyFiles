@@ -1,0 +1,1212 @@
+[slunam@QVL-M0SLPOMYS00 ~]$ cp ~/BancoBase-Unlock-Self-Workflow.xml /tmp/
+[slunam@QVL-M0SLPOMYS00 ~]$ chmod 644 /tmp/BancoBase-Unlock-Self-Workflow.xml
+[slunam@QVL-M0SLPOMYS00 ~]$ sudo -u tomcat /opt/tomcat/webapps/identityiq/WEB-INF/bin/iiq console
+adding exports for Java 17
+iiq.hostname : QVL-M0SLPOMYS00-console
+> import /tmp/BancoBase-Unlock-Self-Workflow.xml
+Workflow:BancoBase-Unlock-Self
+> delete Custom BancoBase-Unlock-RateLimit
+Deleting Custom BancoBase-Unlock-RateLimit
+> workflow BancoBase-Unlock-Self /tmp/unlock-args.xml
+
+2026-10-21T14:02:13,693  WARN main sailpoint.bancobase.UnlockSelf:166 - [BancoBase-Unlock-Self] ENVIADO | usuario=26634 | objetivo=26634 | cuenta=CN=slunam,OU=Aguascalientes,OU=Foraneos,OU=Usuarios,DC=dombase,DC=net | Unlock enviado sin errores reportados
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE WorkflowLaunch PUBLIC "sailpoint.dtd" "sailpoint.dtd">
+<WorkflowLaunch status="complete" workflowName="BancoBase-Unlock-Self">
+  <TaskResultRef>
+    <Reference class="sailpoint.object.TaskResult" id="0a323693a1601e1d81a1600ea0920002" name="BancoBase-Unlock-Self - 1"/>
+  </TaskResultRef>
+  <WorkflowCaseRef>
+    <Reference class="sailpoint.object.WorkflowCase" name="BancoBase-Unlock-Self"/>
+  </WorkflowCaseRef>
+</WorkflowLaunch>
+
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE WorkflowCase PUBLIC "sailpoint.dtd" "sailpoint.dtd">
+<WorkflowCase completed="1792612933759" launcher="26634" name="BancoBase-Unlock-Self">
+  <TaskResult completed="1792612933759" completionStatus="Success" created="1792612933778" id="0a323693a1601e1d81a1600ea0920002" launched="1792612930365" launcher="26634" name="BancoBase-Unlock-Self - 1" type="Workflow">
+    <Attributes>
+      <Map>
+        <entry key="workflowSummary">
+          <value>
+            <WorkflowSummary step="Stop"/>
+          </value>
+        </entry>
+      </Map>
+    </Attributes>
+    <Definition>
+      <Reference class="sailpoint.object.TaskDefinition" id="0a3236939fcd1b12819fcd8b7a7c01dd" name="Workflow Launcher"/>
+    </Definition>
+    <Owner>
+      <Reference class="sailpoint.object.Identity" id="0a323693a0d9121a81a0eb159c7f6657" name="26634"/>
+    </Owner>
+  </TaskResult>
+  <Workflow complete="true" currentStep="e6aa652f14204b5886f6caa9f6fb628a" explicitTransitions="true" name="BancoBase-Unlock-Self">
+    <Variable input="true" name="identityName"/>
+    <Variable input="true" name="launcher"/>
+    <Variable name="resultado"/>
+    <Step complete="true" icon="Start" id="420cd95b08ec492aa603cb4c98e73c9d" name="Start" posX="28" posY="10">
+      <Transition to="Desbloquear"/>
+    </Step>
+    <Step complete="true" id="011c7a7b0b6642a19b6dd9ca05c87bae" name="Desbloquear" posX="150" posY="10" resultVariable="resultado">
+      <Script>
+        <Source>
+import sailpoint.object.*;
+import sailpoint.api.*;
+import java.util.*;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+Log log = LogFactory.getLog("sailpoint.bancobase.UnlockSelf");
+
+// ===== Parametros. Para produccion: cambiar APP y revisar BASE_DN =====
+String APP = "Active Directory - QA";
+String BASE_DN = ",OU=Usuarios,DC=dombase,DC=net";
+int MAX_POR_HORA = 3;
+String ACCION = "BancoBaseSelfUnlock";
+String RL_NAME = "BancoBase-Unlock-RateLimit";
+// ======================================================================
+
+String who = launcher;
+String target = identityName;
+if (who == null) {
+  try { who = wfcontext.getWorkflowCase().getLauncher(); } catch (Throwable t0) { }
+}
+if (target == null) { target = who; }
+
+String finalizar(String estado, String detalle, String cuenta) {
+  if (detalle != null &amp;&amp; detalle.length() > 250) { detalle = detalle.substring(0, 250); }
+  String msg = estado + " | usuario=" + who + " | objetivo=" + target + " | cuenta=" + cuenta + " | " + detalle;
+  log.warn("[BancoBase-Unlock-Self] " + msg);
+  try {
+    AuditEvent ev = new AuditEvent();
+    ev.setSource(who);
+    ev.setAction(ACCION);
+    ev.setTarget(target);
+    ev.setApplication(APP);
+    ev.setAccountName(cuenta);
+    ev.setString1(estado);
+    ev.setString2(detalle);
+    context.saveObject(ev);
+    context.commitTransaction();
+  } catch (Throwable ta) {
+    log.warn("[BancoBase-Unlock-Self] no se pudo escribir el AuditEvent: " + ta);
+  }
+  return msg;
+}
+
+// 1) Solo la propia cuenta
+if (who == null || target == null) {
+  return finalizar("RECHAZADO", "no se pudo determinar quien lanza el workflow", null);
+}
+if (!who.equals(target)) {
+  return finalizar("RECHAZADO", "solo se permite desbloquear la propia cuenta", null);
+}
+
+// 2) La identidad existe y esta activa
+Identity ident = context.getObjectByName(Identity.class, target);
+if (ident == null) {
+  return finalizar("RECHAZADO", "la identidad no existe", null);
+}
+if (ident.isInactive()) {
+  return finalizar("RECHAZADO", "la identidad esta inactiva", null);
+}
+
+// 3) Exactamente una cuenta en la app de AD, dentro del alcance de la delegacion
+Link enlace = null;
+int numCuentas = 0;
+List links = ident.getLinks();
+if (links != null) {
+  for (Object o : links) {
+    Link l = (Link) o;
+    if (APP.equals(l.getApplicationName())) { enlace = l; numCuentas++; }
+  }
+}
+if (numCuentas != 1) {
+  return finalizar("RECHAZADO", "la identidad tiene " + numCuentas + " cuentas en " + APP, null);
+}
+String ni = enlace.getNativeIdentity();
+String niU = (ni == null) ? "" : ni.toUpperCase();
+if (!niU.endsWith(BASE_DN.toUpperCase()) || niU.indexOf(",OU=DISABLED") >= 0) {
+  return finalizar("RECHAZADO", "la cuenta esta fuera de " + BASE_DN, ni);
+}
+Object ac = enlace.getAttribute("adminCount");
+if (ac != null &amp;&amp; "1".equals(ac.toString().trim())) {
+  return finalizar("RECHAZADO", "cuenta protegida (adminCount=1)", ni);
+}
+
+// 4) Limite de intentos por hora (se guarda en un Custom object)
+long ahora = System.currentTimeMillis();
+long ventana = 3600000L;
+Custom rl = context.getObjectByName(Custom.class, RL_NAME);
+if (rl == null) { rl = new Custom(); rl.setName(RL_NAME); }
+Attributes at = rl.getAttributes();
+if (at == null) { at = new Attributes(); rl.setAttributes(at); }
+String hist = at.getString(target);
+StringBuilder nuevo = new StringBuilder();
+int usados = 0;
+if (hist != null &amp;&amp; hist.length() > 0) {
+  String[] partes = hist.split(",");
+  for (int i = 0; i &lt; partes.length; i++) {
+    try {
+      long t1 = Long.parseLong(partes[i].trim());
+      if (ahora - t1 &lt; ventana) {
+        if (nuevo.length() > 0) { nuevo.append(","); }
+        nuevo.append(t1);
+        usados++;
+      }
+    } catch (Throwable tp) { }
+  }
+}
+if (usados >= MAX_POR_HORA) {
+  return finalizar("RECHAZADO", "limite de " + MAX_POR_HORA + " desbloqueos por hora", ni);
+}
+if (nuevo.length() > 0) { nuevo.append(","); }
+nuevo.append(ahora);
+at.put(target, nuevo.toString());
+context.saveObject(rl);
+context.commitTransaction();
+
+// 5) Unlock
+try {
+  ProvisioningPlan plan = new ProvisioningPlan();
+  plan.setIdentity(ident);
+  ProvisioningPlan.AccountRequest ar = new ProvisioningPlan.AccountRequest();
+  ar.setApplication(APP);
+  ar.setNativeIdentity(ni);
+  ar.setOperation(ProvisioningPlan.AccountRequest.Operation.Unlock);
+  plan.add(ar);
+  Provisioner p = new Provisioner(context);
+  p.compile(plan);
+  p.execute();
+  ProvisioningProject proj = p.getProject();
+  String x = proj.toXml().toLowerCase();
+  boolean fallo = (x.indexOf("status=\"failed\"") >= 0) || (x.indexOf("&lt;errors>") >= 0) || (x.indexOf("status=\"retry\"") >= 0);
+  if (fallo) {
+    log.warn("[BancoBase-Unlock-Self] proyecto con errores: " + proj.toXml());
+    return finalizar("ERROR", "el aprovisionamiento reporto errores; revisar el log del servidor y de IQService", ni);
+  }
+  return finalizar("ENVIADO", "Unlock enviado sin errores reportados", ni);
+} catch (Throwable te) {
+  return finalizar("ERROR", "excepcion: " + te, ni);
+}
+      </Source>
+      </Script>
+      <Transition to="Stop"/>
+    </Step>
+    <Step complete="true" icon="Stop" id="e6aa652f14204b5886f6caa9f6fb628a" name="Stop" posX="300" posY="10"/>
+    <Attributes>
+      <Map>
+        <entry key="identityName" value="26634"/>
+        <entry key="launcher" value="26634"/>
+        <entry key="resultado" value="ENVIADO | usuario=26634 | objetivo=26634 | cuenta=CN=slunam,OU=Aguascalientes,OU=Foraneos,OU=Usuarios,DC=dombase,DC=net | Unlock enviado sin errores reportados"/>
+        <entry key="sessionOwner" value="26634"/>
+      </Map>
+    </Attributes>
+  </Workflow>
+</WorkflowCase>
+
+> > workflow BancoBase-Unlock-Self /tmp/unlock-args.xml
+2026-10-21T14:02:50,854  WARN main sailpoint.bancobase.UnlockSelf:166 - [BancoBase-Unlock-Self] ENVIADO | usuario=26634 | objetivo=26634 | cuenta=CN=slunam,OU=Aguascalientes,OU=Foraneos,OU=Usuarios,DC=dombase,DC=net | Unlock enviado sin errores reportados
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE WorkflowLaunch PUBLIC "sailpoint.dtd" "sailpoint.dtd">
+<WorkflowLaunch status="complete" workflowName="BancoBase-Unlock-Self">
+  <TaskResultRef>
+    <Reference class="sailpoint.object.TaskResult" id="0a323693a1601e1d81a1600f31850004" name="BancoBase-Unlock-Self - 2"/>
+  </TaskResultRef>
+  <WorkflowCaseRef>
+    <Reference class="sailpoint.object.WorkflowCase" name="BancoBase-Unlock-Self"/>
+  </WorkflowCaseRef>
+</WorkflowLaunch>
+
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE WorkflowCase PUBLIC "sailpoint.dtd" "sailpoint.dtd">
+<WorkflowCase completed="1792612970878" launcher="26634" name="BancoBase-Unlock-Self">
+  <TaskResult completed="1792612970878" completionStatus="Success" created="1792612970885" id="0a323693a1601e1d81a1600f31850004" launched="1792612970282" launcher="26634" name="BancoBase-Unlock-Self - 2" type="Workflow">
+    <Attributes>
+      <Map>
+        <entry key="workflowSummary">
+          <value>
+            <WorkflowSummary step="Stop"/>
+          </value>
+        </entry>
+      </Map>
+    </Attributes>
+    <Definition>
+      <Reference class="sailpoint.object.TaskDefinition" id="0a3236939fcd1b12819fcd8b7a7c01dd" name="Workflow Launcher"/>
+    </Definition>
+    <Owner>
+      <Reference class="sailpoint.object.Identity" id="0a323693a0d9121a81a0eb159c7f6657" name="26634"/>
+    </Owner>
+  </TaskResult>
+  <Workflow complete="true" currentStep="4979c7d0f4f54f78bdc9dea1d973d653" explicitTransitions="true" name="BancoBase-Unlock-Self">
+    <Variable input="true" name="identityName"/>
+    <Variable input="true" name="launcher"/>
+    <Variable name="resultado"/>
+    <Step complete="true" icon="Start" id="53205949cd9643e0941e2858b985f637" name="Start" posX="28" posY="10">
+      <Transition to="Desbloquear"/>
+    </Step>
+    <Step complete="true" id="1edf80692ea441c6ac6979f646c39555" name="Desbloquear" posX="150" posY="10" resultVariable="resultado">
+      <Script>
+        <Source>
+import sailpoint.object.*;
+import sailpoint.api.*;
+import java.util.*;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+Log log = LogFactory.getLog("sailpoint.bancobase.UnlockSelf");
+
+// ===== Parametros. Para produccion: cambiar APP y revisar BASE_DN =====
+String APP = "Active Directory - QA";
+String BASE_DN = ",OU=Usuarios,DC=dombase,DC=net";
+int MAX_POR_HORA = 3;
+String ACCION = "BancoBaseSelfUnlock";
+String RL_NAME = "BancoBase-Unlock-RateLimit";
+// ======================================================================
+
+String who = launcher;
+String target = identityName;
+if (who == null) {
+  try { who = wfcontext.getWorkflowCase().getLauncher(); } catch (Throwable t0) { }
+}
+if (target == null) { target = who; }
+
+String finalizar(String estado, String detalle, String cuenta) {
+  if (detalle != null &amp;&amp; detalle.length() > 250) { detalle = detalle.substring(0, 250); }
+  String msg = estado + " | usuario=" + who + " | objetivo=" + target + " | cuenta=" + cuenta + " | " + detalle;
+  log.warn("[BancoBase-Unlock-Self] " + msg);
+  try {
+    AuditEvent ev = new AuditEvent();
+    ev.setSource(who);
+    ev.setAction(ACCION);
+    ev.setTarget(target);
+    ev.setApplication(APP);
+    ev.setAccountName(cuenta);
+    ev.setString1(estado);
+    ev.setString2(detalle);
+    context.saveObject(ev);
+    context.commitTransaction();
+  } catch (Throwable ta) {
+    log.warn("[BancoBase-Unlock-Self] no se pudo escribir el AuditEvent: " + ta);
+  }
+  return msg;
+}
+
+// 1) Solo la propia cuenta
+if (who == null || target == null) {
+  return finalizar("RECHAZADO", "no se pudo determinar quien lanza el workflow", null);
+}
+if (!who.equals(target)) {
+  return finalizar("RECHAZADO", "solo se permite desbloquear la propia cuenta", null);
+}
+
+// 2) La identidad existe y esta activa
+Identity ident = context.getObjectByName(Identity.class, target);
+if (ident == null) {
+  return finalizar("RECHAZADO", "la identidad no existe", null);
+}
+if (ident.isInactive()) {
+  return finalizar("RECHAZADO", "la identidad esta inactiva", null);
+}
+
+// 3) Exactamente una cuenta en la app de AD, dentro del alcance de la delegacion
+Link enlace = null;
+int numCuentas = 0;
+List links = ident.getLinks();
+if (links != null) {
+  for (Object o : links) {
+    Link l = (Link) o;
+    if (APP.equals(l.getApplicationName())) { enlace = l; numCuentas++; }
+  }
+}
+if (numCuentas != 1) {
+  return finalizar("RECHAZADO", "la identidad tiene " + numCuentas + " cuentas en " + APP, null);
+}
+String ni = enlace.getNativeIdentity();
+String niU = (ni == null) ? "" : ni.toUpperCase();
+if (!niU.endsWith(BASE_DN.toUpperCase()) || niU.indexOf(",OU=DISABLED") >= 0) {
+  return finalizar("RECHAZADO", "la cuenta esta fuera de " + BASE_DN, ni);
+}
+Object ac = enlace.getAttribute("adminCount");
+if (ac != null &amp;&amp; "1".equals(ac.toString().trim())) {
+  return finalizar("RECHAZADO", "cuenta protegida (adminCount=1)", ni);
+}
+
+// 4) Limite de intentos por hora (se guarda en un Custom object)
+long ahora = System.currentTimeMillis();
+long ventana = 3600000L;
+Custom rl = context.getObjectByName(Custom.class, RL_NAME);
+if (rl == null) { rl = new Custom(); rl.setName(RL_NAME); }
+Attributes at = rl.getAttributes();
+if (at == null) { at = new Attributes(); rl.setAttributes(at); }
+String hist = at.getString(target);
+StringBuilder nuevo = new StringBuilder();
+int usados = 0;
+if (hist != null &amp;&amp; hist.length() > 0) {
+  String[] partes = hist.split(",");
+  for (int i = 0; i &lt; partes.length; i++) {
+    try {
+      long t1 = Long.parseLong(partes[i].trim());
+      if (ahora - t1 &lt; ventana) {
+        if (nuevo.length() > 0) { nuevo.append(","); }
+        nuevo.append(t1);
+        usados++;
+      }
+    } catch (Throwable tp) { }
+  }
+}
+if (usados >= MAX_POR_HORA) {
+  return finalizar("RECHAZADO", "limite de " + MAX_POR_HORA + " desbloqueos por hora", ni);
+}
+if (nuevo.length() > 0) { nuevo.append(","); }
+nuevo.append(ahora);
+at.put(target, nuevo.toString());
+context.saveObject(rl);
+context.commitTransaction();
+
+// 5) Unlock
+try {
+  ProvisioningPlan plan = new ProvisioningPlan();
+  plan.setIdentity(ident);
+  ProvisioningPlan.AccountRequest ar = new ProvisioningPlan.AccountRequest();
+  ar.setApplication(APP);
+  ar.setNativeIdentity(ni);
+  ar.setOperation(ProvisioningPlan.AccountRequest.Operation.Unlock);
+  plan.add(ar);
+  Provisioner p = new Provisioner(context);
+  p.compile(plan);
+  p.execute();
+  ProvisioningProject proj = p.getProject();
+  String x = proj.toXml().toLowerCase();
+  boolean fallo = (x.indexOf("status=\"failed\"") >= 0) || (x.indexOf("&lt;errors>") >= 0) || (x.indexOf("status=\"retry\"") >= 0);
+  if (fallo) {
+    log.warn("[BancoBase-Unlock-Self] proyecto con errores: " + proj.toXml());
+    return finalizar("ERROR", "el aprovisionamiento reporto errores; revisar el log del servidor y de IQService", ni);
+  }
+  return finalizar("ENVIADO", "Unlock enviado sin errores reportados", ni);
+} catch (Throwable te) {
+  return finalizar("ERROR", "excepcion: " + te, ni);
+}
+      </Source>
+      </Script>
+      <Transition to="Stop"/>
+    </Step>
+    <Step complete="true" icon="Stop" id="4979c7d0f4f54f78bdc9dea1d973d653" name="Stop" posX="300" posY="10"/>
+    <Attributes>
+      <Map>
+        <entry key="identityName" value="26634"/>
+        <entry key="launcher" value="26634"/>
+        <entry key="resultado" value="ENVIADO | usuario=26634 | objetivo=26634 | cuenta=CN=slunam,OU=Aguascalientes,OU=Foraneos,OU=Usuarios,DC=dombase,DC=net | Unlock enviado sin errores reportados"/>
+        <entry key="sessionOwner" value="26634"/>
+      </Map>
+    </Attributes>
+  </Workflow>
+</WorkflowCase>
+
+> workflow BancoBase-Unlock-Self /tmp/unlock-args.xml
+2026-10-21T14:02:52,576  WARN main sailpoint.bancobase.UnlockSelf:166 - [BancoBase-Unlock-Self] ENVIADO | usuario=26634 | objetivo=26634 | cuenta=CN=slunam,OU=Aguascalientes,OU=Foraneos,OU=Usuarios,DC=dombase,DC=net | Unlock enviado sin errores reportados
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE WorkflowLaunch PUBLIC "sailpoint.dtd" "sailpoint.dtd">
+<WorkflowLaunch status="complete" workflowName="BancoBase-Unlock-Self">
+  <TaskResultRef>
+    <Reference class="sailpoint.object.TaskResult" id="0a323693a1601e1d81a1600f38470006" name="BancoBase-Unlock-Self - 3"/>
+  </TaskResultRef>
+  <WorkflowCaseRef>
+    <Reference class="sailpoint.object.WorkflowCase" name="BancoBase-Unlock-Self"/>
+  </WorkflowCaseRef>
+</WorkflowLaunch>
+
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE WorkflowCase PUBLIC "sailpoint.dtd" "sailpoint.dtd">
+<WorkflowCase completed="1792612972608" launcher="26634" name="BancoBase-Unlock-Self">
+  <TaskResult completed="1792612972608" completionStatus="Success" created="1792612972615" id="0a323693a1601e1d81a1600f38470006" launched="1792612971960" launcher="26634" name="BancoBase-Unlock-Self - 3" type="Workflow">
+    <Attributes>
+      <Map>
+        <entry key="workflowSummary">
+          <value>
+            <WorkflowSummary step="Stop"/>
+          </value>
+        </entry>
+      </Map>
+    </Attributes>
+    <Definition>
+      <Reference class="sailpoint.object.TaskDefinition" id="0a3236939fcd1b12819fcd8b7a7c01dd" name="Workflow Launcher"/>
+    </Definition>
+    <Owner>
+      <Reference class="sailpoint.object.Identity" id="0a323693a0d9121a81a0eb159c7f6657" name="26634"/>
+    </Owner>
+  </TaskResult>
+  <Workflow complete="true" currentStep="e6f43647565e49d9b8d587e77487c8e0" explicitTransitions="true" name="BancoBase-Unlock-Self">
+    <Variable input="true" name="identityName"/>
+    <Variable input="true" name="launcher"/>
+    <Variable name="resultado"/>
+    <Step complete="true" icon="Start" id="d0df82fbf58c4a84b7fe6e05fa15ee1c" name="Start" posX="28" posY="10">
+      <Transition to="Desbloquear"/>
+    </Step>
+    <Step complete="true" id="6aee86ff57e343a6b86f8b082b30a285" name="Desbloquear" posX="150" posY="10" resultVariable="resultado">
+      <Script>
+        <Source>
+import sailpoint.object.*;
+import sailpoint.api.*;
+import java.util.*;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+Log log = LogFactory.getLog("sailpoint.bancobase.UnlockSelf");
+
+// ===== Parametros. Para produccion: cambiar APP y revisar BASE_DN =====
+String APP = "Active Directory - QA";
+String BASE_DN = ",OU=Usuarios,DC=dombase,DC=net";
+int MAX_POR_HORA = 3;
+String ACCION = "BancoBaseSelfUnlock";
+String RL_NAME = "BancoBase-Unlock-RateLimit";
+// ======================================================================
+
+String who = launcher;
+String target = identityName;
+if (who == null) {
+  try { who = wfcontext.getWorkflowCase().getLauncher(); } catch (Throwable t0) { }
+}
+if (target == null) { target = who; }
+
+String finalizar(String estado, String detalle, String cuenta) {
+  if (detalle != null &amp;&amp; detalle.length() > 250) { detalle = detalle.substring(0, 250); }
+  String msg = estado + " | usuario=" + who + " | objetivo=" + target + " | cuenta=" + cuenta + " | " + detalle;
+  log.warn("[BancoBase-Unlock-Self] " + msg);
+  try {
+    AuditEvent ev = new AuditEvent();
+    ev.setSource(who);
+    ev.setAction(ACCION);
+    ev.setTarget(target);
+    ev.setApplication(APP);
+    ev.setAccountName(cuenta);
+    ev.setString1(estado);
+    ev.setString2(detalle);
+    context.saveObject(ev);
+    context.commitTransaction();
+  } catch (Throwable ta) {
+    log.warn("[BancoBase-Unlock-Self] no se pudo escribir el AuditEvent: " + ta);
+  }
+  return msg;
+}
+
+// 1) Solo la propia cuenta
+if (who == null || target == null) {
+  return finalizar("RECHAZADO", "no se pudo determinar quien lanza el workflow", null);
+}
+if (!who.equals(target)) {
+  return finalizar("RECHAZADO", "solo se permite desbloquear la propia cuenta", null);
+}
+
+// 2) La identidad existe y esta activa
+Identity ident = context.getObjectByName(Identity.class, target);
+if (ident == null) {
+  return finalizar("RECHAZADO", "la identidad no existe", null);
+}
+if (ident.isInactive()) {
+  return finalizar("RECHAZADO", "la identidad esta inactiva", null);
+}
+
+// 3) Exactamente una cuenta en la app de AD, dentro del alcance de la delegacion
+Link enlace = null;
+int numCuentas = 0;
+List links = ident.getLinks();
+if (links != null) {
+  for (Object o : links) {
+    Link l = (Link) o;
+    if (APP.equals(l.getApplicationName())) { enlace = l; numCuentas++; }
+  }
+}
+if (numCuentas != 1) {
+  return finalizar("RECHAZADO", "la identidad tiene " + numCuentas + " cuentas en " + APP, null);
+}
+String ni = enlace.getNativeIdentity();
+String niU = (ni == null) ? "" : ni.toUpperCase();
+if (!niU.endsWith(BASE_DN.toUpperCase()) || niU.indexOf(",OU=DISABLED") >= 0) {
+  return finalizar("RECHAZADO", "la cuenta esta fuera de " + BASE_DN, ni);
+}
+Object ac = enlace.getAttribute("adminCount");
+if (ac != null &amp;&amp; "1".equals(ac.toString().trim())) {
+  return finalizar("RECHAZADO", "cuenta protegida (adminCount=1)", ni);
+}
+
+// 4) Limite de intentos por hora (se guarda en un Custom object)
+long ahora = System.currentTimeMillis();
+long ventana = 3600000L;
+Custom rl = context.getObjectByName(Custom.class, RL_NAME);
+if (rl == null) { rl = new Custom(); rl.setName(RL_NAME); }
+Attributes at = rl.getAttributes();
+if (at == null) { at = new Attributes(); rl.setAttributes(at); }
+String hist = at.getString(target);
+StringBuilder nuevo = new StringBuilder();
+int usados = 0;
+if (hist != null &amp;&amp; hist.length() > 0) {
+  String[] partes = hist.split(",");
+  for (int i = 0; i &lt; partes.length; i++) {
+    try {
+      long t1 = Long.parseLong(partes[i].trim());
+      if (ahora - t1 &lt; ventana) {
+        if (nuevo.length() > 0) { nuevo.append(","); }
+        nuevo.append(t1);
+        usados++;
+      }
+    } catch (Throwable tp) { }
+  }
+}
+if (usados >= MAX_POR_HORA) {
+  return finalizar("RECHAZADO", "limite de " + MAX_POR_HORA + " desbloqueos por hora", ni);
+}
+if (nuevo.length() > 0) { nuevo.append(","); }
+nuevo.append(ahora);
+at.put(target, nuevo.toString());
+context.saveObject(rl);
+context.commitTransaction();
+
+// 5) Unlock
+try {
+  ProvisioningPlan plan = new ProvisioningPlan();
+  plan.setIdentity(ident);
+  ProvisioningPlan.AccountRequest ar = new ProvisioningPlan.AccountRequest();
+  ar.setApplication(APP);
+  ar.setNativeIdentity(ni);
+  ar.setOperation(ProvisioningPlan.AccountRequest.Operation.Unlock);
+  plan.add(ar);
+  Provisioner p = new Provisioner(context);
+  p.compile(plan);
+  p.execute();
+  ProvisioningProject proj = p.getProject();
+  String x = proj.toXml().toLowerCase();
+  boolean fallo = (x.indexOf("status=\"failed\"") >= 0) || (x.indexOf("&lt;errors>") >= 0) || (x.indexOf("status=\"retry\"") >= 0);
+  if (fallo) {
+    log.warn("[BancoBase-Unlock-Self] proyecto con errores: " + proj.toXml());
+    return finalizar("ERROR", "el aprovisionamiento reporto errores; revisar el log del servidor y de IQService", ni);
+  }
+  return finalizar("ENVIADO", "Unlock enviado sin errores reportados", ni);
+} catch (Throwable te) {
+  return finalizar("ERROR", "excepcion: " + te, ni);
+}
+      </Source>
+      </Script>
+      <Transition to="Stop"/>
+    </Step>
+    <Step complete="true" icon="Stop" id="e6f43647565e49d9b8d587e77487c8e0" name="Stop" posX="300" posY="10"/>
+    <Attributes>
+      <Map>
+        <entry key="identityName" value="26634"/>
+        <entry key="launcher" value="26634"/>
+        <entry key="resultado" value="ENVIADO | usuario=26634 | objetivo=26634 | cuenta=CN=slunam,OU=Aguascalientes,OU=Foraneos,OU=Usuarios,DC=dombase,DC=net | Unlock enviado sin errores reportados"/>
+        <entry key="sessionOwner" value="26634"/>
+      </Map>
+    </Attributes>
+  </Workflow>
+</WorkflowCase>
+
+> workflow BancoBase-Unlock-Self /tmp/unlock-args.xml
+2026-10-21T14:02:53,621  WARN main sailpoint.bancobase.UnlockSelf:166 - [BancoBase-Unlock-Self] RECHAZADO | usuario=26634 | objetivo=26634 | cuenta=CN=slunam,OU=Aguascalientes,OU=Foraneos,OU=Usuarios,DC=dombase,DC=net | limite de 3 desbloqueos por hora
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE WorkflowLaunch PUBLIC "sailpoint.dtd" "sailpoint.dtd">
+<WorkflowLaunch status="complete" workflowName="BancoBase-Unlock-Self">
+  <TaskResultRef>
+    <Reference class="sailpoint.object.TaskResult" id="0a323693a1601e1d81a1600f3c4e0008" name="BancoBase-Unlock-Self - 4"/>
+  </TaskResultRef>
+  <WorkflowCaseRef>
+    <Reference class="sailpoint.object.WorkflowCase" name="BancoBase-Unlock-Self"/>
+  </WorkflowCaseRef>
+</WorkflowLaunch>
+
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE WorkflowCase PUBLIC "sailpoint.dtd" "sailpoint.dtd">
+<WorkflowCase completed="1792612973639" launcher="26634" name="BancoBase-Unlock-Self">
+  <TaskResult completed="1792612973639" completionStatus="Success" created="1792612973646" id="0a323693a1601e1d81a1600f3c4e0008" launched="1792612973513" launcher="26634" name="BancoBase-Unlock-Self - 4" type="Workflow">
+    <Attributes>
+      <Map>
+        <entry key="workflowSummary">
+          <value>
+            <WorkflowSummary step="Stop"/>
+          </value>
+        </entry>
+      </Map>
+    </Attributes>
+    <Definition>
+      <Reference class="sailpoint.object.TaskDefinition" id="0a3236939fcd1b12819fcd8b7a7c01dd" name="Workflow Launcher"/>
+    </Definition>
+    <Owner>
+      <Reference class="sailpoint.object.Identity" id="0a323693a0d9121a81a0eb159c7f6657" name="26634"/>
+    </Owner>
+  </TaskResult>
+  <Workflow complete="true" currentStep="e69697339c2e41928e4bd8e6786d854b" explicitTransitions="true" name="BancoBase-Unlock-Self">
+    <Variable input="true" name="identityName"/>
+    <Variable input="true" name="launcher"/>
+    <Variable name="resultado"/>
+    <Step complete="true" icon="Start" id="d1f7a41182cd4a0e8b6deb014088e851" name="Start" posX="28" posY="10">
+      <Transition to="Desbloquear"/>
+    </Step>
+    <Step complete="true" id="36eab9a10711400dba868eaef62b7b5f" name="Desbloquear" posX="150" posY="10" resultVariable="resultado">
+      <Script>
+        <Source>
+import sailpoint.object.*;
+import sailpoint.api.*;
+import java.util.*;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+Log log = LogFactory.getLog("sailpoint.bancobase.UnlockSelf");
+
+// ===== Parametros. Para produccion: cambiar APP y revisar BASE_DN =====
+String APP = "Active Directory - QA";
+String BASE_DN = ",OU=Usuarios,DC=dombase,DC=net";
+int MAX_POR_HORA = 3;
+String ACCION = "BancoBaseSelfUnlock";
+String RL_NAME = "BancoBase-Unlock-RateLimit";
+// ======================================================================
+
+String who = launcher;
+String target = identityName;
+if (who == null) {
+  try { who = wfcontext.getWorkflowCase().getLauncher(); } catch (Throwable t0) { }
+}
+if (target == null) { target = who; }
+
+String finalizar(String estado, String detalle, String cuenta) {
+  if (detalle != null &amp;&amp; detalle.length() > 250) { detalle = detalle.substring(0, 250); }
+  String msg = estado + " | usuario=" + who + " | objetivo=" + target + " | cuenta=" + cuenta + " | " + detalle;
+  log.warn("[BancoBase-Unlock-Self] " + msg);
+  try {
+    AuditEvent ev = new AuditEvent();
+    ev.setSource(who);
+    ev.setAction(ACCION);
+    ev.setTarget(target);
+    ev.setApplication(APP);
+    ev.setAccountName(cuenta);
+    ev.setString1(estado);
+    ev.setString2(detalle);
+    context.saveObject(ev);
+    context.commitTransaction();
+  } catch (Throwable ta) {
+    log.warn("[BancoBase-Unlock-Self] no se pudo escribir el AuditEvent: " + ta);
+  }
+  return msg;
+}
+
+// 1) Solo la propia cuenta
+if (who == null || target == null) {
+  return finalizar("RECHAZADO", "no se pudo determinar quien lanza el workflow", null);
+}
+if (!who.equals(target)) {
+  return finalizar("RECHAZADO", "solo se permite desbloquear la propia cuenta", null);
+}
+
+// 2) La identidad existe y esta activa
+Identity ident = context.getObjectByName(Identity.class, target);
+if (ident == null) {
+  return finalizar("RECHAZADO", "la identidad no existe", null);
+}
+if (ident.isInactive()) {
+  return finalizar("RECHAZADO", "la identidad esta inactiva", null);
+}
+
+// 3) Exactamente una cuenta en la app de AD, dentro del alcance de la delegacion
+Link enlace = null;
+int numCuentas = 0;
+List links = ident.getLinks();
+if (links != null) {
+  for (Object o : links) {
+    Link l = (Link) o;
+    if (APP.equals(l.getApplicationName())) { enlace = l; numCuentas++; }
+  }
+}
+if (numCuentas != 1) {
+  return finalizar("RECHAZADO", "la identidad tiene " + numCuentas + " cuentas en " + APP, null);
+}
+String ni = enlace.getNativeIdentity();
+String niU = (ni == null) ? "" : ni.toUpperCase();
+if (!niU.endsWith(BASE_DN.toUpperCase()) || niU.indexOf(",OU=DISABLED") >= 0) {
+  return finalizar("RECHAZADO", "la cuenta esta fuera de " + BASE_DN, ni);
+}
+Object ac = enlace.getAttribute("adminCount");
+if (ac != null &amp;&amp; "1".equals(ac.toString().trim())) {
+  return finalizar("RECHAZADO", "cuenta protegida (adminCount=1)", ni);
+}
+
+// 4) Limite de intentos por hora (se guarda en un Custom object)
+long ahora = System.currentTimeMillis();
+long ventana = 3600000L;
+Custom rl = context.getObjectByName(Custom.class, RL_NAME);
+if (rl == null) { rl = new Custom(); rl.setName(RL_NAME); }
+Attributes at = rl.getAttributes();
+if (at == null) { at = new Attributes(); rl.setAttributes(at); }
+String hist = at.getString(target);
+StringBuilder nuevo = new StringBuilder();
+int usados = 0;
+if (hist != null &amp;&amp; hist.length() > 0) {
+  String[] partes = hist.split(",");
+  for (int i = 0; i &lt; partes.length; i++) {
+    try {
+      long t1 = Long.parseLong(partes[i].trim());
+      if (ahora - t1 &lt; ventana) {
+        if (nuevo.length() > 0) { nuevo.append(","); }
+        nuevo.append(t1);
+        usados++;
+      }
+    } catch (Throwable tp) { }
+  }
+}
+if (usados >= MAX_POR_HORA) {
+  return finalizar("RECHAZADO", "limite de " + MAX_POR_HORA + " desbloqueos por hora", ni);
+}
+if (nuevo.length() > 0) { nuevo.append(","); }
+nuevo.append(ahora);
+at.put(target, nuevo.toString());
+context.saveObject(rl);
+context.commitTransaction();
+
+// 5) Unlock
+try {
+  ProvisioningPlan plan = new ProvisioningPlan();
+  plan.setIdentity(ident);
+  ProvisioningPlan.AccountRequest ar = new ProvisioningPlan.AccountRequest();
+  ar.setApplication(APP);
+  ar.setNativeIdentity(ni);
+  ar.setOperation(ProvisioningPlan.AccountRequest.Operation.Unlock);
+  plan.add(ar);
+  Provisioner p = new Provisioner(context);
+  p.compile(plan);
+  p.execute();
+  ProvisioningProject proj = p.getProject();
+  String x = proj.toXml().toLowerCase();
+  boolean fallo = (x.indexOf("status=\"failed\"") >= 0) || (x.indexOf("&lt;errors>") >= 0) || (x.indexOf("status=\"retry\"") >= 0);
+  if (fallo) {
+    log.warn("[BancoBase-Unlock-Self] proyecto con errores: " + proj.toXml());
+    return finalizar("ERROR", "el aprovisionamiento reporto errores; revisar el log del servidor y de IQService", ni);
+  }
+  return finalizar("ENVIADO", "Unlock enviado sin errores reportados", ni);
+} catch (Throwable te) {
+  return finalizar("ERROR", "excepcion: " + te, ni);
+}
+      </Source>
+      </Script>
+      <Transition to="Stop"/>
+    </Step>
+    <Step complete="true" icon="Stop" id="e69697339c2e41928e4bd8e6786d854b" name="Stop" posX="300" posY="10"/>
+    <Attributes>
+      <Map>
+        <entry key="identityName" value="26634"/>
+        <entry key="launcher" value="26634"/>
+        <entry key="resultado" value="RECHAZADO | usuario=26634 | objetivo=26634 | cuenta=CN=slunam,OU=Aguascalientes,OU=Foraneos,OU=Usuarios,DC=dombase,DC=net | limite de 3 desbloqueos por hora"/>
+        <entry key="sessionOwner" value="26634"/>
+      </Map>
+    </Attributes>
+  </Workflow>
+</WorkflowCase>
+
+> workflow BancoBase-Unlock-Self /tmp/unlock-args.xml
+2026-10-21T14:02:54,724  WARN main sailpoint.bancobase.UnlockSelf:166 - [BancoBase-Unlock-Self] RECHAZADO | usuario=26634 | objetivo=26634 | cuenta=CN=slunam,OU=Aguascalientes,OU=Foraneos,OU=Usuarios,DC=dombase,DC=net | limite de 3 desbloqueos por hora
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE WorkflowLaunch PUBLIC "sailpoint.dtd" "sailpoint.dtd">
+<WorkflowLaunch status="complete" workflowName="BancoBase-Unlock-Self">
+  <TaskResultRef>
+    <Reference class="sailpoint.object.TaskResult" id="0a323693a1601e1d81a1600f409d000a" name="BancoBase-Unlock-Self - 5"/>
+  </TaskResultRef>
+  <WorkflowCaseRef>
+    <Reference class="sailpoint.object.WorkflowCase" name="BancoBase-Unlock-Self"/>
+  </WorkflowCaseRef>
+</WorkflowLaunch>
+
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE WorkflowCase PUBLIC "sailpoint.dtd" "sailpoint.dtd">
+<WorkflowCase completed="1792612974742" launcher="26634" name="BancoBase-Unlock-Self">
+  <TaskResult completed="1792612974742" completionStatus="Success" created="1792612974749" id="0a323693a1601e1d81a1600f409d000a" launched="1792612974633" launcher="26634" name="BancoBase-Unlock-Self - 5" type="Workflow">
+    <Attributes>
+      <Map>
+        <entry key="workflowSummary">
+          <value>
+            <WorkflowSummary step="Stop"/>
+          </value>
+        </entry>
+      </Map>
+    </Attributes>
+    <Definition>
+      <Reference class="sailpoint.object.TaskDefinition" id="0a3236939fcd1b12819fcd8b7a7c01dd" name="Workflow Launcher"/>
+    </Definition>
+    <Owner>
+      <Reference class="sailpoint.object.Identity" id="0a323693a0d9121a81a0eb159c7f6657" name="26634"/>
+    </Owner>
+  </TaskResult>
+  <Workflow complete="true" currentStep="6ee77999f31a47ea816fd9e39e74ca2f" explicitTransitions="true" name="BancoBase-Unlock-Self">
+    <Variable input="true" name="identityName"/>
+    <Variable input="true" name="launcher"/>
+    <Variable name="resultado"/>
+    <Step complete="true" icon="Start" id="3574635db6674e3d91b5fcb8e0384547" name="Start" posX="28" posY="10">
+      <Transition to="Desbloquear"/>
+    </Step>
+    <Step complete="true" id="032f1bf1c3ef4d93a249ea4bf03f3019" name="Desbloquear" posX="150" posY="10" resultVariable="resultado">
+      <Script>
+        <Source>
+import sailpoint.object.*;
+import sailpoint.api.*;
+import java.util.*;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+Log log = LogFactory.getLog("sailpoint.bancobase.UnlockSelf");
+
+// ===== Parametros. Para produccion: cambiar APP y revisar BASE_DN =====
+String APP = "Active Directory - QA";
+String BASE_DN = ",OU=Usuarios,DC=dombase,DC=net";
+int MAX_POR_HORA = 3;
+String ACCION = "BancoBaseSelfUnlock";
+String RL_NAME = "BancoBase-Unlock-RateLimit";
+// ======================================================================
+
+String who = launcher;
+String target = identityName;
+if (who == null) {
+  try { who = wfcontext.getWorkflowCase().getLauncher(); } catch (Throwable t0) { }
+}
+if (target == null) { target = who; }
+
+String finalizar(String estado, String detalle, String cuenta) {
+  if (detalle != null &amp;&amp; detalle.length() > 250) { detalle = detalle.substring(0, 250); }
+  String msg = estado + " | usuario=" + who + " | objetivo=" + target + " | cuenta=" + cuenta + " | " + detalle;
+  log.warn("[BancoBase-Unlock-Self] " + msg);
+  try {
+    AuditEvent ev = new AuditEvent();
+    ev.setSource(who);
+    ev.setAction(ACCION);
+    ev.setTarget(target);
+    ev.setApplication(APP);
+    ev.setAccountName(cuenta);
+    ev.setString1(estado);
+    ev.setString2(detalle);
+    context.saveObject(ev);
+    context.commitTransaction();
+  } catch (Throwable ta) {
+    log.warn("[BancoBase-Unlock-Self] no se pudo escribir el AuditEvent: " + ta);
+  }
+  return msg;
+}
+
+// 1) Solo la propia cuenta
+if (who == null || target == null) {
+  return finalizar("RECHAZADO", "no se pudo determinar quien lanza el workflow", null);
+}
+if (!who.equals(target)) {
+  return finalizar("RECHAZADO", "solo se permite desbloquear la propia cuenta", null);
+}
+
+// 2) La identidad existe y esta activa
+Identity ident = context.getObjectByName(Identity.class, target);
+if (ident == null) {
+  return finalizar("RECHAZADO", "la identidad no existe", null);
+}
+if (ident.isInactive()) {
+  return finalizar("RECHAZADO", "la identidad esta inactiva", null);
+}
+
+// 3) Exactamente una cuenta en la app de AD, dentro del alcance de la delegacion
+Link enlace = null;
+int numCuentas = 0;
+List links = ident.getLinks();
+if (links != null) {
+  for (Object o : links) {
+    Link l = (Link) o;
+    if (APP.equals(l.getApplicationName())) { enlace = l; numCuentas++; }
+  }
+}
+if (numCuentas != 1) {
+  return finalizar("RECHAZADO", "la identidad tiene " + numCuentas + " cuentas en " + APP, null);
+}
+String ni = enlace.getNativeIdentity();
+String niU = (ni == null) ? "" : ni.toUpperCase();
+if (!niU.endsWith(BASE_DN.toUpperCase()) || niU.indexOf(",OU=DISABLED") >= 0) {
+  return finalizar("RECHAZADO", "la cuenta esta fuera de " + BASE_DN, ni);
+}
+Object ac = enlace.getAttribute("adminCount");
+if (ac != null &amp;&amp; "1".equals(ac.toString().trim())) {
+  return finalizar("RECHAZADO", "cuenta protegida (adminCount=1)", ni);
+}
+
+// 4) Limite de intentos por hora (se guarda en un Custom object)
+long ahora = System.currentTimeMillis();
+long ventana = 3600000L;
+Custom rl = context.getObjectByName(Custom.class, RL_NAME);
+if (rl == null) { rl = new Custom(); rl.setName(RL_NAME); }
+Attributes at = rl.getAttributes();
+if (at == null) { at = new Attributes(); rl.setAttributes(at); }
+String hist = at.getString(target);
+StringBuilder nuevo = new StringBuilder();
+int usados = 0;
+if (hist != null &amp;&amp; hist.length() > 0) {
+  String[] partes = hist.split(",");
+  for (int i = 0; i &lt; partes.length; i++) {
+    try {
+      long t1 = Long.parseLong(partes[i].trim());
+      if (ahora - t1 &lt; ventana) {
+        if (nuevo.length() > 0) { nuevo.append(","); }
+        nuevo.append(t1);
+        usados++;
+      }
+    } catch (Throwable tp) { }
+  }
+}
+if (usados >= MAX_POR_HORA) {
+  return finalizar("RECHAZADO", "limite de " + MAX_POR_HORA + " desbloqueos por hora", ni);
+}
+if (nuevo.length() > 0) { nuevo.append(","); }
+nuevo.append(ahora);
+at.put(target, nuevo.toString());
+context.saveObject(rl);
+context.commitTransaction();
+
+// 5) Unlock
+try {
+  ProvisioningPlan plan = new ProvisioningPlan();
+  plan.setIdentity(ident);
+  ProvisioningPlan.AccountRequest ar = new ProvisioningPlan.AccountRequest();
+  ar.setApplication(APP);
+  ar.setNativeIdentity(ni);
+  ar.setOperation(ProvisioningPlan.AccountRequest.Operation.Unlock);
+  plan.add(ar);
+  Provisioner p = new Provisioner(context);
+  p.compile(plan);
+  p.execute();
+  ProvisioningProject proj = p.getProject();
+  String x = proj.toXml().toLowerCase();
+  boolean fallo = (x.indexOf("status=\"failed\"") >= 0) || (x.indexOf("&lt;errors>") >= 0) || (x.indexOf("status=\"retry\"") >= 0);
+  if (fallo) {
+    log.warn("[BancoBase-Unlock-Self] proyecto con errores: " + proj.toXml());
+    return finalizar("ERROR", "el aprovisionamiento reporto errores; revisar el log del servidor y de IQService", ni);
+  }
+  return finalizar("ENVIADO", "Unlock enviado sin errores reportados", ni);
+} catch (Throwable te) {
+  return finalizar("ERROR", "excepcion: " + te, ni);
+}
+      </Source>
+      </Script>
+      <Transition to="Stop"/>
+    </Step>
+    <Step complete="true" icon="Stop" id="6ee77999f31a47ea816fd9e39e74ca2f" name="Stop" posX="300" posY="10"/>
+    <Attributes>
+      <Map>
+        <entry key="identityName" value="26634"/>
+        <entry key="launcher" value="26634"/>
+        <entry key="resultado" value="RECHAZADO | usuario=26634 | objetivo=26634 | cuenta=CN=slunam,OU=Aguascalientes,OU=Foraneos,OU=Usuarios,DC=dombase,DC=net | limite de 3 desbloqueos por hora"/>
+        <entry key="sessionOwner" value="26634"/>
+      </Map>
+    </Attributes>
+  </Workflow>
+</WorkflowCase>
+
+> workflow BancoBase-Unlock-Self /tmp/unlock-args.xml
+2026-10-21T14:02:55,959  WARN main sailpoint.bancobase.UnlockSelf:166 - [BancoBase-Unlock-Self] RECHAZADO | usuario=26634 | objetivo=26634 | cuenta=CN=slunam,OU=Aguascalientes,OU=Foraneos,OU=Usuarios,DC=dombase,DC=net | limite de 3 desbloqueos por hora
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE WorkflowLaunch PUBLIC "sailpoint.dtd" "sailpoint.dtd">
+<WorkflowLaunch status="complete" workflowName="BancoBase-Unlock-Self">
+  <TaskResultRef>
+    <Reference class="sailpoint.object.TaskResult" id="0a323693a1601e1d81a1600f4570000c" name="BancoBase-Unlock-Self - 6"/>
+  </TaskResultRef>
+  <WorkflowCaseRef>
+    <Reference class="sailpoint.object.WorkflowCase" name="BancoBase-Unlock-Self"/>
+  </WorkflowCaseRef>
+</WorkflowLaunch>
+
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE WorkflowCase PUBLIC "sailpoint.dtd" "sailpoint.dtd">
+<WorkflowCase completed="1792612975978" launcher="26634" name="BancoBase-Unlock-Self">
+  <TaskResult completed="1792612975978" completionStatus="Success" created="1792612975986" id="0a323693a1601e1d81a1600f4570000c" launched="1792612975867" launcher="26634" name="BancoBase-Unlock-Self - 6" type="Workflow">
+    <Attributes>
+      <Map>
+        <entry key="workflowSummary">
+          <value>
+            <WorkflowSummary step="Stop"/>
+          </value>
+        </entry>
+      </Map>
+    </Attributes>
+    <Definition>
+      <Reference class="sailpoint.object.TaskDefinition" id="0a3236939fcd1b12819fcd8b7a7c01dd" name="Workflow Launcher"/>
+    </Definition>
+    <Owner>
+      <Reference class="sailpoint.object.Identity" id="0a323693a0d9121a81a0eb159c7f6657" name="26634"/>
+    </Owner>
+  </TaskResult>
+  <Workflow complete="true" currentStep="d259cbf8ec0a48e78aeeed7cdbb57efa" explicitTransitions="true" name="BancoBase-Unlock-Self">
+    <Variable input="true" name="identityName"/>
+    <Variable input="true" name="launcher"/>
+    <Variable name="resultado"/>
+    <Step complete="true" icon="Start" id="aab753b958af450b8c864f4ad086c282" name="Start" posX="28" posY="10">
+      <Transition to="Desbloquear"/>
+    </Step>
+    <Step complete="true" id="93c5a2523b92456285a54a7924c0eb64" name="Desbloquear" posX="150" posY="10" resultVariable="resultado">
+      <Script>
+        <Source>
+import sailpoint.object.*;
+import sailpoint.api.*;
+import java.util.*;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+Log log = LogFactory.getLog("sailpoint.bancobase.UnlockSelf");
+
+// ===== Parametros. Para produccion: cambiar APP y revisar BASE_DN =====
+String APP = "Active Directory - QA";
+String BASE_DN = ",OU=Usuarios,DC=dombase,DC=net";
+int MAX_POR_HORA = 3;
+String ACCION = "BancoBaseSelfUnlock";
+String RL_NAME = "BancoBase-Unlock-RateLimit";
+// ======================================================================
+
+String who = launcher;
+String target = identityName;
+if (who == null) {
+  try { who = wfcontext.getWorkflowCase().getLauncher(); } catch (Throwable t0) { }
+}
+if (target == null) { target = who; }
+
+String finalizar(String estado, String detalle, String cuenta) {
+  if (detalle != null &amp;&amp; detalle.length() > 250) { detalle = detalle.substring(0, 250); }
+  String msg = estado + " | usuario=" + who + " | objetivo=" + target + " | cuenta=" + cuenta + " | " + detalle;
+  log.warn("[BancoBase-Unlock-Self] " + msg);
+  try {
+    AuditEvent ev = new AuditEvent();
+    ev.setSource(who);
+    ev.setAction(ACCION);
+    ev.setTarget(target);
+    ev.setApplication(APP);
+    ev.setAccountName(cuenta);
+    ev.setString1(estado);
+    ev.setString2(detalle);
+    context.saveObject(ev);
+    context.commitTransaction();
+  } catch (Throwable ta) {
+    log.warn("[BancoBase-Unlock-Self] no se pudo escribir el AuditEvent: " + ta);
+  }
+  return msg;
+}
+
+// 1) Solo la propia cuenta
+if (who == null || target == null) {
+  return finalizar("RECHAZADO", "no se pudo determinar quien lanza el workflow", null);
+}
+if (!who.equals(target)) {
+  return finalizar("RECHAZADO", "solo se permite desbloquear la propia cuenta", null);
+}
+
+// 2) La identidad existe y esta activa
+Identity ident = context.getObjectByName(Identity.class, target);
+if (ident == null) {
+  return finalizar("RECHAZADO", "la identidad no existe", null);
+}
+if (ident.isInactive()) {
+  return finalizar("RECHAZADO", "la identidad esta inactiva", null);
+}
+
+// 3) Exactamente una cuenta en la app de AD, dentro del alcance de la delegacion
+Link enlace = null;
+int numCuentas = 0;
+List links = ident.getLinks();
+if (links != null) {
+  for (Object o : links) {
+    Link l = (Link) o;
+    if (APP.equals(l.getApplicationName())) { enlace = l; numCuentas++; }
+  }
+}
+if (numCuentas != 1) {
+  return finalizar("RECHAZADO", "la identidad tiene " + numCuentas + " cuentas en " + APP, null);
+}
+String ni = enlace.getNativeIdentity();
+String niU = (ni == null) ? "" : ni.toUpperCase();
+if (!niU.endsWith(BASE_DN.toUpperCase()) || niU.indexOf(",OU=DISABLED") >= 0) {
+  return finalizar("RECHAZADO", "la cuenta esta fuera de " + BASE_DN, ni);
+}
+Object ac = enlace.getAttribute("adminCount");
+if (ac != null &amp;&amp; "1".equals(ac.toString().trim())) {
+  return finalizar("RECHAZADO", "cuenta protegida (adminCount=1)", ni);
+}
+
+// 4) Limite de intentos por hora (se guarda en un Custom object)
+long ahora = System.currentTimeMillis();
+long ventana = 3600000L;
+Custom rl = context.getObjectByName(Custom.class, RL_NAME);
+if (rl == null) { rl = new Custom(); rl.setName(RL_NAME); }
+Attributes at = rl.getAttributes();
+if (at == null) { at = new Attributes(); rl.setAttributes(at); }
+String hist = at.getString(target);
+StringBuilder nuevo = new StringBuilder();
+int usados = 0;
+if (hist != null &amp;&amp; hist.length() > 0) {
+  String[] partes = hist.split(",");
+  for (int i = 0; i &lt; partes.length; i++) {
+    try {
+      long t1 = Long.parseLong(partes[i].trim());
+      if (ahora - t1 &lt; ventana) {
+        if (nuevo.length() > 0) { nuevo.append(","); }
+        nuevo.append(t1);
+        usados++;
+      }
+    } catch (Throwable tp) { }
+  }
+}
+if (usados >= MAX_POR_HORA) {
+  return finalizar("RECHAZADO", "limite de " + MAX_POR_HORA + " desbloqueos por hora", ni);
+}
+if (nuevo.length() > 0) { nuevo.append(","); }
+nuevo.append(ahora);
+at.put(target, nuevo.toString());
+context.saveObject(rl);
+context.commitTransaction();
+
+// 5) Unlock
+try {
+  ProvisioningPlan plan = new ProvisioningPlan();
+  plan.setIdentity(ident);
+  ProvisioningPlan.AccountRequest ar = new ProvisioningPlan.AccountRequest();
+  ar.setApplication(APP);
+  ar.setNativeIdentity(ni);
+  ar.setOperation(ProvisioningPlan.AccountRequest.Operation.Unlock);
+  plan.add(ar);
+  Provisioner p = new Provisioner(context);
+  p.compile(plan);
+  p.execute();
+  ProvisioningProject proj = p.getProject();
+  String x = proj.toXml().toLowerCase();
+  boolean fallo = (x.indexOf("status=\"failed\"") >= 0) || (x.indexOf("&lt;errors>") >= 0) || (x.indexOf("status=\"retry\"") >= 0);
+  if (fallo) {
+    log.warn("[BancoBase-Unlock-Self] proyecto con errores: " + proj.toXml());
+    return finalizar("ERROR", "el aprovisionamiento reporto errores; revisar el log del servidor y de IQService", ni);
+  }
+  return finalizar("ENVIADO", "Unlock enviado sin errores reportados", ni);
+} catch (Throwable te) {
+  return finalizar("ERROR", "excepcion: " + te, ni);
+}
+      </Source>
+      </Script>
+      <Transition to="Stop"/>
+    </Step>
+    <Step complete="true" icon="Stop" id="d259cbf8ec0a48e78aeeed7cdbb57efa" name="Stop" posX="300" posY="10"/>
+    <Attributes>
+      <Map>
+        <entry key="identityName" value="26634"/>
+        <entry key="launcher" value="26634"/>
+        <entry key="resultado" value="RECHAZADO | usuario=26634 | objetivo=26634 | cuenta=CN=slunam,OU=Aguascalientes,OU=Foraneos,OU=Usuarios,DC=dombase,DC=net | limite de 3 desbloqueos por hora"/>
+        <entry key="sessionOwner" value="26634"/>
+      </Map>
+    </Attributes>
+  </Workflow>
+</WorkflowCase>
+
+> quit
+[slunam@QVL-M0SLPOMYS00 ~]$ sudo grep -n 'BancoBase-Unlock-Self' /opt/tomcat/logs/catalina.out | tail -6
+[slunam@QVL-M0SLPOMYS00 ~]$ mysql -h 127.0.0.1 -P 3306 -u identityiq -p identityiq -e "select created,source,target,string1,string2 from spt_audit_event where action='BancoBaseSelfUnlock' order by created desc limit 6"
+Enter password:
++---------------+--------+--------+-----------+---------------------------------------+
+| created       | source | target | string1   | string2                               |
++---------------+--------+--------+-----------+---------------------------------------+
+| 1792612975962 | 26634  | 26634  | RECHAZADO | limite de 3 desbloqueos por hora      |
+| 1792612974725 | 26634  | 26634  | RECHAZADO | limite de 3 desbloqueos por hora      |
+| 1792612973622 | 26634  | 26634  | RECHAZADO | limite de 3 desbloqueos por hora      |
+| 1792612972578 | 26634  | 26634  | ENVIADO   | Unlock enviado sin errores reportados |
+| 1792612970855 | 26634  | 26634  | ENVIADO   | Unlock enviado sin errores reportados |
+| 1792612933699 | 26634  | 26634  | ENVIADO   | Unlock enviado sin errores reportados |
++---------------+--------+--------+-----------+---------------------------------------+
