@@ -1,0 +1,5 @@
+$s = [ADSI]"LDAP://MTY-ALE-PMDC002.dombase.net/CN=slunam,OU=Aguascalientes,OU=Foraneos,OU=Usuarios,DC=dombase,DC=net"
+$s.RefreshCache(@("badPwdCount","lockoutTime","badPasswordTime"))
+"badPwdCount : " + $s.Properties["badPwdCount"].Value
+"lockoutTime : " + $s.Properties["lockoutTime"].Value
+"badPasswordTime : " + $s.Properties["badPasswordTime"].Value
