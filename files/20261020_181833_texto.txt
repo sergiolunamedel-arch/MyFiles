@@ -1,0 +1,13 @@
+Las dos cuentas pueden escribir lockoutTime sobre slunam, y en los dos DC. El permiso en AD ya es efectivo. El Access is denied del 20/10 fue probablemente propagación de la herencia, que apenas llegó. Esto último es lo más probable pero no está confirmado.
+
+Reintenta Test Unlock slunam una vez (Setup → Tasks → Run Rule), con la cuenta todavía desbloqueada, y mira los dos logs:
+
+Linux:
+
+bash
+sudo grep -n -A2 'ADLDAPConnector.*ERROR\|ERROR.*ADLDAPConnector' /opt/tomcat/logs/catalina.out | tail -12
+
+Windows:
+
+powershell
+Get-Content C:\iqservice\IQTrace.log -Tail 6
