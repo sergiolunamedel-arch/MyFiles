@@ -1,7 +1,0 @@
-Para la prueba real:
-
-Terminal de Linux ya abierta y con sudo validado (sudo -v) antes de bloquearte.
-net use \\MTY-ALE-PMDC002.dombase.net\IPC$ /user:dombase\slunam ClaveMala1! hasta que salga el 1909.
-Como spadmin, corre Test Unlock slunam una vez, y revisa los dos logs.
-Verifica con net use \\MTY-ALE-PMDC002.dombase.net\IPC$ /user:dombase\slunam *, tecleando tu password real. “The command completed successfully” significa que funcionó.
-Limpia con net use \\MTY-ALE-PMDC002.dombase.net\IPC$ /delete.
