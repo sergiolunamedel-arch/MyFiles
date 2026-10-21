@@ -1,5 +1,0 @@
-python -c "import http.server as h
-class R(h.BaseHTTPRequestHandler):
-    def do_GET(s):
-        s.send_response(301); s.send_header('Location','https://iga-qa.bancobase.net'+s.path); s.end_headers()
-h.HTTPServer(('127.0.0.1',80),R).serve_forever()"
