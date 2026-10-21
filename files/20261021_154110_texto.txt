@@ -1,0 +1,4 @@
+[iiq]
+accept = 443
+connect = 127.0.0.1:8080
+cert = C:\Program Files (x86)\stunnel\config\stunnel.pem
