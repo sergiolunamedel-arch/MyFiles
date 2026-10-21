@@ -1,0 +1,164 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE Workflow PUBLIC "sailpoint.dtd" "sailpoint.dtd">
+<Workflow explicitTransitions="true" name="BancoBase-Unlock-Self">
+  <Description>Autoservicio: desbloquea la cuenta de Active Directory de la identidad que lanza el QuickLink "Desbloquear mi cuenta". Solo la propia cuenta, solo bajo OU=Usuarios, maximo 3 por hora por identidad, con auditoria. Version 1 (QA), por confirmar en pruebas.</Description>
+  <Variable input="true" name="identityName">
+    <Description>Identidad objetivo (la envia el QuickLink; debe ser igual al launcher).</Description>
+  </Variable>
+  <Variable input="true" name="launcher">
+    <Description>Identidad que lanza el workflow.</Description>
+  </Variable>
+  <Variable name="resultado">
+    <Description>Texto con el resultado de la ejecucion.</Description>
+  </Variable>
+  <Step icon="Start" name="Start" posX="28" posY="10">
+    <Transition to="Desbloquear"/>
+  </Step>
+  <Step name="Desbloquear" posX="150" posY="10" resultVariable="resultado">
+    <Script>
+      <Source><![CDATA[
+import sailpoint.object.*;
+import sailpoint.api.*;
+import java.util.*;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+Log log = LogFactory.getLog("sailpoint.bancobase.UnlockSelf");
+
+// ===== Parametros. Para produccion: cambiar APP y revisar BASE_DN =====
+String APP = "Active Directory - QA";
+String BASE_DN = ",OU=Usuarios,DC=dombase,DC=net";
+int MAX_POR_HORA = 3;
+String ACCION = "BancoBaseSelfUnlock";
+String RL_NAME = "BancoBase-Unlock-RateLimit";
+// ======================================================================
+
+String who = launcher;
+String target = identityName;
+if (who == null) {
+  try { who = wfcontext.getWorkflowCase().getLauncher(); } catch (Throwable t0) { }
+}
+if (target == null) { target = who; }
+
+String finalizar(String estado, String detalle, String cuenta) {
+  if (detalle != null && detalle.length() > 250) { detalle = detalle.substring(0, 250); }
+  String msg = estado + " | usuario=" + who + " | objetivo=" + target + " | cuenta=" + cuenta + " | " + detalle;
+  log.warn("[BancoBase-Unlock-Self] " + msg);
+  try {
+    AuditEvent ev = new AuditEvent();
+    ev.setSource(who);
+    ev.setAction(ACCION);
+    ev.setTarget(target);
+    ev.setApplication(APP);
+    ev.setAccountName(cuenta);
+    ev.setString1(estado);
+    ev.setString2(detalle);
+    Auditor.log(ev);
+    context.commitTransaction();
+  } catch (Throwable ta) {
+    log.warn("[BancoBase-Unlock-Self] no se pudo escribir el AuditEvent: " + ta);
+  }
+  return msg;
+}
+
+// 1) Solo la propia cuenta
+if (who == null || target == null) {
+  return finalizar("RECHAZADO", "no se pudo determinar quien lanza el workflow", null);
+}
+if (!who.equals(target)) {
+  return finalizar("RECHAZADO", "solo se permite desbloquear la propia cuenta", null);
+}
+
+// 2) La identidad existe y esta activa
+Identity ident = context.getObjectByName(Identity.class, target);
+if (ident == null) {
+  return finalizar("RECHAZADO", "la identidad no existe", null);
+}
+if (ident.isInactive()) {
+  return finalizar("RECHAZADO", "la identidad esta inactiva", null);
+}
+
+// 3) Exactamente una cuenta en la app de AD, dentro del alcance de la delegacion
+Link enlace = null;
+int numCuentas = 0;
+List links = ident.getLinks();
+if (links != null) {
+  for (Object o : links) {
+    Link l = (Link) o;
+    if (APP.equals(l.getApplicationName())) { enlace = l; numCuentas++; }
+  }
+}
+if (numCuentas != 1) {
+  return finalizar("RECHAZADO", "la identidad tiene " + numCuentas + " cuentas en " + APP, null);
+}
+String ni = enlace.getNativeIdentity();
+String niU = (ni == null) ? "" : ni.toUpperCase();
+if (!niU.endsWith(BASE_DN.toUpperCase()) || niU.indexOf(",OU=DISABLED") >= 0) {
+  return finalizar("RECHAZADO", "la cuenta esta fuera de " + BASE_DN, ni);
+}
+Object ac = enlace.getAttribute("adminCount");
+if (ac != null && "1".equals(ac.toString().trim())) {
+  return finalizar("RECHAZADO", "cuenta protegida (adminCount=1)", ni);
+}
+
+// 4) Limite de intentos por hora (se guarda en un Custom object)
+long ahora = System.currentTimeMillis();
+long ventana = 3600000L;
+Custom rl = context.getObjectByName(Custom.class, RL_NAME);
+if (rl == null) { rl = new Custom(); rl.setName(RL_NAME); }
+Attributes at = rl.getAttributes();
+if (at == null) { at = new Attributes(); rl.setAttributes(at); }
+String hist = at.getString(target);
+StringBuilder nuevo = new StringBuilder();
+int usados = 0;
+if (hist != null && hist.length() > 0) {
+  String[] partes = hist.split(",");
+  for (int i = 0; i < partes.length; i++) {
+    try {
+      long t1 = Long.parseLong(partes[i].trim());
+      if (ahora - t1 < ventana) {
+        if (nuevo.length() > 0) { nuevo.append(","); }
+        nuevo.append(t1);
+        usados++;
+      }
+    } catch (Throwable tp) { }
+  }
+}
+if (usados >= MAX_POR_HORA) {
+  return finalizar("RECHAZADO", "limite de " + MAX_POR_HORA + " desbloqueos por hora", ni);
+}
+if (nuevo.length() > 0) { nuevo.append(","); }
+nuevo.append(ahora);
+at.put(target, nuevo.toString());
+context.saveObject(rl);
+context.commitTransaction();
+
+// 5) Unlock
+try {
+  ProvisioningPlan plan = new ProvisioningPlan();
+  plan.setIdentity(ident);
+  ProvisioningPlan.AccountRequest ar = new ProvisioningPlan.AccountRequest();
+  ar.setApplication(APP);
+  ar.setNativeIdentity(ni);
+  ar.setOperation(ProvisioningPlan.AccountRequest.Operation.Unlock);
+  plan.add(ar);
+  Provisioner p = new Provisioner(context);
+  p.compile(plan);
+  p.execute();
+  ProvisioningProject proj = p.getProject();
+  String x = proj.toXml().toLowerCase();
+  boolean fallo = (x.indexOf("status=\"failed\"") >= 0) || (x.indexOf("<errors>") >= 0) || (x.indexOf("status=\"retry\"") >= 0);
+  if (fallo) {
+    log.warn("[BancoBase-Unlock-Self] proyecto con errores: " + proj.toXml());
+    return finalizar("ERROR", "el aprovisionamiento reporto errores; revisar el log del servidor y de IQService", ni);
+  }
+  return finalizar("ENVIADO", "Unlock enviado sin errores reportados", ni);
+} catch (Throwable te) {
+  return finalizar("ERROR", "excepcion: " + te, ni);
+}
+      ]]></Source>
+    </Script>
+    <Transition to="Stop"/>
+  </Step>
+  <Step icon="Stop" name="Stop" posX="300" posY="10"/>
+</Workflow>
