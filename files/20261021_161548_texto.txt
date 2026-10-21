@@ -1,0 +1,22 @@
+[slunam@QVL-M0SLPOMYS00 ~]$ sudo grep -n -i 'saml\|sso\|correlat\|NameID' /opt/tomcat/logs/catalina.out | tail -5
+[sudo] password for slunam:
+114926:         at org.apache.coyote.AbstractProcessor.action(AbstractProcessor.java:414)
+114933:         at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:407)
+114934:         at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:71)
+114936:         at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:2089)
+114937:         at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:74)
+[slunam@QVL-M0SLPOMYS00 ~]$ ^C
+[slunam@QVL-M0SLPOMYS00 ~]$ sudo grep -n 'BancoBase-Unlock-Self' /opt/tomcat/logs/catalina.out | tail -5
+[sudo] password for slunam:
+115068:2026-10-21T16:12:34,324  WARN http-nio-8080-exec-1 sailpoint.bancobase.UnlockSelf:166 - [BancoBase-Unlock-Self] ENVIADO | usuario=26634 | objetivo=26634 | cuenta=CN=slunam,OU=Aguascalientes,OU=Foraneos,OU=Usuarios,DC=dombase,DC=net | Unlock enviado sin errores reportados
+[slunam@QVL-M0SLPOMYS00 ~]$ mysql -h 127.0.0.1 -P 3306 -u identityiq -p identityiq -e "select from_unixtime(created/1000) as hora,source,target,string1,string2 from spt_audit_event where action='BancoBaseSelfUnlock' order by created desc limit 5"
+Enter password:
++--------------------------+--------+--------+-----------+---------------------------------------+
+| hora                     | source | target | string1   | string2                               |
++--------------------------+--------+--------+-----------+---------------------------------------+
+| 2026-10-21 16:12:34.3280 | 26634  | 26634  | ENVIADO   | Unlock enviado sin errores reportados |
+| 2026-10-21 14:02:55.9620 | 26634  | 26634  | RECHAZADO | limite de 3 desbloqueos por hora      |
+| 2026-10-21 14:02:54.7250 | 26634  | 26634  | RECHAZADO | limite de 3 desbloqueos por hora      |
+| 2026-10-21 14:02:53.6220 | 26634  | 26634  | RECHAZADO | limite de 3 desbloqueos por hora      |
+| 2026-10-21 14:02:52.5780 | 26634  | 26634  | ENVIADO   | Unlock enviado sin errores reportados |
++--------------------------+--------+--------+-----------+---------------------------------------+
