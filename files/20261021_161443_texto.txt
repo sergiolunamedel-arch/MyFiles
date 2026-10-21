@@ -1,4 +1,0 @@
-bash
-sudo grep -n 'BancoBase-Unlock-Self' /opt/tomcat/logs/catalina.out | tail -5
-bash
-mysql -h 127.0.0.1 -P 3306 -u identityiq -p identityiq -e "select from_unixtime(created/1000) as hora,source,target,string1,string2 from spt_audit_event where action='BancoBaseSelfUnlock' order by created desc limit 5"
