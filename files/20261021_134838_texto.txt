@@ -1,6 +1,0 @@
-cp ~/BancoBase-Unlock-Self-Workflow.xml ~/BancoBase-Unlock-Self-QuickLink.xml /tmp/
-chmod 644 /tmp/BancoBase-Unlock-Self-*.xml
-sudo -u tomcat /opt/tomcat/webapps/identityiq/WEB-INF/bin/iiq console
-> import /tmp/BancoBase-Unlock-Self-Workflow.xml
-> import /tmp/BancoBase-Unlock-Self-QuickLink.xml
-> quit
