@@ -1,0 +1,11 @@
+cat > /tmp/unlock-args.xml <<'EOF'
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE Attributes PUBLIC "sailpoint.dtd" "sailpoint.dtd">
+<Attributes>
+  <Map>
+    <entry key="launcher" value="26634"/>
+    <entry key="identityName" value="26634"/>
+  </Map>
+</Attributes>
+EOF
+chmod 644 /tmp/unlock-args.xml
