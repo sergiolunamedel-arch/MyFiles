@@ -1,7 +1,0 @@
-[slunam@QVL-M0SLPOMYS00 ~]$ sudo grep -n -i 'saml\|sso\|correlat\|NameID' /opt/tomcat/logs/catalina.out | tail -5
-[sudo] password for slunam:
-114926:         at org.apache.coyote.AbstractProcessor.action(AbstractProcessor.java:414)
-114933:         at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:407)
-114934:         at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:71)
-114936:         at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:2089)
-114937:         at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:74)
