@@ -1,0 +1,3 @@
+sudo -u tomcat /opt/tomcat/webapps/identityiq/WEB-INF/bin/iiq console
+> workflow BancoBase-Unlock-Self /tmp/unlock-args.xml
+> quit
