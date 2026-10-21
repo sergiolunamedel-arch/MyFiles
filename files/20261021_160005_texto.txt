@@ -1,9 +1,0 @@
-[slunam@QVL-M0SLPOMYS00 ~]$ sudo sed -n '114812,114818p' /opt/tomcat/logs/catalina.out
-        at sun.security.util.DerValue.<init>(DerValue.java:425) ~[?:?]
-        at sun.security.util.DerValue.<init>(DerValue.java:340) ~[?:?]
-        at sun.security.x509.X509CertImpl.<init>(X509CertImpl.java:178) ~[?:?]
-        ... 52 more
-2026-10-21T15:49:16,100 ERROR http-nio-8080-exec-4 sailpoint.web.sso.SAMLSSOAuthenticator:423 - An error occurred verifying the SAML assertion
-net.shibboleth.utilities.java.support.logic.ConstraintViolationException: Credential certificate cannot be null
-        at net.shibboleth.utilities.java.support.logic.Constraint.isNotNull(Constraint.java:227) ~[java-support-7.5.2.jar:?]
-[slunam@QVL-M0SLPOMYS00 ~]$
