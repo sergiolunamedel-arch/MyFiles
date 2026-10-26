@@ -1,0 +1,53 @@
+PS C:\Users\slunam\AppData\Local\Programs\Microsoft VS Code> C:\Users\slunam\AppData\Local\Python\pythoncore-3.14-64\python.exe c:/Users/slunam/Documents/Snyk/INICIAR_SnykScannerGUI.py
+Exception in Tkinter callback
+Traceback (most recent call last):
+  File "C:\Users\slunam\AppData\Local\Python\pythoncore-3.14-64\Lib\tkinter\__init__.py", line 2088, in __call__
+    return self.func(*args)
+           ~~~~~~~~~^^^^^^^
+  File "C:\Users\slunam\AppData\Local\Python\pythoncore-3.14-64\Lib\tkinter\__init__.py", line 876, in callit
+    func(*args, **kw)
+    ~~~~^^^^^^^^^^^^^
+  File "C:\Users\slunam\Documents\Snyk\core\gui_apps_tab.py", line 851, in _auto_load_last_app
+    self._load_app_profile(app, silent=True)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slunam\Documents\Snyk\core\gui_apps_tab.py", line 803, in _load_app_profile
+    self._restore_last_report()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slunam\AppData\Local\Python\pythoncore-3.14-64\Lib\tkinter\__init__.py", line 2566, in __getattr__
+    return getattr(self.tk, attr)
+AttributeError: '_tkinter.tkapp' object has no attribute '_restore_last_report'
+PS C:\Users\slunam\AppData\Local\Programs\Microsoft VS Code> & C:\Users\slunam\AppData\Local\Python\pythoncore-3.14-64\python.exe c:/Users/slunam/Documents/Snyk/INICIAR_SnykScannerGUI.py
+Exception in Tkinter callback
+Traceback (most recent call last):
+  File "C:\Users\slunam\AppData\Local\Python\pythoncore-3.14-64\Lib\tkinter\__init__.py", line 2088, in __call__
+    return self.func(*args)
+           ~~~~~~~~~^^^^^^^
+  File "C:\Users\slunam\AppData\Local\Python\pythoncore-3.14-64\Lib\tkinter\__init__.py", line 876, in callit
+    func(*args, **kw)
+    ~~~~^^^^^^^^^^^^^
+  File "C:\Users\slunam\Documents\Snyk\core\gui_apps_tab.py", line 851, in _auto_load_last_app
+    self._load_app_profile(app, silent=True)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slunam\Documents\Snyk\core\gui_apps_tab.py", line 803, in _load_app_profile
+    self._restore_last_report()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slunam\AppData\Local\Python\pythoncore-3.14-64\Lib\tkinter\__init__.py", line 2566, in __getattr__
+    return getattr(self.tk, attr)
+AttributeError: '_tkinter.tkapp' object has no attribute '_restore_last_report'
+Exception in Tkinter callback
+Traceback (most recent call last):
+  File "C:\Users\slunam\AppData\Local\Python\pythoncore-3.14-64\Lib\tkinter\__init__.py", line 2088, in __call__
+    return self.func(*args)
+           ~~~~~~~~~^^^^^^^
+  File "c:\Users\slunam\Documents\Snyk\INICIAR_SnykScannerGUI.py", line 1137, in <lambda>
+    command=lambda a=aid: self._switch_app_tab(a))
+                          ~~~~~~~~~~~~~~~~~~~~^^^
+  File "C:\Users\slunam\Documents\Snyk\core\gui_apps_tab.py", line 821, in _switch_app_tab
+    self._load_app_profile(app, silent=True)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slunam\Documents\Snyk\core\gui_apps_tab.py", line 803, in _load_app_profile
+    self._restore_last_report()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slunam\AppData\Local\Python\pythoncore-3.14-64\Lib\tkinter\__init__.py", line 2566, in __getattr__
+    return getattr(self.tk, attr)
+AttributeError: '_tkinter.tkapp' object has no attribute '_restore_last_report'
