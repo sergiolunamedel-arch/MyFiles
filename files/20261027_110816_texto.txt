@@ -1,0 +1,14 @@
+Rosa puede revisarlo desde su compu sin OpenSSL. Solo necesita Java instalado (trae keytool), el archivo .jks y su contraseña. Podrías contestarle así:
+
+Sí, lo puedes ver desde tu compu y no necesitas OpenSSL. keytool viene con Java.
+
+Abre CMD en la carpeta donde está el archivo. Desde el Explorador, escribe cmd en la barra de dirección y presiona Enter.
+Ejecuta:
+keytool -J-Duser.language=en -list -v -keystore BASTFIXTCRUAT.jks | findstr /i "Alias until"
+Te va a pedir la contraseña del keystore.
+
+En cada línea until: aparece la fecha de vencimiento del certificado correspondiente.
+
+Si te sale que keytool no se reconoce como comando, es que Java no está en el PATH. En ese caso búscalo en C:\Program Files\Java\<versión>\bin\keytool.exe y ejecútalo con la ruta completa entre comillas.
+
+Ojo: con el | findstr, a veces el prompt de la contraseña no se ve en pantalla. Si se queda “colgado”, Rosa puede escribir la contraseña a ciegas y dar Enter, o quitar el | findstr y buscar las líneas until: a mano.
