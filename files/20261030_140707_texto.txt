@@ -1,2 +1,0 @@
-PS C:\Users\slunam\AppData\Local\Programs\Microsoft VS Code> & C:\Users\slunam\AppData\Local\Python\pythoncore-3.14-64\python.exe c:/Users/slunam/Documents/Snyk/habilitar_snyk_code.py
-No hay credencial de Snyk: inicie sesión con `snyk auth` (o en ScannerBase) o defina SNYK_TOKEN.
