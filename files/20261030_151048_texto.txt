@@ -1,0 +1,38 @@
+BancoBase-DirectorioActivo-AccountGroupAggregation: Starting
+BancoBase-DirectorioActivo-AccountGroupAggregation: Encountered an Error: Exception during aggregation of Object Type Group on Application BancoBase-Application-DirectorioActivo. Reason: sailpoint.connector.ConnectorException: Uninitialized keystore
+
+BancoBase-GoogleWorkspace-AccountGroupAggregation: Starting
+BancoBase-GoogleWorkspace-AccountGroupAggregation: Encountered an Error: Exception during aggregation of Object Type Group on Application BancoBase-Application-GoogleWorkspace. Reason: sailpoint.connector.ConnectorException: [ ConnectorException ]
+[ Error details ] Uninitialized keystore
+
+BancoBase-Salesforce-AccountGroupAggregation: Starting
+BancoBase-Salesforce-AccountGroupAggregation: completed
+
+BancoBase-DirectorioActivo-AccountAggregation: Starting
+BancoBase-DirectorioActivo-AccountAggregation: Encountered an Error: Uninitialized keystore
+
+BancoBase-GoogleWorkspace-AccountAggregation: Starting
+BancoBase-GoogleWorkspace-AccountAggregation: Encountered an Error: Exception during aggregation of Object Type account on Application BancoBase-Application-GoogleWorkspace. Reason: Unable to create iterator sailpoint.connector.ConnectorException: [ ConnectorException ]
+[ Error details ] Uninitialized keystore
+
+BancoBase-Salesforce-AccountAggregation: Starting
+BancoBase-Salesforce-AccountAggregation: completed
+
+BancoBase-IntelexionWebService-AccountAggregation: Starting
+BancoBase-IntelexionWebService-AccountAggregation: Encountered an Error: Exception during aggregation. Reason: java.lang.RuntimeException: sailpoint.connector.ConnectorException: Error: class java.lang.String cannot be cast to class java.util.Map (java.lang.String and java.util.Map are in module java.base of loader 'bootstrap')
+
+BancoBase-IdentityRefresh-daily: Starting
+BancoBase-IdentityRefresh-daily: completed
+
+BancoBase-DirectorioActivo-AccountAggregation-2nd: Starting
+BancoBase-DirectorioActivo-AccountAggregation-2nd: Encountered an Error: Uninitialized keystore
+
+BancoBase-IdentityRefresh-daily-2nd: Starting
+BancoBase-IdentityRefresh-daily-2nd: completed
+
+BancoBase-IdentityRefresh-daily-3rd: Starting
+BancoBase-IdentityRefresh-daily-3rd: completed
+
+Sequential Task BancoBase-SecuentialTask-Ejecucion-Diaria: completed
+ 	 
+© Copyright 2022 SailPoint Technologies - All righ
