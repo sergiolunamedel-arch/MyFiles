@@ -1,1 +1,0 @@
-keytool -J-Duser.language=en -list -v -keystore BASTFIXTCRUAT.jks | findstr /i "Alias until"
