@@ -1,0 +1,15 @@
+Siguiente paso, todo solo lectura:
+
+bash
+V=/srv/tps9001/jboss-eap-7.4/standalone/tmp/vfs/temp/tempaec2b9176d90d639/content-e075b0c42682c05f/WEB-INF/classes
+sudo md5sum $V/iiq.dat $V/iiq.cfg
+sudo grep -n -i keystore $V/iiq.properties
+
+Y para saber desde cuándo falla:
+
+bash
+L=/srv/tps9001/jboss-eap-7.4/standalone/log
+sudo ls -l --time-style=long-iso $L | head -20
+sudo grep -l "Invalid secret key format" $L/server.log* 2>/dev/null | sort | head -3
+
+El grep keystore dice si iiq.properties apunta a otro keystore fuera del war, que es lo más importante. Los logs dicen con qué fecha empezó.
