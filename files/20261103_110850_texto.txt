@@ -1,0 +1,38 @@
+[slunam@QRO-ALE-PSIU000 ~]$ V=/srv/tps9001/jboss-eap-7.4/standalone/tmp/vfs/temp/tempaec2b9176d90d639/content-e075b0c42682c05f/WEB-INF/classes
+[slunam@QRO-ALE-PSIU000 ~]$
+[slunam@QRO-ALE-PSIU000 ~]$ sudo md5sum $V/iiq.dat $V/iiq.cfg
+[sudo] password for slunam:
+28bcbc1468b69ff5ee617fad849c49b2  /srv/tps9001/jboss-eap-7.4/standalone/tmp/vfs/temp/tempaec2b9176d90d639/content-e075b0c42682c05f/WEB-INF/classes/iiq.dat
+51114ac29b9fe2a961db05df7cd5f6aa  /srv/tps9001/jboss-eap-7.4/standalone/tmp/vfs/temp/tempaec2b9176d90d639/content-e075b0c42682c05f/WEB-INF/classes/iiq.cfg
+[slunam@QRO-ALE-PSIU000 ~]$ sudo grep -n -i keystore $V/iiq.properties
+234:# IIQ Keystore and Master Password properties
+237:# file location of the IIQ keystore
+240:#keyStore.file  = /example/path/filename
+245:#keyStore.passwordFile = /example/path/filename
+247:# Enable caching in the keystore
+250:#keyStore.cache = true
+[slunam@QRO-ALE-PSIU000 ~]$ L=/srv/tps9001/jboss-eap-7.4/standalone/log
+[slunam@QRO-ALE-PSIU000 ~]$
+[slunam@QRO-ALE-PSIU000 ~]$ sudo ls -l --time-style=long-iso $L | head -20
+total 28833048
+-rw-r--r--. 1 sailpoint-admin sailpoint-admin         0 2024-10-07 19:23 audit.log
+-rw-rw-r--. 1 sailpoint-admin sailpoint-admin   1125570 2026-10-30 17:27 backupgc.log
+-rw-rw-r--. 1 sailpoint-admin sailpoint-admin   3145783 2026-10-18 15:00 backupgc.log.0
+-rw-rw-r--. 1 sailpoint-admin sailpoint-admin   3145881 2026-09-10 06:48 backupgc.log.1
+-rw-rw-r--. 1 sailpoint-admin sailpoint-admin    167626 2026-11-03 09:32 gc.log
+-rw-r--r--. 1 root            root               305762 2026-10-30 17:23 log-grep
+-rw-rw-r--. 1 sailpoint-admin sailpoint-admin  25147173 2026-11-03 11:07 server.log
+-rw-r--r--. 1 sailpoint-admin sailpoint-admin     41422 2024-10-08 13:39 server.log.2024-10-08
+-rw-r--r--. 1 sailpoint-admin sailpoint-admin     17845 2024-10-31 10:59 server.log.2024-10-31
+-rw-rw-r--. 1 sailpoint-admin sailpoint-admin    136088 2025-05-28 23:59 server.log.2025-05-28
+-rw-rw-r--. 1 sailpoint-admin sailpoint-admin    788058 2025-05-29 23:59 server.log.2025-05-29
+-rw-rw-r--. 1 sailpoint-admin sailpoint-admin    144980 2025-05-30 23:57 server.log.2025-05-30
+-rw-rw-r--. 1 sailpoint-admin sailpoint-admin     50075 2025-05-31 23:57 server.log.2025-05-31
+-rw-rw-r--. 1 sailpoint-admin sailpoint-admin      4466 2025-06-01 23:58 server.log.2025-06-01.gz
+-rw-rw-r--. 1 sailpoint-admin sailpoint-admin     14294 2025-06-02 23:58 server.log.2025-06-02.gz
+-rw-rw-r--. 1 sailpoint-admin sailpoint-admin     24883 2025-06-03 23:59 server.log.2025-06-03.gz
+-rw-rw-r--. 1 sailpoint-admin sailpoint-admin     38807 2025-06-04 23:59 server.log.2025-06-04.gz
+-rw-rw-r--. 1 sailpoint-admin sailpoint-admin     53404 2025-06-05 23:59 server.log.2025-06-05.gz
+-rw-rw-r--. 1 sailpoint-admin sailpoint-admin     64578 2025-06-06 23:59 server.log.2025-06-06.gz
+[slunam@QRO-ALE-PSIU000 ~]$ sudo grep -l "Invalid secret key format" $L/server.log* 2>/dev/null | sort | head -3
+/srv/tps9001/jboss-eap-7.4/standalone/log/server.log.2026-09-15
