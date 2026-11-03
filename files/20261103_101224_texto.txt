@@ -1,7 +1,0 @@
-2026-09-15 18:00:01,060 INFO  [stdout] (QuartzScheduler_Worker-2) BancoBase-DirectorioActivo-AccountGroupAggregation: Starting
-2026-09-15 18:00:03,930 INFO  [stdout] (QuartzScheduler_Worker-3) 2026-09-15T18:00:03,482 ERROR QuartzScheduler_Worker-3 sailpoint.server.SPKeyStore:222 - sailpoint.tools.GeneralException: Invalid secret key format
-2026-09-15 18:00:04,364 INFO  [stdout] (QuartzScheduler_Worker-3) 2026-09-15T18:00:03,931 ERROR QuartzScheduler_Worker-3 sailpoint.connector.ConnectorFactory:250 - unable to decrypt strings for: domainSettings.password
-2026-09-15 18:00:04,854 INFO  [stdout] (QuartzScheduler_Worker-3) 2026-09-15T18:00:04,365 ERROR QuartzScheduler_Worker-3 sailpoint.connector.ConnectorFactory:250 - unable to decrypt strings for: forestSettings.password
-2026-09-15 18:00:05,524 INFO  [stdout] (QuartzScheduler_Worker-3) 2026-09-15T18:00:05,077 ERROR QuartzScheduler_Worker-3 sailpoint.connector.ADLDAPConnector:2961 - 1177013494 Error occurred while initializing AD application
-2026-09-15 18:00:05,524 INFO  [stdout] (QuartzScheduler_Worker-3) sailpoint.connector.ConnectorException: Uninitialized keystore
-2026-09-15 18:00:05,524 INFO  [stdout] (QuartzScheduler_Worker-3)       at sailpoint.connector.activedirectory.ForestConfig.setPassword(ForestConfig.java:116) ~[connector-bundle-directories.jar:8.3p3]
