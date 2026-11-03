@@ -1,0 +1,4 @@
+W=/srv/tps9001/jboss-eap-7.4/standalone/deployments/identityiq.war
+sudo md5sum $W
+sudo unzip -p $W WEB-INF/classes/iiq.dat | md5sum
+sudo unzip -p $W WEB-INF/classes/iiq.cfg | md5sum
