@@ -1,0 +1,19 @@
+Corre exactamente lo mismo en PSIU000 y en PSPT001:
+
+bash
+hostname
+J=$(sudo readlink -f /proc/$(pgrep -f jboss-modules | head -1)/exe); echo $J
+$J -version 2>&1
+fips-mode-setup --check
+update-crypto-policies --show
+rpm -qa --last | grep -iE 'openjdk|java|crypto-policies|nss' | head -10
+bash
+JH=$(dirname $(dirname $J))
+sudo grep -n -E '^(jceks\.key\.serialFilter|jdk\.jceks|security\.provider\.1|fips)' $JH/conf/security/java.security $JH/lib/security/java.security 2>/dev/null
+ps -o args= -p $(pgrep -f jboss-modules | head -1) | tr ' ' '\n' | grep -iE 'serialFilter|fips|java\.security|crypto'
+sudo md5sum $JH/lib/security/cacerts
+
+Y solo en PSIU000, para ver qué se actualizó alrededor del 15/09:
+
+bash
+sudo dnf history list | head -25
