@@ -1,0 +1,8 @@
+[slunam@QRO-ALE-PSIU000 ~]$ W=/srv/tps9001/jboss-eap-7.4/standalone/deployments/identityiq.war
+[slunam@QRO-ALE-PSIU000 ~]$ sudo md5sum $W
+[sudo] password for slunam:
+818570a259d62bfae573ab10404be2dd  /srv/tps9001/jboss-eap-7.4/standalone/deployments/identityiq.war
+[slunam@QRO-ALE-PSIU000 ~]$ sudo unzip -p $W WEB-INF/classes/iiq.dat | md5sum
+28bcbc1468b69ff5ee617fad849c49b2  -
+[slunam@QRO-ALE-PSIU000 ~]$ sudo unzip -p $W WEB-INF/classes/iiq.cfg | md5sum
+51114ac29b9fe2a961db05df7cd5f6aa  -
