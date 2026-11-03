@@ -1,0 +1,9 @@
+[slunam@QRO-ALE-PSIU000 ~]$ sudo find /srv/tps9001 \( -name iiq.dat -o -name iiq.cfg -o -name iiq.properties -o -name '*.war' \) -exec ls -ld --time-style=long-iso {} \; 2>/dev/null
+[sudo] password for slunam:
+-rwxrwxrwx. 1 sailpoint-admin sailpoint-admin 542151322 2026-03-24 15:25 /srv/tps9001/jboss-eap-7.4/standalone/deployments/identityiq.war
+-rw-rw-r--. 1 sailpoint-admin sailpoint-admin 2696302 2022-04-20 13:04 /srv/tps9001/jboss-eap-7.4/standalone/tmp/vfs/temp/tempaec2b9176d90d639/content-e075b0c42682c05f/integration/ITIM/iiqIntegration-ITIM.war
+-rw-rw-r--. 1 sailpoint-admin sailpoint-admin 1304 2025-03-24 14:50 /srv/tps9001/jboss-eap-7.4/standalone/tmp/vfs/temp/tempaec2b9176d90d639/content-e075b0c42682c05f/WEB-INF/classes/iiq.cfg
+-rw-rw-r--. 1 sailpoint-admin sailpoint-admin 512 2025-03-24 14:51 /srv/tps9001/jboss-eap-7.4/standalone/tmp/vfs/temp/tempaec2b9176d90d639/content-e075b0c42682c05f/WEB-INF/classes/iiq.dat
+-rw-rw-r--. 1 sailpoint-admin sailpoint-admin 12099 2026-03-21 03:19 /srv/tps9001/jboss-eap-7.4/standalone/tmp/vfs/temp/tempaec2b9176d90d639/content-e075b0c42682c05f/WEB-INF/classes/iiq.properties
+drwxrwxr-x. 2 sailpoint-admin sailpoint-admin 6 2026-04-30 21:05 /srv/tps9001/jboss-eap-7.4/standalone/tmp/identityiq.war
+[slunam@QRO-ALE-PSIU000 ~]$
