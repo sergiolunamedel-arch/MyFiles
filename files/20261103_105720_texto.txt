@@ -1,0 +1,20 @@
+[slunam@QRO-ALE-PSIU000 ~]$ ps -ef | grep -i [j]boss | tr ' ' '\n' | grep -E 'jboss\.home\.dir|jboss\.server\.base\.dir|server\.log\.dir|javax\.net\.ssl|^/.*java$'
+-Djboss.home.dir=/srv/tps9001/jboss-eap-7.4
+-Djboss.server.base.dir=/srv/tps9001/jboss-eap-7.4/standalone
+[slunam@QRO-ALE-PSIU000 ~]$ df -
+df: -: No such file or directory
+[slunam@QRO-ALE-PSIU000 ~]$ df -h
+Filesystem                 Size  Used Avail Use% Mounted on
+devtmpfs                   7.7G     0  7.7G   0% /dev
+tmpfs                      7.7G     0  7.7G   0% /dev/shm
+tmpfs                      7.7G  249M  7.5G   4% /run
+tmpfs                      7.7G     0  7.7G   0% /sys/fs/cgroup
+/dev/mapper/vg_rhel-root    32G  6.5G   25G  21% /
+/dev/sda2                 1014M  461M  554M  46% /boot
+/dev/sda1                  599M  5.9M  594M   1% /boot/efi
+/dev/mapper/vg_app-lv_app  128G   61G   68G  47% /srv
+/dev/mapper/vg_rhel-var     15G  1.1G   14G   8% /var
+tmpfs                      1.6G     0  1.6G   0% /run/user/0
+tmpfs                      1.6G     0  1.6G   0% /run/user/1005
+tmpfs                      1.6G     0  1.6G   0% /run/user/1002
+tmpfs                      1.6G     0  1.6G   0% /run/user/1017
