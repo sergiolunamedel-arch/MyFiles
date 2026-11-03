@@ -1,1 +1,0 @@
-sudo find /srv/tps9001 \( -name iiq.dat -o -name iiq.cfg -o -name iiq.properties -o -name '*.war' \) -exec ls -ld --time-style=long-iso {} \; 2>/dev/null
