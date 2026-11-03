@@ -1,0 +1,19 @@
+Siguiente paso (solo lectura, en los dos nodos)
+
+1. ¿Desde cuándo corre cada JBoss? Si PSIU000 arrancó alrededor del 15/09, algo cambió en ese arranque.
+
+bash
+hostname; ps -o lstart= -p $(pgrep -f jboss-modules | head -1)
+
+2. Qué certificados tiene cada cacerts. keytool pide la contraseña en el prompt (la de fábrica es changeit):
+
+bash
+sudo keytool -list -cacerts 2>/dev/null | grep -i trustedCertEntry | cut -d, -f1 | sort > /tmp/cacerts_$(hostname).txt
+wc -l /tmp/cacerts_$(hostname).txt
+
+3. Contenido de cada war (nombre y CRC de cada archivo):
+
+bash
+W=/srv/tps9001/jboss-eap-7.4/standalone/deployments/identityiq.war
+sudo unzip -v $W | awk 'NR>3 && $7 ~ /^[0-9a-f]{8}$/ {print $7, $8}' | sort -k2 > /tmp/war_$(hostname).txt
+wc -l /tmp/war_$(hostname).txt
