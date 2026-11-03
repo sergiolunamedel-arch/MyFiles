@@ -1,0 +1,68 @@
+[slunam@QRO-ALE-PSIU000 ~]$ hostname
+QRO-ALE-PSIU000
+[slunam@QRO-ALE-PSIU000 ~]$
+[slunam@QRO-ALE-PSIU000 ~]$ J=$(sudo readlink -f /proc/$(pgrep -f jboss-modules                                                                              | head -1)/exe); echo $J
+/usr/lib/jvm/java-11-openjdk-11.0.25.0.9-2.el8.x86_64/bin/java
+[slunam@QRO-ALE-PSIU000 ~]$ $J -version 2>&1
+openjdk version "11.0.25" 2024-10-15 LTS
+OpenJDK Runtime Environment (Red_Hat-11.0.25.0.9-1) (build 11.0.25+9-LTS)
+OpenJDK 64-Bit Server VM (Red_Hat-11.0.25.0.9-1) (build 11.0.25+9-LTS, mixed mod                                                                             e, sharing)
+[slunam@QRO-ALE-PSIU000 ~]$ fips-mode-setup --check
+Installation of FIPS modules is not completed.
+FIPS mode is disabled.
+[slunam@QRO-ALE-PSIU000 ~]$ update-crypto-policies --show
+DEFAULT
+[slunam@QRO-ALE-PSIU000 ~]$ rpm -qa --last | grep -iE 'openjdk|java|crypto-polic                                                                             ies|nss' | head -10
+compat-openssl10-1.0.2o-4.el8_10.1.x86_64     Tue 26 Aug 2025 07:46:22 PM CST
+tzdata-java-2025b-1.el8.noarch                Tue 08 Jul 2025 06:25:26 PM CST
+libsss_nss_idmap-2.9.4-5.el8_10.2.x86_64      Tue 08 Jul 2025 06:25:05 PM CST
+nss-sysinit-3.101.0-11.el8_8.x86_64           Tue 08 Jul 2025 06:24:47 PM CST
+nss-softokn-freebl-3.101.0-11.el8_8.x86_64    Tue 08 Jul 2025 06:24:47 PM CST
+nss-softokn-3.101.0-11.el8_8.x86_64           Tue 08 Jul 2025 06:24:47 PM CST
+nss-3.101.0-11.el8_8.x86_64                   Tue 08 Jul 2025 06:24:47 PM CST
+nss-util-3.101.0-11.el8_8.x86_64              Tue 08 Jul 2025 06:23:54 PM CST
+openssh-server-8.0p1-25.el8_10.x86_64         Tue 29 Oct 2024 07:24:02 PM CST
+openssh-clients-8.0p1-25.el8_10.x86_64        Tue 29 Oct 2024 07:24:02 PM CST
+[slunam@QRO-ALE-PSIU000 ~]$ JH=$(dirname $(dirname $J))
+[slunam@QRO-ALE-PSIU000 ~]$ sudo grep -n -E '^(jceks\.key\.serialFilter|jdk\.jce                                                                             ks|security\.provider\.1|fips)' $JH/conf/security/java.security
+66:security.provider.1=SUN
+75:security.provider.10=JdkLDAP
+76:security.provider.11=JdkSASL
+77:security.provider.12=SunPKCS11
+83:fips.provider.1=SunPKCS11 ${java.home}/conf/security/nss.fips.cfg
+84:fips.provider.2=SUN
+85:fips.provider.3=SunEC
+86:fips.provider.4=com.sun.net.ssl.internal.ssl.Provider SunPKCS11-NSS-FIPS
+293:fips.keystore.type=PKCS11
+1153:jceks.key.serialFilter = java.base/java.lang.Enum;java.base/java.security.K                                                                             eyRep;\
+[slunam@QRO-ALE-PSIU000 ~]$ $JH/lib/security/java.security 2>/dev/null
+[slunam@QRO-ALE-PSIU000 ~]$ ps -o args= -p $(pgrep -f jboss-modules | head -1) |                                                                              tr ' ' '\n' | grep -iE 'serialFilter|fips|java\.security|crypto'
+--add-opens=java.base/java.security=ALL-UNNAMED
+[slunam@QRO-ALE-PSIU000 ~]$ sudo md5sum $JH/lib/security/cacerts
+77217f6fb7ccbfc4867db057dc8877f2  /usr/lib/jvm/java-11-openjdk-11.0.25.0.9-2.el8                                                                             .x86_64/lib/security/cacerts
+[slunam@QRO-ALE-PSIU000 ~]$ sudo dnf history list | head -25
+Updating Subscription Management repositories.
+ID     | Command line              | Date and time    | Action(s)      | Altered
+--------------------------------------------------------------------------------
+    22 |                           | 2025-08-26 19:46 | Install        |    6 EE
+    21 |                           | 2025-08-26 19:44 | Install        |    1
+    20 | update -y                 | 2025-07-24 20:37 | C, E, I, U     |   51
+    19 | update                    | 2025-07-08 18:23 | C, E, I, U     |  148  <
+    18 | update -y                 | 2024-10-29 19:21 | I, U           |  382 >E
+    17 | install rsync -y          | 2024-10-08 12:26 | Install        |    1
+    16 | install tzdata            | 2024-10-07 19:06 | Upgrade        |    1
+    15 |                           | 2023-08-03 13:36 | Install        |    1 EE
+    14 |                           | 2023-08-03 13:36 | Removed        |    1 EE
+    13 |                           | 2023-04-21 15:08 | Install        |   71
+    12 | update -y                 | 2023-04-21 11:22 | I, U           |  109
+    11 | install bind-utils        | 2022-08-04 19:16 | I, U           |   12
+    10 | install nano              | 2022-07-22 12:52 | Install        |    1
+     9 | install zip               | 2022-07-22 12:52 | Install        |    2
+     8 | install net-tools         | 2022-07-21 11:59 | Install        |    1
+     7 | localinstall falcon-senso | 2022-07-21 11:53 | Install        |    1 EE
+     6 | install sos               | 2022-07-21 10:21 | Install        |    4
+     5 | install vim               | 2022-07-20 20:12 | Install        |    4
+     4 | install nmap              | 2022-07-20 15:48 | Install        |    2
+     3 | update                    | 2022-07-20 15:20 | Upgrade        |    1
+     2 | install net-snmp          | 2022-07-20 14:31 | Install        |   47  <
+     1 |                           | 2022-07-20 11:54 | Install        |  437 >E
