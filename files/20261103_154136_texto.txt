@@ -1,3 +1,0 @@
-hostname
-sudo find /srv -path '*WEB-INF/classes/*' \( -name iiq.dat -o -name iiq.cfg \) -exec md5sum {} \; 2>/dev/null
-sudo find /srv -path '*deployments*' -name identityiq.war -exec md5sum {} \; 2>/dev/null
