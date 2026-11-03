@@ -1,0 +1,2 @@
+BancoBase-IntelexionWebService-AccountAggregation: Starting
+BancoBase-IntelexionWebService-AccountAggregation: Encountered an Error: Exception during aggregation. Reason: java.lang.RuntimeException: sailpoint.connector.ConnectorException: Url: https://api.bancobase.com/api/integration/adm/empleados, Message: 0 : javax.net.ssl.SSLHandshakeException: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target, HTTP Error Code: 0
