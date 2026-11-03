@@ -1,1 +1,0 @@
-ps -ef | grep -i [j]boss | tr ' ' '\n' | grep -E 'jboss\.home\.dir|jboss\.server\.base\.dir|server\.log\.dir|javax\.net\.ssl|^/.*java$'
