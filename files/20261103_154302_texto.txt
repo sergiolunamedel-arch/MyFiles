@@ -1,8 +1,0 @@
-[slunam@QRO-ALE-PSPT001 ~]$ hostname
-QRO-ALE-PSPT001
-[slunam@QRO-ALE-PSPT001 ~]$ sudo find /srv -path '*WEB-INF/classes/*' \( -name iiq.dat -o -name iiq.cfg \) -exec md5sum {} \; 2>/dev/null
-[sudo] password for slunam:
-51114ac29b9fe2a961db05df7cd5f6aa  /srv/tps9001/jboss-eap-7.4/standalone/tmp/vfs/temp/temp58fcf175607d95d9/content-7b124f3a33f04936/WEB-INF/classes/iiq.cfg
-28bcbc1468b69ff5ee617fad849c49b2  /srv/tps9001/jboss-eap-7.4/standalone/tmp/vfs/temp/temp58fcf175607d95d9/content-7b124f3a33f04936/WEB-INF/classes/iiq.dat
-[slunam@QRO-ALE-PSPT001 ~]$ sudo find /srv -path '*deployments*' -name identityiq.war -exec md5sum {} \; 2>/dev/null
-54cbb87647dbaed680059195cead781c  /srv/tps9001/jboss-eap-7.4/standalone/deployments/identityiq.war
