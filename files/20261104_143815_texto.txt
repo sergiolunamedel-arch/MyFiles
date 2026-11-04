@@ -1,0 +1,1 @@
+sudo openssl x509 -in /ruta/archivo.pem -noout -subject -issuer
