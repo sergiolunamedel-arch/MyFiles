@@ -1,1 +1,0 @@
-openssl crl2pkcs7 -nocrl -certfile gd_bundle_dv-r1-g2.crt.pem | openssl pkcs7 -print_certs -noout
