@@ -1,7 +1,0 @@
-# Linux $
-cd ~/certs
-awk '/BEGIN CERTIFICATE/{n++} n==1' gd_bundle-g2.crt > gd_intermedio-g2.crt
-openssl x509 -in gd_intermedio-g2.crt -noout -subject
-( cat 7a8846ba23e677ee.crt; echo; cat gd_intermedio-g2.crt ) > bancobase2026net-fullchain.crt
-grep -c 'BEGIN CERTIFICATE' bancobase2026net-fullchain.crt
-openssl verify -untrusted gd_intermedio-g2.crt 7a8846ba23e677ee.crt
