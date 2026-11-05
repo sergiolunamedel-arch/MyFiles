@@ -1,0 +1,60 @@
+El Paso 3 salió bien. El Permission denied es mi culpa: puse el ls sin sudo, y private es 700 de root, así que tu usuario no puede listarlo. Eso es lo correcto. Confirma que la llave quedó con sudo:
+
+bash
+# Linux $
+sudo ls -lZ /etc/pki/nginx/private
+
+Debe mostrar bancobase2026net.key con -rw-------, dueño root y contexto cert_t.
+
+Con eso listo, sigue con el Paso 4. Primero crea el archivo:
+
+bash
+# Linux $
+sudo nano /etc/nginx/conf.d/iga-qa.conf
+
+Pega esto:
+
+nginx
+server {
+    listen 443 ssl;
+    server_name iga-qa.bancobase.net;
+
+    ssl_certificate     /etc/pki/nginx/bancobase2026net-fullchain.crt;
+    ssl_certificate_key /etc/pki/nginx/private/bancobase2026net.key;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_prefer_server_ciphers on;
+    ssl_session_cache shared:SSL:10m;
+
+    add_header Strict-Transport-Security "max-age=31536000" always;
+
+    client_max_body_size 50m;
+    proxy_buffer_size 16k;
+    proxy_buffers 8 16k;
+    large_client_header_buffers 4 16k;
+
+    location = / { return 302 /identityiq/; }
+
+    location /identityiq {
+        proxy_pass http://127.0.0.1:8080;
+        proxy_set_header Host              $host;
+        proxy_set_header X-Real-IP         $remote_addr;
+        proxy_set_header X-Forwarded-For   $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto https;
+        proxy_read_timeout 300s;
+    }
+}
+
+Guarda con Ctrl+O, Enter, Ctrl+X. Luego valida y arranca:
+
+bash
+# Linux $
+sudo grep -n 'listen' /etc/nginx/nginx.conf
+sudo nginx -t
+sudo setsebool -P httpd_can_network_connect 1
+sudo firewall-cmd --permanent --add-service=https
+sudo firewall-cmd --reload
+sudo systemctl enable --now nginx
+sudo systemctl status nginx --no-pager
+nginx -t debe decir syntax is ok y test is successful.
+setsebool tarda unos segundos.
+El status debe decir active (running).
