@@ -1,0 +1,27 @@
+El .pem del mismo nombre es el mismo certificado (como pasó con el .net), así que no hace falta subirlo.
+
+bash
+# Linux $
+cd ~/certs
+tar -tzf bancobase_com.key.tgz            # ver qué trae
+tar -xzf bancobase_com.key.tgz
+KEY=$(tar -tzf bancobase_com.key.tgz | grep '\.key$' | head -1); echo "Llave: $KEY"
+cp "$KEY" bancobase2026com.key && chmod 600 bancobase2026com.key
+
+echo "=== Certificado del servidor ==="
+openssl x509 -in c9d0957aee0ae15a.crt -noout -subject -issuer -dates -ext subjectAltName
+
+echo "=== Bundle ==="
+grep -c 'BEGIN CERTIFICATE' gd_bundle_dv-r1-g2.crt.pem
+openssl crl2pkcs7 -nocrl -certfile gd_bundle_dv-r1-g2.crt.pem | openssl pkcs7 -print_certs -noout
+
+echo "=== Llave vs certificado (deben ser iguales) ==="
+openssl x509 -noout -modulus -in c9d0957aee0ae15a.crt | openssl md5
+openssl rsa  -noout -modulus -in bancobase2026com.key | openssl md5
+
+Qué revisar en la salida:
+
+SAN: debe traer *.bancobase.com.
+Vigencia: notAfter no debe estar vencido.
+Llave: los dos md5 deben ser idénticos.
+Bundle: el issuer del certificado del servidor debe coincidir con el subject de algún certificado del bundle. Ojo: este bundle es dv-r1-g2, distinto del g2 que usamos con el .net, y puede traer 2 o 3 certificados (intermedio, cross-sign y root).
