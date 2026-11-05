@@ -1,4 +1,0 @@
-curl -sI https://<org>.okta.com/.well-known/openid-configuration | head -1
-sudo dnf install -y mod_auth_openidc
-rpm -q mod_auth_openidc
-sudo cat /etc/httpd/conf.d/scanner-base.conf
