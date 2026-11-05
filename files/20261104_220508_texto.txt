@@ -1,0 +1,39 @@
+[slunam@QVL-M0SLPOMYS00 ~]$ cd ~/certs
+[slunam@QVL-M0SLPOMYS00 certs]$ echo "=== ¿.crt y .pem son el mismo certificado? ==="
+for f in 7a8846ba23e677ee.crt 7a8846ba23e677ee.pem; do
+  echo "--- $f"; head -1 "$f"
+  openssl x509 -in "$f" -noout -fingerprint -sha256 2>/dev/null || echo "NO es PEM (posible DER)"
+done
+=== ¿.crt y .pem son el mismo certificado? ===
+--- 7a8846ba23e677ee.crt
+-----BEGIN CERTIFICATE-----
+sha256 Fingerprint=FE:3F:8E:58:BD:B4:63:4C:BB:32:28:3C:CE:02:85:54:7B:8B:D6:4A:1C:AC:7B:A5:8E:42:88:9F:07:87:CA:BB
+--- 7a8846ba23e677ee.pem
+-----BEGIN CERTIFICATE-----
+sha256 Fingerprint=FE:3F:8E:58:BD:B4:63:4C:BB:32:28:3C:CE:02:85:54:7B:8B:D6:4A:1C:AC:7B:A5:8E:42:88:9F:07:87:CA:BB
+[slunam@QVL-M0SLPOMYS00 certs]$ echo "=== Certificado del servidor ==="
+openssl x509 -in 7a8846ba23e677ee.crt -noout -subject -issuer -dates -ext subjectAltName
+=== Certificado del servidor ===
+subject=CN=*.bancobase.net
+issuer=C=US, ST=Arizona, L=Scottsdale, O=GoDaddy.com, Inc., OU=http://certs.godaddy.com/repository/, CN=Go Daddy Secure Certificate Authority - G2
+notBefore=Feb 10 18:23:57 2026 GMT
+notAfter=Feb 19 21:00:43 2027 GMT
+X509v3 Subject Alternative Name:
+    DNS:*.bancobase.net, DNS:bancobase.net
+[slunam@QVL-M0SLPOMYS00 certs]$ echo "=== Contenido del bundle (cuántos y cuáles) ==="
+grep -c 'BEGIN CERTIFICATE' gd_bundle-g2.crt
+openssl crl2pkcs7 -nocrl -certfile gd_bundle-g2.crt | openssl pkcs7 -print_certs -noout
+=== Contenido del bundle (cuántos y cuáles) ===
+2
+subject=C=US, ST=Arizona, L=Scottsdale, O=GoDaddy.com, Inc., OU=http://certs.godaddy.com/repository/, CN=Go Daddy Secure Certificate Authority - G2
+issuer=C=US, ST=Arizona, L=Scottsdale, O=GoDaddy.com, Inc., CN=Go Daddy Root Certificate Authority - G2
+
+subject=C=US, ST=Arizona, L=Scottsdale, O=GoDaddy.com, Inc., CN=Go Daddy Root Certificate Authority - G2
+issuer=C=US, ST=Arizona, L=Scottsdale, O=GoDaddy.com, Inc., CN=Go Daddy Root Certificate Authority - G2
+
+[slunam@QVL-M0SLPOMYS00 certs]$ echo "=== ¿La llave corresponde al certificado? (los dos hashes iguales) ==="
+openssl x509 -noout -modulus -in 7a8846ba23e677ee.crt | openssl md5
+openssl rsa  -noout -modulus -in bancobase2026net.key | openssl md5
+=== ¿La llave corresponde al certificado? (los dos hashes iguales) ===
+MD5(stdin)= eb0d0debabcfdfa7cba71547a9cc69fd
+MD5(stdin)= eb0d0debabcfdfa7cba71547a9cc69fd
