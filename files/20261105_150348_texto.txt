@@ -1,2 +1,0 @@
-  nslookup iga-qa.bancobase.net
-  Test-NetConnection -ComputerName 10.50.54.147 -Port 443
