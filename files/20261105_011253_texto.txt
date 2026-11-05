@@ -1,0 +1,86 @@
+Paso 1 — Confirmar que el servidor llega a Okta
+bash
+# Linux $
+curl -s -o /dev/null -w 'HTTP %{http_code}\n' --max-time 15 https://bancobase.okta.com/.well-known/openid-configuration
+HTTP 200: sigue con el Paso 2.
+HTTP 000 o timeout: detente. Hace falta proxy de salida o regla de red. Pásame la salida de curl -v --max-time 15 https://bancobase.okta.com/ y lo resolvemos antes de seguir.
+Paso 2 — Guardar los secretos (sin que pasen por el chat)
+
+El script te pide el Client ID y el Client Secret en pantalla (el secret no se ve al teclearlo) y genera la passphrase solo:
+
+bash
+# Linux $
+read -rp "Client ID: " CID; read -rsp "Client Secret: " CSEC; echo
+PASS=$(openssl rand -base64 32)
+sudo install -d -m 700 -o root -g root /etc/httpd/oidc
+sudo tee /etc/httpd/oidc/scan-secrets.conf > /dev/null <<EOF
+OIDCClientID "$CID"
+OIDCClientSecret "$CSEC"
+OIDCCryptoPassphrase "$PASS"
+EOF
+unset CSEC PASS
+sudo chmod 600 /etc/httpd/oidc/scan-secrets.conf
+sudo restorecon -Rv /etc/httpd/oidc
+sudo grep -c '^OIDC' /etc/httpd/oidc/scan-secrets.conf     # debe dar 3
+
+Los secretos quedan en un archivo aparte, solo legible por root. El VirtualHost los incluye, pero no los contiene.
+
+Paso 3 — VirtualHost completo con Okta
+bash
+# Linux $
+sudo cp -a /etc/httpd/conf.d/scanner-base.conf /var/tmp/scanner-base.conf.antes-oidc-$(date +%F_%H%M)
+sudo tee /etc/httpd/conf.d/scanner-base.conf > /dev/null <<'EOF'
+<VirtualHost *:8008>
+    # El esquema https en ServerName hace que Apache arme URLs y redirects
+    # en https aunque reciba HTTP plano desde nginx.
+    ServerName https://scan.bancobase.com:443
+    UseCanonicalName On
+    DocumentRoot /var/www/ScannerBaseSite
+
+    # ---------- Okta OIDC ----------
+    OIDCProviderMetadataURL https://bancobase.okta.com/.well-known/openid-configuration
+    OIDCRedirectURI https://scan.bancobase.com/oidc/callback
+    Include /etc/httpd/oidc/scan-secrets.conf
+    OIDCScope "openid email profile"
+    OIDCRemoteUserClaim email
+    OIDCXForwardedHeaders X-Forwarded-Proto
+    OIDCSessionInactivityTimeout 3600
+    OIDCSessionMaxDuration 28800
+    OIDCCookieSameSite On
+
+    <Directory /var/www/ScannerBaseSite>
+        AllowOverride All
+        Require all granted
+    </Directory>
+
+    # Todo el sitio exige sesión de Okta (Location se aplica después de Directory)
+    <Location />
+        AuthType openid-connect
+        Require valid-user
+    </Location>
+
+    # Si la app de escritorio descarga de /downloads/ sin navegador,
+    # descomenta este bloque para dejar esa ruta fuera del login:
+    # <Location /downloads/>
+    #     AuthType None
+    #     Require all granted
+    # </Location>
+</VirtualHost>
+EOF
+sudo apachectl configtest
+sudo systemctl restart httpd
+
+configtest debe decir Syntax OK.
+
+Paso 4 — Probar
+bash
+# Linux $
+curl -sI --resolve scan.bancobase.com:443:127.0.0.1 https://scan.bancobase.com/ | grep -iE '^(HTTP|location)'
+
+Debe dar HTTP/1.1 302 con Location: https://bancobase.okta.com/oauth2/v1/authorize?.... Eso significa que el candado ya está puesto.
+
+Luego prueba en el navegador:
+
+Ventana privada a https://scan.bancobase.com: te manda a Okta, inicias sesión y regresas a la página.
+Tile en el dashboard de Okta: entra directo.
+Usuario no asignado (si tienes un compañero a mano): Okta debe rechazarlo.
