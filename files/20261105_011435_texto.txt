@@ -1,3 +1,0 @@
-sudo grep -iE '^\s*proxy' /etc/dnf/dnf.conf /etc/yum.repos.d/*.repo 2>/dev/null
-sudo grep -iE '^\s*(hostname|proxy_hostname|proxy_port)\s*=' /etc/rhsm/rhsm.conf
-env | grep -i proxy
