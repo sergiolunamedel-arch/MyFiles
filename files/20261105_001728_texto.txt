@@ -1,0 +1,67 @@
+Primero confirma que Tomcat sigue escuchando en el 8080:
+
+bash
+# Linux $
+sudo ss -ltnp | grep -E ':8080\b'
+
+Luego crea la config, valídala y arranca:
+
+bash
+# Linux $
+sudo tee /etc/nginx/conf.d/scan.bancobase.com.conf > /dev/null <<'EOF'
+server {
+    listen 443 ssl;
+    server_name scan.bancobase.com;
+
+    ssl_certificate     /etc/pki/nginx/bancobase2026com-fullchain.crt;
+    ssl_certificate_key /etc/pki/nginx/private/bancobase2026com.key;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_prefer_server_ciphers on;
+    ssl_session_cache shared:SSL:10m;
+
+    add_header Strict-Transport-Security "max-age=31536000" always;
+
+    client_max_body_size 200m;
+
+    location / {
+        proxy_pass http://127.0.0.1:8080;
+        proxy_set_header Host              $host;
+        proxy_set_header X-Real-IP         $remote_addr;
+        proxy_set_header X-Forwarded-For   $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto https;
+        proxy_read_timeout 300s;
+    }
+}
+
+server {
+    listen 80;
+    server_name scan.bancobase.com;
+    return 301 https://$host$request_uri;
+}
+EOF
+sudo head -3 /etc/nginx/conf.d/scan.bancobase.com.conf
+sudo nginx -t
+sudo setsebool -P httpd_can_network_connect 1
+sudo firewall-cmd --permanent --add-service=https --add-service=http
+sudo firewall-cmd --reload
+sudo systemctl enable --now nginx
+sudo systemctl status nginx --no-pager
+
+Lo esperado:
+
+head muestra server { como primera línea.
+nginx -t dice syntax is ok y test is successful.
+status dice active (running).
+Paso 6 — Prueba rápida
+
+El Paso 5 (Tomcat) lo vemos después, según el resultado de esta prueba.
+
+bash
+# Linux $
+curl -sI --resolve scan.bancobase.com:443:127.0.0.1 https://scan.bancobase.com/
+curl -sI --resolve scan.bancobase.com:80:127.0.0.1  http://scan.bancobase.com/
+
+Lo esperado:
+
+El primer curl regresa 200 (o 302), sin error de certificado.
+El segundo regresa 301 con Location: https://scan.bancobase.com/.
