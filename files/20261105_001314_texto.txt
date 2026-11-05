@@ -1,0 +1,9 @@
+sudo mkdir -p /etc/pki/nginx/private
+sudo cp ~/certs/bancobase2026com-fullchain.crt /etc/pki/nginx/
+sudo cp ~/certs/bancobase2026com.key /etc/pki/nginx/private/
+sudo chown -R root:root /etc/pki/nginx
+sudo chmod 644 /etc/pki/nginx/bancobase2026com-fullchain.crt
+sudo chmod 700 /etc/pki/nginx/private
+sudo chmod 600 /etc/pki/nginx/private/bancobase2026com.key
+sudo restorecon -Rv /etc/pki/nginx
+sudo ls -lZ /etc/pki/nginx /etc/pki/nginx/private
