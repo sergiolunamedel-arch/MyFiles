@@ -1,0 +1,48 @@
+[slunam@QVL-M0SLPOMYS00 certs]$ cd ~/certs
+[slunam@QVL-M0SLPOMYS00 certs]$ awk '/BEGIN CERTIFICATE/{n++} n==1' gd_bundle-g2.crt > gd_intermedio-g2.crt
+[slunam@QVL-M0SLPOMYS00 certs]$ openssl x509 -in gd_intermedio-g2.crt -noout -subject
+subject=C=US, ST=Arizona, L=Scottsdale, O=GoDaddy.com, Inc., OU=http://certs.godaddy.com/repository/, CN=Go Daddy Secure Certificate Authority - G2
+[slunam@QVL-M0SLPOMYS00 certs]$ ( cat 7a8846ba23e677ee.crt; echo; cat gd_intermedio-g2.crt ) > bancobase2026net-fullchain.crt
+[slunam@QVL-M0SLPOMYS00 certs]$ grep -c 'BEGIN CERTIFICATE' bancobase2026net-fullchain.crt
+2
+[slunam@QVL-M0SLPOMYS00 certs]$ openssl verify -untrusted gd_intermedio-g2.crt 7a8846ba23e677ee.crt
+7a8846ba23e677ee.crt: OK
+[slunam@QVL-M0SLPOMYS00 certs]$ sudo ss -ltnp | grep ':443 '
+[sudo] password for slunam:
+[slunam@QVL-M0SLPOMYS00 certs]$ sudo dnf install -y nginx
+Updating Subscription Management repositories.
+Red Hat Enterprise Linux 9 for x86_64 - BaseOS (RPMs)                                                                         26 kB/s | 2.4 kB     00:00
+Red Hat Enterprise Linux 9 for x86_64 - AppStream (RPMs)                                                                      12 kB/s | 2.8 kB     00:00
+Dependencies resolved.
+=============================================================================================================================================================
+ Package                        Architecture       Version                                                Repository                                    Size
+=============================================================================================================================================================
+Installing:
+ nginx                          x86_64             2:1.26.3-9.module+el9.8.0+24288+e2e6d896               rhel-9-for-x86_64-appstream-rpms              39 k
+Installing dependencies:
+ nginx-core                     x86_64             2:1.26.3-9.module+el9.8.0+24288+e2e6d896               rhel-9-for-x86_64-appstream-rpms             672 k
+ nginx-filesystem               noarch             2:1.26.3-9.module+el9.8.0+24288+e2e6d896               rhel-9-for-x86_64-appstream-rpms              16 k
+ redhat-logos-httpd             noarch             90.6-1.el9                                             rhel-9-for-x86_64-appstream-rpms              15 k
+
+Transaction Summary
+=============================================================================================================================================================
+Install  4 Packages
+
+Total download size: 742 k
+Installed size: 2.0 M
+Downloading Packages:
+(1/4): nginx-filesystem-1.26.3-9.module+el9.8.0+24288+e2e6d896.noarch.rpm                                                    124 kB/s |  16 kB     00:00
+(2/4): nginx-1.26.3-9.module+el9.8.0+24288+e2e6d896.x86_64.rpm                                                               363 kB/s |  39 kB     00:00
+(3/4): redhat-logos-httpd-90.6-1.el9.noarch.rpm                                                                               58 kB/s |  15 kB     00:00
+(4/4): nginx-core-1.26.3-9.module+el9.8.0+24288+e2e6d896.x86_64.rpm                                                          1.4 MB/s | 672 kB     00:00
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+Total                                                                                                                        1.5 MB/s | 742 kB     00:00
+Running transaction check
+No available modular metadata for modular package 'nginx-core-2:1.26.3-9.module+el9.8.0+24288+e2e6d896.x86_64', it cannot be installed on the system
+No available modular metadata for modular package 'nginx-filesystem-2:1.26.3-9.module+el9.8.0+24288+e2e6d896.noarch', it cannot be installed on the system
+No available modular metadata for modular package 'nginx-2:1.26.3-9.module+el9.8.0+24288+e2e6d896.x86_64', it cannot be installed on the system
+The downloaded packages were saved in cache until the next successful transaction.
+You can remove cached packages by executing 'dnf clean packages'.
+Error: No available modular metadata for modular package
+[slunam@QVL-M0SLPOMYS00 certs]$ nginx -v
+-bash: nginx: command not found
