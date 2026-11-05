@@ -1,0 +1,45 @@
+Sigue el Paso 5: que Tomcat sepa que hay HTTPS delante. Esto corrige que, después del SSO, IIQ redirija a http:// en vez de https://.
+
+bash
+# Linux $
+sudo cp /opt/tomcat/conf/server.xml /var/tmp/server.xml.antes-nginx-$(date +%F)
+sudo grep -n '<Host name' /opt/tomcat/conf/server.xml
+sudo grep -n 'RemoteIpValve' /opt/tomcat/conf/server.xml
+El primer grep te dice en qué línea está <Host name="localhost".
+El segundo debe salir vacío; si no, la Valve ya existe y no hay que agregarla.
+
+Abre el archivo:
+
+bash
+# Linux $
+sudo nano /opt/tomcat/conf/server.xml
+
+Con Ctrl+W busca <Host name="localhost". Esa etiqueta ocupa varias líneas y termina con >. Coloca el cursor en la línea siguiente al > que cierra la etiqueta <Host ...>, y escribe esto a mano (no pegues por RDP si te corrompe caracteres):
+
+xml
+<Valve className="org.apache.catalina.valves.RemoteIpValve"
+       remoteIpHeader="X-Forwarded-For"
+       protocolHeader="X-Forwarded-Proto"
+       internalProxies="127\.0\.0\.1" />
+
+Guarda con Ctrl+O, Enter, Ctrl+X. Después reinicia Tomcat:
+
+bash
+# Linux $
+sudo systemctl restart tomcat
+sudo journalctl -u tomcat -f
+
+Espera Server startup in [...] milliseconds y sal con Ctrl+C.
+
+Paso 6: probar desde el servidor
+bash
+# Linux $
+curl -sI --resolve iga-qa.bancobase.net:443:127.0.0.1 https://iga-qa.bancobase.net/identityiq/
+
+Lo esperado:
+
+HTTP/1.1 302 con un Location: que empiece con https://. Si sale http://, la Valve no quedó.
+Sin error de certificado. Este curl no usa -k, así que también valida la cadena.
+Si sale 502, corre sudo tail -20 /var/log/nginx/error.log. Lo más común es SELinux, pero el setsebool ya lo hiciste.
+
+Pásame la salida del grep de la Valve, del arranque de Tomcat y del curl. Con eso pasamos al Paso 7: DNS interno y firewall desde tu laptop.
