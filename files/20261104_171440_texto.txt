@@ -1,9 +1,0 @@
-En qué consisten las pruebas: Plataforma de autoservicio con la que cada desarrollador valida la seguridad de su código en cada etapa, sin esperar a otro equipo.
-
-Código: dependencias (SCA), código fuente (SAST) y secretos expuestos.
-Infraestructura: contenedores e infraestructura como código (IaC).
-En ejecución: aplicaciones web (DAST) y APIs.
-
-Dónde o cómo solicitar las pruebas: No se solicitan, son 100% autoservicio. Cada escaneo crea, actualiza y cierra automáticamente su ticket en ServiceNow cuando ya no hay hallazgos críticos ni altos. Hay trazabilidad completa para auditoría.
-
-Tiempo para tener el resultado: De 10 minutos (solo código) a 30 minutos (todos los servicios).
