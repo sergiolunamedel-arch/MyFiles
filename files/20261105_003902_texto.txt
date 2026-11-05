@@ -1,6 +1,0 @@
-sudo cp -a /var/www/ScannerBaseSite /var/tmp/ScannerBaseSite.bak-$(date +%F_%H%M)
-sudo cp ~/index.html /var/www/ScannerBaseSite/index.html
-sudo chown root:root /var/www/ScannerBaseSite/index.html
-sudo chmod 644 /var/www/ScannerBaseSite/index.html
-sudo restorecon -Rv /var/www/ScannerBaseSite
-curl -s --resolve scan.bancobase.com:443:127.0.0.1 https://scan.bancobase.com/ | grep -m1 -i '<title>'
