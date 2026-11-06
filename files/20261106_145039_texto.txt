@@ -1,0 +1,41 @@
+[arranque] ⚠ Node.js / npm: no se pudo verificar la instalación — revise el registro — la etapa correspondiente puede no estar disponible (detalle en data/boot_dependencies.log)
+[auth] autenticado.
+[escaneo] pipeline: CODE+SCA+SECRETS
+[escaneo] salida → C:\Users\anunezl\Downloads\ScannerBase_1.0\ScannerBase\Reports\_unscoped\report_20261106_130153_code+sca+secrets
+[snyk] CLI lista (1.1308.4)
+[escaneo] ejecutando 3 etapas en paralelo
+[secretos] ejecutando escaneo de secretos…
+[tls] confiando en el proxy corporativo vía NODE_EXTRA_CA_CERTS=C:\Users\anunezl\AppData\Local\Temp\bbscanner_corp_ca.pem
+[tls] confiando en el proxy corporativo vía NODE_EXTRA_CA_CERTS=C:\Users\anunezl\AppData\Local\Temp\bbscanner_corp_ca.pem
+[secretos] escaneando C:\Repos\gfb-nautilus-loans\Colocacion.ResumenEjecutivo
+[secretos] capa git-secrets activa (C:\Users\anunezl\Downloads\ScannerBase_1.0\ScannerBase\tools\gitsecrets\1.3.0\git-secrets)
+[snyk] no se pudo consultar las organizaciones de la cuenta en la API de Snyk (URLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Basic Constraints of CA cert not marked critical (_ssl.c:1081)'))) — se usará la org corporativa y, si falla, la org por defecto de la cuenta.
+[escaneo] $ snyk code test --org=7c545e26-1865-4ce9-a2e5-2b8c1c215e62 --json  (cwd=C:\Repos\gfb-nautilus-loans\Colocacion.ResumenEjecutivo)
+[escaneo] $ snyk test --all-projects --detection-depth=10 --strict-out-of-sync=false --skip-unresolved --org=7c545e26-1865-4ce9-a2e5-2b8c1c215e62 --json  (cwd=C:\Repos\gfb-nautilus-loans\Colocacion.ResumenEjecutivo)
+[snyk] SAST: la organización 7c545e26-1865-4ce9-a2e5-2b8c1c215e62 no tiene Snyk Code activado (Snyk Code is not supported for your current organization: ``.). Se intenta con la organización por defecto de la cuenta…
+[escaneo] $ snyk code test --json  (cwd=C:\Repos\gfb-nautilus-loans\Colocacion.ResumenEjecutivo)
+[snyk] SAST: la organización por defecto de la cuenta no tiene Snyk Code activado (Snyk Code is not supported for your current organization: `anunezl`.). No quedan más organizaciones por probar.
+[escaneo] code falló: SnykScanError('Snyk Code no está habilitado en la(s) organización(es) de la empresa de esta cuenta (., anunezl) — un admin de Snyk debe activarlo ahí (Settings → Snyk Code) o agregar la cuenta a una organización que lo tenga.')
+[snyk] SCA: la organización 7c545e26-1865-4ce9-a2e5-2b8c1c215e62 no está disponible para esta sesión (Org 7c545e26-1865-4ce9-a2e5-2b8c1c215e62 was not found or you may not have the correct permissions to access the org. Try re-running with the `--org` flag.). Se intenta con la organización por defecto de la cuenta…
+[escaneo] $ snyk test --all-projects --detection-depth=10 --strict-out-of-sync=false --skip-unresolved --json  (cwd=C:\Repos\gfb-nautilus-loans\Colocacion.ResumenEjecutivo)
+[escaneo] SCA vulnerabilidades totales: 0
+[escaneo] JSON crudo → C:\Users\anunezl\Downloads\ScannerBase_1.0\ScannerBase\Reports\_unscoped\report_20261106_130153_code+sca+secrets\snyk_test.json
+[snyk] SCA completado en la organización por defecto de la cuenta.
+[secretos] git-secrets --scan-history excedió el tiempo en un repositorio grande — los resultados del árbol de trabajo siguen completos.
+[secretos] motor integrado: 61 archivo(s) vistos · 48 escaneados · omitidos 12 por tipo, 0 demasiado grandes, 1 binarios, 0 ilegibles · 0 por nombre de archivo · 0 por entropía
+[secretos] listo — 19 hallazgo(s) en 48 archivo(s) en 429.3s
+[secretos] 19 hallazgo(s) en 48 archivo(s)
+[escaneo] ⚠ CODE no se completó — el resultado es INCOMPLETO, no lo interprete como un escaneo limpio.
+[snyk] ℹ️ CODE: NO es un problema de inicio de sesión — la cuenta sí entró con SSO a una organización de la empresa (por eso SCA funcionó), pero esa organización no tiene Snyk Code (SAST) activado. Un admin de Snyk debe activarlo en esa organización (Settings → Snyk Code → Enable Snyk Code) o agregar la cuenta a una organización que ya lo tenga (p. ej. banco-base-default). Reiniciar sesión no lo resuelve.
+[estado] resultado sca guardado en el histórico acumulado
+[estado] resultado secrets guardado en el histórico acumulado
+[servicenow] [app:Colocacion.ResumenEjecutivo] OK (200) -> request_number: REQ0041479
+[servicenow] ticket creado en Producción para Colocacion.ResumenEjecutivo: RITM0041239 (solicitante: anunezl)
+[gate] INCOMPLETE  (critical=0 high=5 medium=0 low=14 secrets_crit_high=5)  — CODE no se completó; vuelva a ejecutar antes de tomarlo como FAIL
+[reporte] HTML → C:\Users\anunezl\Downloads\ScannerBase_1.0\ScannerBase\Reports\_unscoped\report_20261106_130153_code+sca+secrets\code+sca+secrets+anunezl_20261106.html
+[servicenow] reporte adjuntado a RITM0041239: Reporte_SecDevOps_Colocacion.ResumenEjecutivo.html
+[reporte] CSV (ZIP) → C:\Users\anunezl\Downloads\ScannerBase_1.0\ScannerBase\Reports\_unscoped\report_20261106_130153_code+sca+secrets\code+sca+secrets+anunezl_20261106.zip
+[reporte] Secretos HTML → C:\Users\anunezl\Downloads\ScannerBase_1.0\ScannerBase\Reports\_unscoped\report_20261106_130153_code+sca+secrets\code+sca+secrets+anunezl_20261106_secrets.html
+[reporte] SARIF unificado → C:\Users\anunezl\Downloads\ScannerBase_1.0\ScannerBase\Reports\_unscoped\report_20261106_130153_code+sca+secrets\findings.sarif
+[reporte] JSON unificado → C:\Users\anunezl\Downloads\ScannerBase_1.0\ScannerBase\Reports\_unscoped\report_20261106_130153_code+sca+secrets\findings_unified.json
+[historial] registrado — remediadas 0, nuevas 19 desde el último CODE+SCA+SECRETS
