@@ -1,0 +1,83 @@
+Usando Python 3.14.2  (py -3.14)
+
+Requirement already satisfied: pyinstaller in C:\Users\slunam\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages (6.22.3)
+Requirement already satisfied: jinja2 in C:\Users\slunam\AppData\Roaming\Python\Python314\site-packages (3.1.6)
+Requirement already satisfied: selenium in C:\Users\slunam\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages (4.52.0)
+Requirement already satisfied: webdriver-manager in C:\Users\slunam\AppData\Roaming\Python\Python314\site-packages (4.1.2)
+Requirement already satisfied: pynput in C:\Users\slunam\AppData\Roaming\Python\Python314\site-packages (1.8.2)
+Requirement already satisfied: pyyaml in C:\Users\slunam\AppData\Roaming\Python\Python314\site-packages (6.0.3)
+Requirement already satisfied: requests in C:\Users\slunam\AppData\Roaming\Python\Python314\site-packages (2.34.2)
+Requirement already satisfied: send2trash in C:\Users\slunam\AppData\Roaming\Python\Python314\site-packages (2.1.0)
+Requirement already satisfied: altgraph in C:\Users\slunam\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages (from pyinstaller) (0.17.5)
+Requirement already satisfied: packaging>=22.0 in C:\Users\slunam\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages (from pyinstaller) (26.0)
+Requirement already satisfied: pefile>=2022.5.30 in C:\Users\slunam\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages (from pyinstaller) (2024.8.26)
+Requirement already satisfied: pyinstaller-hooks-contrib>=2026.7 in C:\Users\slunam\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages (from pyinstaller) (2026.9)
+Requirement already satisfied: pywin32-ctypes>=0.2.1 in C:\Users\slunam\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages (from pyinstaller) (0.2.3)
+Requirement already satisfied: setuptools>=42.0.0 in C:\Users\slunam\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages (from pyinstaller) (84.2.1)
+Requirement already satisfied: MarkupSafe>=2.0 in C:\Users\slunam\AppData\Roaming\Python\Python314\site-packages (from jinja2) (3.0.3)
+Collecting certifi>=2026.10.23 (from selenium)
+  Using cached certifi-2026.10.23-py3-none-any.whl.metadata (2.5 kB)
+Requirement already satisfied: trio<1.0,>=0.31.0 in C:\Users\slunam\AppData\Roaming\Python\Python314\site-packages (from selenium) (0.33.0)
+Requirement already satisfied: trio-websocket<1.0,>=0.12.2 in C:\Users\slunam\AppData\Roaming\Python\Python314\site-packages (from selenium) (0.12.2)
+Requirement already satisfied: typing_extensions<5.0,>=4.15.0 in C:\Users\slunam\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages (from selenium) (4.15.0)
+Requirement already satisfied: urllib3<3.0,>=2.6.3 in C:\Users\slunam\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages (from urllib3[socks]<3.0,>=2.6.3->selenium) (2.7.0)
+Requirement already satisfied: websocket-client<2.0,>=1.8.0 in C:\Users\slunam\AppData\Roaming\Python\Python314\site-packages (from selenium) (1.9.0)
+Requirement already satisfied: attrs>=23.2.0 in C:\Users\slunam\AppData\Roaming\Python\Python314\site-packages (from trio<1.0,>=0.31.0->selenium) (26.1.0)
+Requirement already satisfied: sortedcontainers in C:\Users\slunam\AppData\Roaming\Python\Python314\site-packages (from trio<1.0,>=0.31.0->selenium) (2.4.0)
+Requirement already satisfied: idna in C:\Users\slunam\AppData\Roaming\Python\Python314\site-packages (from trio<1.0,>=0.31.0->selenium) (3.18)
+Requirement already satisfied: outcome in C:\Users\slunam\AppData\Roaming\Python\Python314\site-packages (from trio<1.0,>=0.31.0->selenium) (1.3.0.post0)
+Requirement already satisfied: sniffio>=1.3.0 in C:\Users\slunam\AppData\Roaming\Python\Python314\site-packages (from trio<1.0,>=0.31.0->selenium) (1.3.1)
+Requirement already satisfied: cffi>=1.14 in C:\Users\slunam\AppData\Roaming\Python\Python314\site-packages (from trio<1.0,>=0.31.0->selenium) (2.0.0)
+Requirement already satisfied: wsproto>=0.14 in C:\Users\slunam\AppData\Roaming\Python\Python314\site-packages (from trio-websocket<1.0,>=0.12.2->selenium) (1.3.2)
+Requirement already satisfied: pysocks!=1.5.7,<2.0,>=1.5.6 in C:\Users\slunam\AppData\Roaming\Python\Python314\site-packages (from urllib3[socks]<3.0,>=2.6.3->selenium) (1.7.1)
+Requirement already satisfied: python-dotenv in C:\Users\slunam\AppData\Roaming\Python\Python314\site-packages (from webdriver-manager) (1.2.2)
+Requirement already satisfied: six in C:\Users\slunam\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages (from pynput) (1.17.0)
+Requirement already satisfied: charset_normalizer<4,>=2 in C:\Users\slunam\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages (from requests) (3.4.4)
+Requirement already satisfied: pycparser in C:\Users\slunam\AppData\Roaming\Python\Python314\site-packages (from cffi>=1.14->trio<1.0,>=0.31.0->selenium) (3.0)
+Requirement already satisfied: h11<1,>=0.16.0 in C:\Users\slunam\AppData\Roaming\Python\Python314\site-packages (from wsproto>=0.14->trio-websocket<1.0,>=0.12.2->selenium) (0.16.0)
+Using cached certifi-2026.10.23-py3-none-any.whl (135 kB)
+Installing collected packages: certifi
+  Attempting uninstall: certifi
+    Found existing installation: certifi 2026.1.4
+    Uninstalling certifi-2026.1.4:
+      Successfully uninstalled certifi-2026.1.4
+Successfully installed certifi-2026.10.23
+
+[notice] A new release of pip is available: 26.2.1 -> 26.3
+[notice] To update, run: C:\Users\slunam\AppData\Local\Python\pythoncore-3.14-64\python.exe -m pip install --upgrade pip
+85 DEPRECATION: Running PyInstaller as admin is not necessary nor sensible. Run PyInstaller from a non-administrator terminal. PyInstaller 7.0 will block this.
+233 INFO: PyInstaller: 6.22.3, contrib hooks: 2026.9
+234 INFO: Python: 3.14.2
+291 INFO: Platform: Windows-11-10.0.26200-SP0
+291 INFO: Python environment: C:\Users\slunam\AppData\Local\Python\pythoncore-3.14-64
+298 INFO: Removing temporary files and cleaning cache in C:\Users\slunam\AppData\Local\pyinstaller
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\slunam\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\__main__.py", line 321, in <module>
+    run()
+    ~~~^^
+  File "C:\Users\slunam\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\__main__.py", line 215, in run
+    run_build(pyi_config, spec_file, **vars(args))
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slunam\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\__main__.py", line 70, in run_build
+    PyInstaller.building.build_main.main(pyi_config, spec_file, **kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slunam\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\building\build_main.py", line 1275, in main
+    build(specfile, distpath, workpath, clean_build)
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slunam\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\building\build_main.py", line 1168, in build
+    shutil.rmtree(f)
+    ~~~~~~~~~~~~~^^^
+  File "C:\Users\slunam\AppData\Local\Python\pythoncore-3.14-64\Lib\shutil.py", line 852, in rmtree
+    _rmtree_impl(path, dir_fd, onexc)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slunam\AppData\Local\Python\pythoncore-3.14-64\Lib\shutil.py", line 711, in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\slunam\AppData\Local\Python\pythoncore-3.14-64\Lib\shutil.py", line 707, in _rmtree_unsafe
+    os.rmdir(path)
+    ~~~~~~~~^^^^^^
+PermissionError: [WinError 5] Acceso denegado: 'C:\\Users\\slunam\\Documents\\Snyk\\Fuente\\build\\ScannerBase\\localpycs'
+Fallo la compilacion.
+Presione una tecla para continuar . . .
