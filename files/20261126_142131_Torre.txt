@@ -1,0 +1,98 @@
+
+| Torre                              | Correo                          | Actividad                                                                                                                                                                                                                                                                                                                                                                               | Integrantes                                                                          |
+| ---------------------------------- | ------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| Psaumis                            |                                 | Desbloqueo/Re-bloqueo pipelines para excepciones.                                                                                                                                                                                                                                                                                                                                       | Guillermo Escalona Bustos                                                            |
+| Seguridad en Infraestructura (SOC) | ciberseguridadti@bancobase.com  | Administración de los controles de seguridad implementados en la infraestructura de BASE, instalación de agentes de seguridad (nessus, netskope, crowdstrike), atención de incidentes de ciberseguridad.<br/>- EDR Crowdstrike<br/>- DBF Imperva (Firewall de base de datos)<br/>- Trellix<br/>- Splunk<br/>- Cyberark (a nivel administración de la caja)<br/>- MDM MAAS 360<br/>- RSA | - Leo Ramirez<br/>- Adan Diaz de Leon<br/>- Alejandro Gomez<br/>- Jose Luis Martinez |
+| Ciber inteligencia                 | ciberinteligencia@bancobase.com | Ejecución de pruebas de penetración y análisis de vulnerabilidades (Nessus).                                                                                                                                                                                                                                                                                                            | - Jonathan Tapia<br/>- Alma Herrera<br/>- Alberto Santamaria                         |
+| Ciberseguridad Perimetral          | ciber_perimetral@bancobase.com  | Gestión de la seguridad perimetral, apertura de comunicaciones, bloqueo y desbloqueo de páginas/sitios/URLS/comunicaciones.<br/>- Firewall<br/>- WAF Imperva (Firewall de Aplicaciones Web)<br/>- Netskope<br/>- Darktrace                                                                                                                                                              | - Fer Cortez<br/>- Omar Sanchez<br/>- Kevin Martinez<br/>- Mario Loera               |
+| Gestión de Accesos TI              | ciber_iam@bancobase.com         | Gestión del ciclo de vida de identidades de los aplicativos institucionales (en proceso), ABC de accesos. Se encuentra en proceso de migración de flujo operativos con el equipo de Miguel Jurado (Gestión de Identidades y Accesos - controldeacceso@bancobase.com)<br/><br/>- Okta<br/>- Sailpoint<br/>- Cyberark<br/>- Google Workspace                                              | - Jose Luis Martinez (temporal)<br/>- Carlos Campos<br/>- Gonzalo Navarro            |
+| Ciberseguridad Digital             | ciberdigital@bancobase.com      | Automatización de flujos de seguridad, triage de vulnerabilidades, implementación de seguridad en el pipe de devops (DEVSECOPS).<br/>- Snyk<br/>- GitSecretScan<br/>- Programa Interno de Escaneo de Seguridad                                                                                                                                                                          | - Sergio Luna                                                                        |
+
+
+| Nombre                             | Pocisión                        |
+| ---------------------------------- | ------------------------------- |
+| Carlos Fernando Rodríguez          | CISO                            |
+| Jimmy Alfaro                       | Director de Arquitectura        |
+| Jairo Monroy                       | ServiceNow                      |
+| Jessica Santos                     | Preguntas ServiceNow            |
+| Ana Gabriela Navarro               | Préstamos                       |
+| Miguel Ángel Jurado                | Control de acceso, certificados |
+| Antonio Eliezer                    | Director de Arquitectura        |
+| Hermila Elizabeth López Villanueva | CTO                             |
+| Mario Muñoz Texas                  | Sailpoint                       |
+| Gilberto Ruiz                      | Sailpoint, jefe de Mario        |
+| Ricardo Guzman                     | DevOps externo                  |
+| Adriana Gomez López                | Encargada de gestión de cambios |
+
+### Seguridad en Infraestructura (SOC)
+
+Correo: ciberseguridadti@bancobase.com	
+
+Descripción: Administración de los controles de seguridad implementados en la infraestructura de BASE, instalación de agentes de seguridad (nessus, netskope, crowdstrike), atención de incidentes de ciberseguridad.
+- EDR Crowdstrike
+- DBF Imperva (Firewall de base de datos)
+- Trellix
+- Splunk
+- Cyberark (a nivel administración de la caja)
+- MDM MAAS 360
+- RSA
+
+Integrantes:
+- Leo Ramirez
+- Adan Diaz de Leon
+- Alejandro Gomez
+- Jose Luis Martinez
+
+### Ciber inteligencia	
+
+Correo: ciberinteligencia@bancobase.com	
+
+Descripción: Ejecución de pruebas de penetración y análisis de vulnerabilidades (Nessus).	
+
+Integrantes:
+- Jonathan Tapia
+- Alma Herrera
+- Alberto Santamaria
+
+### Ciberseguridad Perimetral	
+
+Correo: ciber_perimetral@bancobase.com	
+
+Descripción: Gestión de la seguridad perimetral, apertura de comunicaciones, bloqueo y desbloqueo de páginas/sitios/URLS/comunicaciones.
+- Firewall
+- WAF Imperva (Firewall de Aplicaciones Web)
+- Netskope
+- Darktrace
+
+Integrantes:
+- Fer Cortez
+- Omar Sanchez
+- Kevin Martinez
+- Mario Loera
+
+### Gestión de Accesos TI	
+
+Correo: ciber_iam@bancobase.com	
+
+Descripción: Gestión del ciclo de vida de identidades de los aplicativos institucionales (en proceso), ABC de accesos. Se encuentra en proceso de migración de flujo operativos con el equipo de Miguel Jurado.
+- Okta
+- Sailpoint
+- Cyberark
+- Google Workspace
+
+Integrantes:
+- Jose Luis Martinez (temporal)
+- Carlos Campos
+- Gonzalo Navarro
+
+### Ciberseguridad Digital	
+
+Correo: ciberdigital@bancobase.com	
+
+Descripción: Automatización de flujos de seguridad, triage de vulnerabilidades, implementación de seguridad en el pipe de devops (DEVSECOPS).
+- Snyk
+- GitSecretScan
+- Programa Interno de Escaneo de Seguridad
+
+Integrantes:
+- Sergio Luna Medel
